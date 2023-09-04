@@ -31,3 +31,4 @@ set(CMAKE_PREFIX_PATH "D:\\Qt\\6.5.2\\mingw_64")
 
 ## 可执行文件路径
 
+可执行文件在`output`目录下，已使用windeployqt进行发布。
