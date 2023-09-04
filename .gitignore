@@ -1,3 +1,6 @@
 *-Debug/
 */build-*
 */cmake-*
+*/*.exe
+*/*.dll
+*/*/output
