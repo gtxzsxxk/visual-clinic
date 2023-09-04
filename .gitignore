@@ -1,6 +1,9 @@
 *-Debug/
+*-Release/
 */build-*
 */cmake-*
 */*.exe
 */*.dll
 */*/output
+*/release
+*.zip
