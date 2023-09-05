@@ -17,6 +17,14 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    bool eventFilter(QObject *watched, QEvent *event) override;
+    void goAttributionAnalysis();
+    void goAvgAndVari();
+    void goMeans();
+    void goScatter();
+    void goRelate();
+    void goPCA();
+    void importCSV();
 public slots:
     void quit();
     void minimize();

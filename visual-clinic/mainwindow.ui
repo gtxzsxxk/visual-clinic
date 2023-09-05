@@ -558,7 +558,7 @@ border:1px solid #D1D3D5;
            <number>5</number>
           </property>
           <item>
-           <widget class="QFrame" name="buttonImport">
+           <widget class="QFrame" name="button_import">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -602,7 +602,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="pushButton_4">
+              <widget class="QPushButton" name="pushButton_import">
                <property name="enabled">
                 <bool>true</bool>
                </property>
@@ -637,7 +637,7 @@ QFrame:hover{
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_10">
+              <widget class="QLabel" name="label_import">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -679,7 +679,7 @@ QFrame:hover{
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="buttonAvg">
+           <widget class="QFrame" name="button_avg">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -723,7 +723,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="pushButton_10">
+              <widget class="QPushButton" name="pushButton_avg">
                <property name="enabled">
                 <bool>true</bool>
                </property>
@@ -758,7 +758,7 @@ QFrame:hover{
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_16">
+              <widget class="QLabel" name="label_avg">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -800,7 +800,7 @@ QFrame:hover{
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="buttonScatter">
+           <widget class="QFrame" name="button_scatter">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -844,7 +844,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="pushButton_11">
+              <widget class="QPushButton" name="pushButton_scatter">
                <property name="enabled">
                 <bool>true</bool>
                </property>
@@ -879,7 +879,7 @@ QFrame:hover{
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_17">
+              <widget class="QLabel" name="label_scatter">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -921,7 +921,7 @@ QFrame:hover{
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="buttonRelate">
+           <widget class="QFrame" name="button_relate">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -965,7 +965,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="pushButton_12">
+              <widget class="QPushButton" name="pushButton_relate">
                <property name="enabled">
                 <bool>true</bool>
                </property>
@@ -1000,7 +1000,7 @@ QFrame:hover{
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_18">
+              <widget class="QLabel" name="label_relate">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -1042,7 +1042,7 @@ QFrame:hover{
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="buttonPCA">
+           <widget class="QFrame" name="button_PCA">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -1086,7 +1086,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="pushButton_13">
+              <widget class="QPushButton" name="pushButton_PCA">
                <property name="enabled">
                 <bool>true</bool>
                </property>
@@ -1121,7 +1121,7 @@ QFrame:hover{
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_19">
+              <widget class="QLabel" name="label_PCA">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -1163,7 +1163,7 @@ QFrame:hover{
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="buttonMeans">
+           <widget class="QFrame" name="button_means">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -1207,7 +1207,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="pushButton_14">
+              <widget class="QPushButton" name="pushButton_means">
                <property name="enabled">
                 <bool>true</bool>
                </property>
@@ -1242,7 +1242,7 @@ QFrame:hover{
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_20">
+              <widget class="QLabel" name="label_means">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
@@ -1284,7 +1284,7 @@ QFrame:hover{
            </widget>
           </item>
           <item>
-           <widget class="QFrame" name="buttonAttrAnalyze">
+           <widget class="QFrame" name="button_attr">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -1328,7 +1328,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <item>
-              <widget class="QPushButton" name="pushButton_15">
+              <widget class="QPushButton" name="pushButton_attr">
                <property name="enabled">
                 <bool>true</bool>
                </property>
@@ -1363,7 +1363,7 @@ QFrame:hover{
               </widget>
              </item>
              <item>
-              <widget class="QLabel" name="label_21">
+              <widget class="QLabel" name="label_attr">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>0</horstretch>
