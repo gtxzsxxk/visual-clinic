@@ -17,5 +17,8 @@ public:
 
 private:
     Ui::MainWindow *ui;
+private slots:
+    void quit();
+    void openDateTimeSettingDialog();
 };
 #endif // MAINWINDOW_H
