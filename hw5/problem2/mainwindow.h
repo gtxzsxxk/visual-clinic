@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "datetimepicker.h"
+
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -17,6 +19,10 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    DateTimePicker* dateTimePicker;
+    QString default_date;
+    void setDate(int year,int month,int day);
+    void setDate(const QString& year,const QString& month,const QString& day);
 private slots:
     void quit();
     void openDateTimeSettingDialog();
