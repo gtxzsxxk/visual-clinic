@@ -18,7 +18,7 @@ set(PROJECT_SOURCES
         src/main.cpp
         src/mainwindow.cpp
         include/mainwindow.h
-        resources/forms/mainwindow.ui
+        mainwindow.ui
         include/XMainWindow.h
 )
 

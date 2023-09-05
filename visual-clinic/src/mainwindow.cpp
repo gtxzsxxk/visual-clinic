@@ -1,5 +1,5 @@
 #include "../include/mainwindow.h"
-#include "../resources/forms/ui_mainwindow.h"
+#include "../ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
     : XMainWindow(parent)

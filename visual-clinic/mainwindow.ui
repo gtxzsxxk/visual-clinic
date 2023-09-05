@@ -269,7 +269,7 @@ border:1px solid #D1D3D5;
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>../win_minimal.png</normaloff>../win_minimal.png</iconset>
+            <normaloff>resources/win_minimal.png</normaloff>resources/win_minimal.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -305,7 +305,7 @@ border:1px solid #D1D3D5;
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>../win_normal.png</normaloff>../win_normal.png</iconset>
+            <normaloff>resources/win_normal.png</normaloff>resources/win_normal.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -341,7 +341,7 @@ border:1px solid #D1D3D5;
           </property>
           <property name="icon">
            <iconset>
-            <normaloff>../win_close.png</normaloff>../win_close.png</iconset>
+            <normaloff>resources/win_close.png</normaloff>resources/win_close.png</iconset>
           </property>
           <property name="iconSize">
            <size>
@@ -359,7 +359,7 @@ border:1px solid #D1D3D5;
   </widget>
  </widget>
  <resources>
-  <include location="../resources.qrc"/>
+  <include location="resources/resources.qrc"/>
  </resources>
  <connections/>
 </ui>
