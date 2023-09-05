@@ -44,11 +44,18 @@ void MainWindow::openDateTimeSettingDialog() {
         QRegularExpression re(pattern);
         if (re.match(date).hasMatch()) {
             auto splits = date.split('-');
-            auto year = splits[0];
-            auto month = splits[1];
-            auto day = splits[2];
+            auto year = splits[0].toInt();
+            auto month = splits[1].toInt();
+            auto day = splits[2].toInt();
+            if(!is_leap_year(year)){
+                if(month==2&&day==29){
+                    QMessageBox::warning(this, "错误", "不是闰年");
+                    return;
+                }
+            }
             setDate(year, month, day);
-            QString info = "已将日期设置为" + year + "年" + month + "月" + day + "日";
+            QString info = "已将日期设置为" + QString::number(year) + "年"
+                           + QString::number(month) + "月" + QString::number(day) + "日";
             QMessageBox::information(this, "日期设置成功", info);
         } else {
             QMessageBox::warning(this, "错误", "在日期文本中检测到错误");
@@ -62,9 +69,19 @@ void MainWindow::setDate(int year, int month, int day) {
     ui->dayLCD->display(day);
 }
 
-void MainWindow::setDate(const QString &year, const QString &month, const QString &day) {
-    ui->yearLCD->display(year.toInt());
-    ui->monthLCD->display(month.toInt());
-    ui->dayLCD->display(day.toInt());
+bool MainWindow::is_leap_year(int year) {
+    if (year % 4 == 0) {
+        if (year % 100 == 0) {
+            if (year % 400 == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        } else {
+            return true;
+        }
+    } else {
+        return false;
+    }
 }
 

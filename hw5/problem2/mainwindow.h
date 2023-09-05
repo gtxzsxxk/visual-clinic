@@ -22,7 +22,7 @@ private:
     DateTimePicker* dateTimePicker;
     QString default_date;
     void setDate(int year,int month,int day);
-    void setDate(const QString& year,const QString& month,const QString& day);
+    static bool is_leap_year(int year);
 private slots:
     void quit();
     void openDateTimeSettingDialog();
