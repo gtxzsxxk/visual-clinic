@@ -47,19 +47,21 @@ void MainWindow::openDateTimeSettingDialog() {
             auto year = splits[0].toInt();
             auto month = splits[1].toInt();
             auto day = splits[2].toInt();
-            if(!is_leap_year(year)){
-                if(month==2&&day==29){
+            if (!is_leap_year(year)) {
+                if (month == 2 && day == 29) {
                     QMessageBox::warning(this, "错误", "不是闰年");
                     return;
                 }
             }
-            setDate(year, month, day);
-            QString info = "已将日期设置为" + QString::number(year) + "年"
-                           + QString::number(month) + "月" + QString::number(day) + "日";
-            QMessageBox::information(this, "日期设置成功", info);
-        } else {
-            QMessageBox::warning(this, "错误", "在日期文本中检测到错误");
+            if (day >= 1 && day <= 31) {
+                setDate(year, month, day);
+                QString info = "已将日期设置为" + QString::number(year) + "年"
+                               + QString::number(month) + "月" + QString::number(day) + "日";
+                QMessageBox::information(this, "日期设置成功", info);
+                return;
+            }
         }
+        QMessageBox::warning(this, "错误", "在日期文本中检测到错误");
     }
 }
 
