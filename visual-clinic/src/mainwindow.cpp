@@ -2,7 +2,7 @@
 #include "../resources/forms/ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
+    : XMainWindow(parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);

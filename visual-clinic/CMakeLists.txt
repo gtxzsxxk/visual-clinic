@@ -19,6 +19,7 @@ set(PROJECT_SOURCES
         src/mainwindow.cpp
         include/mainwindow.h
         resources/forms/mainwindow.ui
+        include/XMainWindow.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
