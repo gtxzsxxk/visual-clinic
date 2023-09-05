@@ -2,6 +2,7 @@
 *-Release/
 */build-*
 */cmake-*
+*/*/cmake-*
 */*.exe
 */*.dll
 */*/output
