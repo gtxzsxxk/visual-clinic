@@ -90,7 +90,8 @@ void MainWindow::goAvgAndVari() {
             data.push_back(item->text().toDouble());
         }
     }
-    auto avgDialog = new AvgDialog(this,std::move(data));
+    auto avgDialog = new AvgDialog(this,std::move(data),
+                                   ui->tableWidget->takeHorizontalHeaderItem(selected_column)->text());
     avgDialog->setModal(true);
     avgDialog->show();
 }
