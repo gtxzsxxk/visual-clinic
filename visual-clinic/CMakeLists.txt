@@ -20,6 +20,8 @@ set(PROJECT_SOURCES
         include/mainwindow.h
         mainwindow.ui
         include/XMainWindow.h
+        src/FileTab.cpp
+        include/FileTab.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "../include/XMainWindow.h"
+#include "FileTab.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -17,6 +18,7 @@ public:
 
 private:
     Ui::MainWindow *ui;
+    bool fileOpened;
     bool eventFilter(QObject *watched, QEvent *event) override;
     void goAttributionAnalysis();
     void goAvgAndVari();

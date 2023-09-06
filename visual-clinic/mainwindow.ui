@@ -26,6 +26,9 @@
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QVBoxLayout" name="verticalLayout">
+    <property name="spacing">
+     <number>0</number>
+    </property>
     <property name="leftMargin">
      <number>0</number>
     </property>
@@ -95,13 +98,13 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>400</width>
+           <width>700</width>
            <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>400</width>
+           <width>700</width>
            <height>40</height>
           </size>
          </property>
@@ -128,7 +131,7 @@
            <number>0</number>
           </property>
           <item>
-           <widget class="QFrame" name="frame_4">
+           <widget class="QFrame" name="titleBarFrame">
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -137,7 +140,7 @@
             </property>
             <property name="maximumSize">
              <size>
-              <width>500</width>
+              <width>700</width>
               <height>38</height>
              </size>
             </property>
@@ -197,13 +200,13 @@ padding: 3px 10px 3px 10px
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>200</width>
+                 <width>150</width>
                  <height>28</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>200</width>
+                 <width>150</width>
                  <height>28</height>
                 </size>
                </property>
@@ -230,26 +233,26 @@ border:1px solid #D1D3D5;
                  <number>0</number>
                 </property>
                 <property name="topMargin">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <property name="rightMargin">
                  <number>0</number>
                 </property>
                 <property name="bottomMargin">
-                 <number>1</number>
+                 <number>0</number>
                 </property>
                 <item>
                  <widget class="QLabel" name="label">
                   <property name="minimumSize">
                    <size>
-                    <width>132</width>
-                    <height>18</height>
+                    <width>80</width>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="maximumSize">
                    <size>
-                    <width>132</width>
-                    <height>18</height>
+                    <width>80</width>
+                    <height>20</height>
                    </size>
                   </property>
                   <property name="styleSheet">
@@ -259,12 +262,12 @@ padding-left:0px;
 }</string>
                   </property>
                   <property name="text">
-                   <string>breast-cancer.csv</string>
+                   <string>csgo.exe</string>
                   </property>
                  </widget>
                 </item>
                 <item>
-                 <widget class="QPushButton" name="pushButton">
+                 <widget class="QPushButton" name="buttonCloseCurrentFile">
                   <property name="minimumSize">
                    <size>
                     <width>18</width>
@@ -308,19 +311,6 @@ QPushButton:hover{
                </layout>
               </widget>
              </item>
-             <item>
-              <spacer name="horizontalSpacer">
-               <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-               </property>
-               <property name="sizeHint" stdset="0">
-                <size>
-                 <width>40</width>
-                 <height>20</height>
-                </size>
-               </property>
-              </spacer>
-             </item>
             </layout>
            </widget>
           </item>
@@ -331,6 +321,9 @@ QPushButton:hover{
         <spacer name="horizontalSpacer_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
+         </property>
+         <property name="sizeType">
+          <enum>QSizePolicy::Expanding</enum>
          </property>
          <property name="sizeHint" stdset="0">
           <size>
@@ -598,6 +591,9 @@ border:1px solid #D1D3D5;
               <width>100</width>
               <height>60</height>
              </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="styleSheet">
              <string notr="true">QFrame{

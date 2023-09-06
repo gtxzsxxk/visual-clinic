@@ -1,4 +1,5 @@
 #include "../include/mainwindow.h"
+#include "../include/FileTab.h"
 #include "../ui_mainwindow.h"
 
 #include <QMessageBox>
@@ -14,7 +15,7 @@ ui->pushButton_##tag->installEventFilter(this);\
 && ui->button_##tag->isEnabled())
 
 MainWindow::MainWindow(QWidget *parent)
-        : XMainWindow(parent), ui(new Ui::MainWindow) {
+        : XMainWindow(parent), ui(new Ui::MainWindow),fileOpened(false) {
     ui->setupUi(this);
     connect(ui->buttonClose, SIGNAL(clicked()), this, SLOT(quit()));
     connect(ui->buttonMinimize, SIGNAL(clicked()), this, SLOT(minimize()));
@@ -25,7 +26,13 @@ MainWindow::MainWindow(QWidget *parent)
     FILTER_INSTALL(PCA);
     FILTER_INSTALL(means);
     FILTER_INSTALL(import);
-//    ui->fileFrame->setVisible(false);
+    ui->fileFrame->setVisible(false);
+    auto *box = dynamic_cast<QHBoxLayout*>(ui->titleBarFrame->layout());
+    if(box!= nullptr){
+        box->addWidget(new FileTab(this,"csgo.exe"));
+        box->addWidget(new FileTab(this,"Microsoft.exe"));
+        box->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
+    }
 }
 
 MainWindow::~MainWindow() {
@@ -75,7 +82,7 @@ void MainWindow::goAvgAndVari() {
 }
 
 void MainWindow::importCSV() {
-    QMessageBox::information(this, "Debug", "导入数据");
+
 }
 
 void MainWindow::goMeans() {
