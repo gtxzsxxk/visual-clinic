@@ -10,7 +10,8 @@ ui->pushButton_##tag->installEventFilter(this);\
 }while(0);
 
 #define TAG_HIT(tag) ((watched == ui->button_##tag || watched == ui->label_##tag \
-|| watched == ui->pushButton_##tag) && event->type() == QEvent::MouseButtonRelease)
+|| watched == ui->pushButton_##tag) && event->type() == QEvent::MouseButtonRelease\
+&& ui->button_##tag->isEnabled())
 
 MainWindow::MainWindow(QWidget *parent)
         : XMainWindow(parent), ui(new Ui::MainWindow) {
@@ -24,6 +25,7 @@ MainWindow::MainWindow(QWidget *parent)
     FILTER_INSTALL(PCA);
     FILTER_INSTALL(means);
     FILTER_INSTALL(import);
+//    ui->fileFrame->setVisible(false);
 }
 
 MainWindow::~MainWindow() {

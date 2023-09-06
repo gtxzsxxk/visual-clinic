@@ -10,6 +10,12 @@
     <height>630</height>
    </rect>
   </property>
+  <property name="minimumSize">
+   <size>
+    <width>900</width>
+    <height>630</height>
+   </size>
+  </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
@@ -89,13 +95,13 @@
          </property>
          <property name="minimumSize">
           <size>
-           <width>320</width>
+           <width>400</width>
            <height>40</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>320</width>
+           <width>400</width>
            <height>40</height>
           </size>
          </property>
@@ -123,6 +129,18 @@
           </property>
           <item>
            <widget class="QFrame" name="frame_4">
+            <property name="minimumSize">
+             <size>
+              <width>0</width>
+              <height>38</height>
+             </size>
+            </property>
+            <property name="maximumSize">
+             <size>
+              <width>500</width>
+              <height>38</height>
+             </size>
+            </property>
             <property name="frameShape">
              <enum>QFrame::StyledPanel</enum>
             </property>
@@ -170,7 +188,7 @@ padding: 3px 10px 3px 10px
               </widget>
              </item>
              <item>
-              <widget class="QFrame" name="frame_8">
+              <widget class="QFrame" name="fileFrame">
                <property name="sizePolicy">
                 <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                  <horstretch>180</horstretch>
@@ -179,13 +197,13 @@ padding: 3px 10px 3px 10px
                </property>
                <property name="minimumSize">
                 <size>
-                 <width>180</width>
+                 <width>200</width>
                  <height>28</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
-                 <width>180</width>
+                 <width>200</width>
                  <height>28</height>
                 </size>
                </property>
@@ -290,6 +308,19 @@ QPushButton:hover{
                </layout>
               </widget>
              </item>
+             <item>
+              <spacer name="horizontalSpacer">
+               <property name="orientation">
+                <enum>Qt::Horizontal</enum>
+               </property>
+               <property name="sizeHint" stdset="0">
+                <size>
+                 <width>40</width>
+                 <height>20</height>
+                </size>
+               </property>
+              </spacer>
+             </item>
             </layout>
            </widget>
           </item>
@@ -297,16 +328,13 @@ QPushButton:hover{
         </widget>
        </item>
        <item>
-        <spacer name="horizontalSpacer">
+        <spacer name="horizontalSpacer_3">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Ignored</enum>
-         </property>
          <property name="sizeHint" stdset="0">
           <size>
-           <width>460</width>
+           <width>40</width>
            <height>20</height>
           </size>
          </property>
@@ -322,14 +350,14 @@ QPushButton:hover{
          </property>
          <property name="minimumSize">
           <size>
-           <width>120</width>
-           <height>40</height>
+           <width>114</width>
+           <height>38</height>
           </size>
          </property>
          <property name="maximumSize">
           <size>
-           <width>120</width>
-           <height>40</height>
+           <width>114</width>
+           <height>38</height>
           </size>
          </property>
          <property name="frameShape">
@@ -361,14 +389,14 @@ QPushButton:hover{
            <widget class="QPushButton" name="buttonMinimize">
             <property name="minimumSize">
              <size>
-              <width>40</width>
-              <height>40</height>
+              <width>38</width>
+              <height>38</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>40</width>
-              <height>40</height>
+              <width>38</width>
+              <height>38</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -403,14 +431,14 @@ QPushButton:hover{
            <widget class="QPushButton" name="buttonMiddle">
             <property name="minimumSize">
              <size>
-              <width>40</width>
-              <height>40</height>
+              <width>38</width>
+              <height>38</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>40</width>
-              <height>40</height>
+              <width>38</width>
+              <height>38</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -445,14 +473,14 @@ QPushButton:hover{
            <widget class="QPushButton" name="buttonClose">
             <property name="minimumSize">
              <size>
-              <width>40</width>
-              <height>40</height>
+              <width>38</width>
+              <height>38</height>
              </size>
             </property>
             <property name="maximumSize">
              <size>
-              <width>40</width>
-              <height>40</height>
+              <width>38</width>
+              <height>38</height>
              </size>
             </property>
             <property name="styleSheet">
@@ -680,6 +708,9 @@ QFrame:hover{
           </item>
           <item>
            <widget class="QFrame" name="button_avg">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -725,7 +756,7 @@ QFrame:hover{
              <item>
               <widget class="QPushButton" name="pushButton_avg">
                <property name="enabled">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="maximumSize">
                 <size>
@@ -801,6 +832,9 @@ QFrame:hover{
           </item>
           <item>
            <widget class="QFrame" name="button_scatter">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -846,7 +880,7 @@ QFrame:hover{
              <item>
               <widget class="QPushButton" name="pushButton_scatter">
                <property name="enabled">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="maximumSize">
                 <size>
@@ -922,6 +956,9 @@ QFrame:hover{
           </item>
           <item>
            <widget class="QFrame" name="button_relate">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -967,7 +1004,7 @@ QFrame:hover{
              <item>
               <widget class="QPushButton" name="pushButton_relate">
                <property name="enabled">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="maximumSize">
                 <size>
@@ -1043,6 +1080,9 @@ QFrame:hover{
           </item>
           <item>
            <widget class="QFrame" name="button_PCA">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -1088,7 +1128,7 @@ QFrame:hover{
              <item>
               <widget class="QPushButton" name="pushButton_PCA">
                <property name="enabled">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="maximumSize">
                 <size>
@@ -1164,6 +1204,9 @@ QFrame:hover{
           </item>
           <item>
            <widget class="QFrame" name="button_means">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -1209,7 +1252,7 @@ QFrame:hover{
              <item>
               <widget class="QPushButton" name="pushButton_means">
                <property name="enabled">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="maximumSize">
                 <size>
@@ -1285,6 +1328,9 @@ QFrame:hover{
           </item>
           <item>
            <widget class="QFrame" name="button_attr">
+            <property name="enabled">
+             <bool>false</bool>
+            </property>
             <property name="minimumSize">
              <size>
               <width>0</width>
@@ -1330,7 +1376,7 @@ QFrame:hover{
              <item>
               <widget class="QPushButton" name="pushButton_attr">
                <property name="enabled">
-                <bool>true</bool>
+                <bool>false</bool>
                </property>
                <property name="maximumSize">
                 <size>
@@ -1471,9 +1517,101 @@ QFrame:hover{
             </property>
             <item>
              <widget class="QTableWidget" name="tableWidget">
+              <property name="palette">
+               <palette>
+                <active>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>233</red>
+                    <green>236</green>
+                    <blue>238</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Base">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>233</red>
+                    <green>236</green>
+                    <blue>238</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Window">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>233</red>
+                    <green>236</green>
+                    <blue>238</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                </active>
+                <inactive>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>233</red>
+                    <green>236</green>
+                    <blue>238</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Base">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>233</red>
+                    <green>236</green>
+                    <blue>238</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Window">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>233</red>
+                    <green>236</green>
+                    <blue>238</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                </inactive>
+                <disabled>
+                 <colorrole role="Button">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>233</red>
+                    <green>236</green>
+                    <blue>238</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Base">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>233</red>
+                    <green>236</green>
+                    <blue>238</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                 <colorrole role="Window">
+                  <brush brushstyle="SolidPattern">
+                   <color alpha="255">
+                    <red>233</red>
+                    <green>236</green>
+                    <blue>238</blue>
+                   </color>
+                  </brush>
+                 </colorrole>
+                </disabled>
+               </palette>
+              </property>
               <property name="styleSheet">
                <string notr="true">QTableWidget {
 	border: none;
+	background:#e9ecee;
 }</string>
               </property>
               <property name="rowCount">
