@@ -13,13 +13,14 @@ class MainWindow : public XMainWindow
     Q_OBJECT
 
 public:
-    MainWindow(QWidget *parent = nullptr);
+    explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
 private:
     Ui::MainWindow *ui;
     bool fileOpened;
     QString currentFilePath;
+    std::vector<QString> currentCSVLines;
     bool eventFilter(QObject *watched, QEvent *event) override;
     void goAttributionAnalysis();
     void goAvgAndVari();
@@ -29,8 +30,11 @@ private:
     void goPCA();
     void importCSV();
     void titleBarAdd(const QString& name);
+    void openCSVFile(const QString& path);
 public slots:
     void quit();
     void minimize();
+    void tabSelected(int tabIndex);
+    void tabClosed(int tabIndex);
 };
 #endif // MAINWINDOW_H

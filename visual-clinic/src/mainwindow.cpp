@@ -78,30 +78,11 @@ void MainWindow::goAvgAndVari() {
 }
 
 void MainWindow::importCSV() {
-    currentFilePath = QFileDialog::getOpenFileName(this, "选择病例文件", ".", "*.csv");
-    QFile f(currentFilePath);
-
-    if (f.open(QIODevice::ReadOnly)) {
-        QTextStream stream(&f);
-        std::vector<QString> lines;
-        while (!stream.atEnd()) {
-            lines.push_back(stream.readLine());
-        }
-        if (lines.size() < 2) {
-            QMessageBox::warning(this, "错误", "文件是空的，或者文件格式错误");
-        }
-        auto header_src = lines[0];
-        auto headers = header_src.split(',');
-        ui->tableWidget->setColumnCount(headers.size());
-        ui->tableWidget->setHorizontalHeaderLabels(headers);
-
-        QFileInfo info(currentFilePath);
-        auto real_name = info.fileName();
-        titleBarAdd(real_name);
-        fileOpened = true;
-    } else {
-        QMessageBox::warning(this, "错误", "无法打开文件：" + currentFilePath);
+    auto path = QFileDialog::getOpenFileName(this, "选择病例文件", ".", "*.csv");
+    if (path.isEmpty()) {
+        return;
     }
+    openCSVFile(path);
 }
 
 void MainWindow::goMeans() {
@@ -124,10 +105,52 @@ void MainWindow::titleBarAdd(const QString &name) {
     auto *box = dynamic_cast<QHBoxLayout *>(ui->titleBarFrame->layout());
     if (box != nullptr) {
         box->removeItem(ui->titleBarSpacer);
-        auto *item = new FileTab(this, name);
+        auto *item = new FileTab(ui->titleBarFrame, name);
+        connect(item,SIGNAL(tabClosed(int)),this,SLOT(tabClosed(int)));
         box->addWidget(item);
         box->addItem(ui->titleBarSpacer);
         item->select();
     }
+}
+
+void MainWindow::openCSVFile(const QString &path) {
+    QFile f(path);
+    if (f.open(QIODevice::ReadOnly)) {
+        QTextStream stream(&f);
+        std::vector<QString> lines;
+        while (!stream.atEnd()) {
+            lines.push_back(stream.readLine());
+        }
+        if (lines.size() < 2) {
+            QMessageBox::warning(this, "错误", "文件是空的，或者文件格式错误");
+        }
+        auto header_src = lines[0];
+        auto headers = header_src.split(',');
+        ui->tableWidget->setColumnCount(headers.size());
+        ui->tableWidget->setHorizontalHeaderLabels(headers);
+
+        QFileInfo info(path);
+        auto real_name = info.fileName();
+        titleBarAdd(real_name);
+        fileOpened = true;
+        currentFilePath = path;
+        currentCSVLines = std::move(lines);
+    } else {
+        QMessageBox::warning(this, "错误", "无法打开文件：" + path);
+    }
+}
+
+void MainWindow::tabSelected(int tabIndex) {
+
+}
+
+void MainWindow::tabClosed(int tabIndex) {
+    auto *item = FileTab::fileTabs[tabIndex];
+    auto *box = dynamic_cast<QHBoxLayout *>(ui->titleBarFrame->layout());
+    if (box != nullptr) {
+        item->hide();
+        box->removeWidget(item);
+    }
+    FileTab::fileTabs.erase(FileTab::fileTabs.begin()+tabIndex);
 }
 

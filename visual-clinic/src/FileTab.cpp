@@ -5,12 +5,13 @@
 #include "../include/FileTab.h"
 
 #include <QEvent>
+#include <QFontMetrics>
 
 std::vector<FileTab *> FileTab::fileTabs;
 
 FileTab::FileTab(QWidget *parent, const QString &filename) :
         QFrame(parent), filename(filename), selected(false) {
-    int width = filename.length() * 10;
+    int width = QFontMetrics(this->font()).boundingRect(filename).width();
     int container_width = width + 60;
     QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(180);
@@ -18,7 +19,7 @@ FileTab::FileTab(QWidget *parent, const QString &filename) :
     sizePolicy2.setHeightForWidth(sizePolicy().hasHeightForWidth());
     setSizePolicy(sizePolicy2);
     setMinimumSize(QSize(container_width, 28));
-    setMaximumSize(QSize(container_width, 28));
+    setMaximumSize(QSize(260, 28));
     setStyleSheet(QString::fromUtf8("QFrame{\n"
                                     "	background:white;\n"
                                     "border:none;\n"
@@ -33,12 +34,13 @@ FileTab::FileTab(QWidget *parent, const QString &filename) :
     horizontalLayout_6->setContentsMargins(0, 0, 0, 0);
     label = new QLabel(this);
     label->setMinimumSize(QSize(width, 20));
-    label->setMaximumSize(QSize(width, 20));
+    label->setMaximumSize(QSize(200, 20));
     label->setStyleSheet(QString::fromUtf8("QLabel {\n"
                                            "	border:none;\n"
                                            "padding-left:0px;background: transparent;\n"
                                            "}"));
     label->setText(filename);
+    label->setWordWrap(true);
 
     horizontalLayout_6->addWidget(label);
 
