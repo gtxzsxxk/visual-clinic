@@ -20,6 +20,8 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
     connect(ui->buttonClose, SIGNAL(clicked()), this, SLOT(quit()));
     connect(ui->buttonMinimize, SIGNAL(clicked()), this, SLOT(minimize()));
+    connect(ui->tableWidget->horizontalHeader(),
+            SIGNAL(sectionClicked(int)),this,SLOT(onTableHeaderSelected(int)));
     FILTER_INSTALL(attr);
     FILTER_INSTALL(avg);
     FILTER_INSTALL(scatter);
@@ -105,7 +107,7 @@ void MainWindow::titleBarAdd(const QString &path) {
     if (box != nullptr) {
         box->removeItem(ui->titleBarSpacer);
         auto *item = new FileTab(ui->titleBarFrame, ui->tableWidget, path);
-        connect(item, SIGNAL(tabClosed(int)), this, SLOT(tabClosed(int)));
+        connect(item, SIGNAL(onTabClosed(int)), this, SLOT(onTabClosed(int)));
         box->addWidget(item);
         box->addItem(ui->titleBarSpacer);
         item->select();
@@ -116,7 +118,7 @@ void MainWindow::tabSelected(int tabIndex) {
 
 }
 
-void MainWindow::tabClosed(int tabIndex) {
+void MainWindow::onTabClosed(int tabIndex) {
     auto *item = FileTab::fileTabs[tabIndex];
     auto *box = dynamic_cast<QHBoxLayout *>(ui->titleBarFrame->layout());
     if (box != nullptr) {
@@ -127,5 +129,10 @@ void MainWindow::tabClosed(int tabIndex) {
     if(!FileTab::fileTabs.empty()){
         FileTab::fileTabs[0]->select();
     }
+}
+
+void MainWindow::onTableHeaderSelected(int index) {
+
+    return;
 }
 

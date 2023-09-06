@@ -34,7 +34,7 @@ public slots:
     void quit();
     void minimize();
     void tabSelected(int tabIndex);
-    void tabClosed(int tabIndex);
-
+    void onTabClosed(int tabIndex);
+    void onTableHeaderSelected(int index);
 };
 #endif // MAINWINDOW_H
