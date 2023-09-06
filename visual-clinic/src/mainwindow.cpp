@@ -81,7 +81,7 @@ void MainWindow::goAttributionAnalysis() {
 }
 
 void MainWindow::goAvgAndVari() {
-    std::vector<double> data;
+    std::vector<float> data;
     for(int i=0;i<ui->tableWidget->rowCount();i++){
         auto *item = ui->tableWidget->item(i,selected_column);
         if(item->text()[0]>='A'){
@@ -91,7 +91,7 @@ void MainWindow::goAvgAndVari() {
         }
     }
     auto avgDialog = new AvgDialog(this,std::move(data),
-                                   ui->tableWidget->takeHorizontalHeaderItem(selected_column)->text());
+                                   ui->tableWidget->horizontalHeaderItem(selected_column)->text());
     avgDialog->setModal(true);
     avgDialog->show();
 }

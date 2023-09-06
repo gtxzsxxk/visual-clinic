@@ -13,19 +13,23 @@ class AvgDialog : public QDialog {
 Q_OBJECT
 
 public:
-    explicit AvgDialog(QWidget *parent, std::vector<double> &&data, const QString &&name, bool discrete = false);
+    explicit AvgDialog(QWidget *parent, std::vector<float> data, const QString &&name, bool discrete = false);
 
     ~AvgDialog();
 
 private:
-    const QString &name;
+    const QString name;
     Ui::AvgDialog *ui;
-    std::vector<double> data;
-    std::map<double, int> coordinates;
+    std::vector<float> data;
+    std::map<float, int> coordinates;
 
-    void data_initialize();
+    void data_initialize(double groups = 0);
 
     void chart_initialize() const;
+
+private slots:
+
+    void onSpinBoxValueChanged(int value);
 };
 
 #endif // AVGDIALOG_H
