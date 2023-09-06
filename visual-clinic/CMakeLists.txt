@@ -32,6 +32,11 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
             include/avgdialog.h src/avgdialog.cpp avgdialog.ui
+            include/scatterdialog.h src/scatterdialog.cpp scatterdialog.ui
+            include/relatedialog.h src/relatedialog.cpp relatedialog.ui
+            include/pcadialog.h src/pcadialog.cpp pcadialog.ui
+            include/meansdialog.h src/meansdialog.cpp meansdialog.ui
+            include/attrdialog.h src/attrdialog.cpp attrdialog.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET visual-clinic APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

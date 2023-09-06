@@ -1,5 +1,6 @@
 #include "../include/mainwindow.h"
 #include "../include/avgdialog.h"
+#include "../include/scatterdialog.h"
 #include "../ui_mainwindow.h"
 
 #include <QMessageBox>
@@ -138,7 +139,9 @@ void MainWindow::goMeans() {
 }
 
 void MainWindow::goScatter() {
-    QMessageBox::information(this, "Debug", "散点分析");
+    auto scatterdial = new ScatterDialog(this);
+    scatterdial->setModal(true);
+    scatterdial->show();
 }
 
 void MainWindow::goRelate() {
