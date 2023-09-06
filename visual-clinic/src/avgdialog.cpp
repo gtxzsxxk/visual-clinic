@@ -52,20 +52,20 @@ void AvgDialog::chart_initialize() const {
     QStringList categories;
     int upper = 0;
     QString start, end;
+    auto *st = new QBarSet("组内平均值", (QObject *) this);
     for (const auto &it: coordinates) {
         auto cat = QString::number(it.first, 'g', 2);
         if (start.isEmpty()) {
             start = cat;
         }
         end = cat;
-        auto *st = new QBarSet(cat, (QObject *) this);
         *st << it.second;
-        series->append(st);
         categories.push_back(cat);
         if (it.second > upper) {
             upper = it.second;
         }
     }
+    series->append(st);
     auto axisX = new QBarCategoryAxis;
     axisX->append(categories);
     axisX->setRange(start, end);
