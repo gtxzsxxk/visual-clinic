@@ -13,6 +13,7 @@ set(CMAKE_PREFIX_PATH "D:\\Qt\\6.5.2\\mingw_64")
 
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Charts)
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -22,12 +23,15 @@ set(PROJECT_SOURCES
         include/XMainWindow.h
         src/FileTab.cpp
         include/FileTab.h
+        lib/rowfeature.hpp
+        lib/common.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(visual-clinic
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+            include/avgdialog.h src/avgdialog.cpp avgdialog.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET visual-clinic APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR
@@ -48,6 +52,7 @@ else()
 endif()
 
 target_link_libraries(visual-clinic PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+target_link_libraries(visual-clinic PRIVATE Qt6::Charts)
 
 # Qt for iOS sets MACOSX_BUNDLE_GUI_IDENTIFIER automatically since Qt 6.1.
 # If you are developing for iOS or macOS you should consider setting an

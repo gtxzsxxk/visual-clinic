@@ -19,6 +19,7 @@ public:
 private:
     Ui::MainWindow *ui;
     bool fileOpened;
+    int selected_column;
     QString currentFilePath;
     std::vector<QString> currentCSVLines;
     bool eventFilter(QObject *watched, QEvent *event) override;

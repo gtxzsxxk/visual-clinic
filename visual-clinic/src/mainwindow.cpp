@@ -1,19 +1,25 @@
 #include "../include/mainwindow.h"
+#include "../include/avgdialog.h"
 #include "../ui_mainwindow.h"
 
 #include <QMessageBox>
 #include <QFileDialog>
 #include <vector>
 
-#define FILTER_INSTALL(tag) do{ \
+#define APP_BTN_FILTER_INSTALL(tag) do{ \
      ui->button_##tag->installEventFilter(this);\
 ui->label_##tag->installEventFilter(this);\
 ui->pushButton_##tag->installEventFilter(this);\
 }while(0);
 
-#define TAG_HIT(tag) ((watched == ui->button_##tag || watched == ui->label_##tag \
+#define APP_BTN_TAG_HIT(tag) ((watched == ui->button_##tag || watched == ui->label_##tag \
 || watched == ui->pushButton_##tag) && event->type() == QEvent::MouseButtonRelease\
 && ui->button_##tag->isEnabled())
+
+#define APP_BTN_SET_ENABLE(tag, value) do { \
+            ui->button_##tag->setEnabled(value);                               \
+            ui->pushButton_##tag->setEnabled(value);                               \
+} while (0);
 
 MainWindow::MainWindow(QWidget *parent)
         : XMainWindow(parent), ui(new Ui::MainWindow), fileOpened(false) {
@@ -21,14 +27,14 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->buttonClose, SIGNAL(clicked()), this, SLOT(quit()));
     connect(ui->buttonMinimize, SIGNAL(clicked()), this, SLOT(minimize()));
     connect(ui->tableWidget->horizontalHeader(),
-            SIGNAL(sectionClicked(int)),this,SLOT(onTableHeaderSelected(int)));
-    FILTER_INSTALL(attr);
-    FILTER_INSTALL(avg);
-    FILTER_INSTALL(scatter);
-    FILTER_INSTALL(relate);
-    FILTER_INSTALL(PCA);
-    FILTER_INSTALL(means);
-    FILTER_INSTALL(import);
+            SIGNAL(sectionClicked(int)), this, SLOT(onTableHeaderSelected(int)));
+    APP_BTN_FILTER_INSTALL(attr);
+    APP_BTN_FILTER_INSTALL(avg);
+    APP_BTN_FILTER_INSTALL(scatter);
+    APP_BTN_FILTER_INSTALL(relate);
+    APP_BTN_FILTER_INSTALL(PCA);
+    APP_BTN_FILTER_INSTALL(means);
+    APP_BTN_FILTER_INSTALL(import);
     ui->fileFrame->setVisible(false);
 }
 
@@ -45,25 +51,25 @@ void MainWindow::minimize() {
 }
 
 bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
-    if TAG_HIT(attr) {
+    if APP_BTN_TAG_HIT(attr) {
         goAttributionAnalysis();
         return true;
-    } else if TAG_HIT(avg) {
+    } else if APP_BTN_TAG_HIT(avg) {
         goAvgAndVari();
         return true;
-    } else if TAG_HIT(import) {
+    } else if APP_BTN_TAG_HIT(import) {
         importCSV();
         return true;
-    } else if TAG_HIT(means) {
+    } else if APP_BTN_TAG_HIT(means) {
         goMeans();
         return true;
-    } else if TAG_HIT(scatter) {
+    } else if APP_BTN_TAG_HIT(scatter) {
         goScatter();
         return true;
-    } else if TAG_HIT(relate) {
+    } else if APP_BTN_TAG_HIT(relate) {
         goRelate();
         return true;
-    } else if TAG_HIT(PCA) {
+    } else if APP_BTN_TAG_HIT(PCA) {
         goPCA();
         return true;
     }
@@ -75,7 +81,18 @@ void MainWindow::goAttributionAnalysis() {
 }
 
 void MainWindow::goAvgAndVari() {
-    QMessageBox::information(this, "Debug", "均值与方差分析");
+    std::vector<double> data;
+    for(int i=0;i<ui->tableWidget->rowCount();i++){
+        auto *item = ui->tableWidget->item(i,selected_column);
+        if(item->text()[0]>='A'){
+            //discrete
+        }else{
+            data.push_back(item->text().toDouble());
+        }
+    }
+    auto avgDialog = new AvgDialog(this,std::move(data));
+    avgDialog->setModal(true);
+    avgDialog->show();
 }
 
 void MainWindow::importCSV() {
@@ -126,13 +143,15 @@ void MainWindow::onTabClosed(int tabIndex) {
         box->removeWidget(item);
     }
     FileTab::fileTabs.erase(FileTab::fileTabs.begin() + tabIndex);
-    if(!FileTab::fileTabs.empty()){
+    if (!FileTab::fileTabs.empty()) {
         FileTab::fileTabs[0]->select();
     }
 }
 
 void MainWindow::onTableHeaderSelected(int index) {
-
-    return;
+    if (!FileTab::fileTabs.empty()) {
+        APP_BTN_SET_ENABLE(avg, true);
+        selected_column = index;
+    }
 }
 

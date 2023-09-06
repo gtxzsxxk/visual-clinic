@@ -732,6 +732,9 @@ QFrame:hover{
               <height>60</height>
              </size>
             </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="styleSheet">
              <string notr="true">QFrame{
 	border:none;
@@ -855,6 +858,9 @@ QFrame:hover{
               <width>100</width>
               <height>60</height>
              </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="styleSheet">
              <string notr="true">QFrame{
@@ -980,6 +986,9 @@ QFrame:hover{
               <height>60</height>
              </size>
             </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="styleSheet">
              <string notr="true">QFrame{
 	border:none;
@@ -1103,6 +1112,9 @@ QFrame:hover{
               <width>100</width>
               <height>60</height>
              </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="styleSheet">
              <string notr="true">QFrame{
@@ -1228,6 +1240,9 @@ QFrame:hover{
               <height>60</height>
              </size>
             </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
+            </property>
             <property name="styleSheet">
              <string notr="true">QFrame{
 	border:none;
@@ -1351,6 +1366,9 @@ QFrame:hover{
               <width>100</width>
               <height>60</height>
              </size>
+            </property>
+            <property name="cursor">
+             <cursorShape>PointingHandCursor</cursorShape>
             </property>
             <property name="styleSheet">
              <string notr="true">QFrame{
