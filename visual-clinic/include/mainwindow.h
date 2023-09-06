@@ -19,6 +19,7 @@ public:
 private:
     Ui::MainWindow *ui;
     bool fileOpened;
+    QString currentFilePath;
     bool eventFilter(QObject *watched, QEvent *event) override;
     void goAttributionAnalysis();
     void goAvgAndVari();
