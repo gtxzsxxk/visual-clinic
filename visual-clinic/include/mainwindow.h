@@ -27,6 +27,7 @@ private:
     void goRelate();
     void goPCA();
     void importCSV();
+    void titleBarAdd(const QString& name);
 public slots:
     void quit();
     void minimize();

@@ -27,12 +27,8 @@ MainWindow::MainWindow(QWidget *parent)
     FILTER_INSTALL(means);
     FILTER_INSTALL(import);
     ui->fileFrame->setVisible(false);
-    auto *box = dynamic_cast<QHBoxLayout*>(ui->titleBarFrame->layout());
-    if(box!= nullptr){
-        box->addWidget(new FileTab(this,"csgo.exe"));
-        box->addWidget(new FileTab(this,"Microsoft.exe"));
-        box->addItem(new QSpacerItem(40, 20, QSizePolicy::Expanding, QSizePolicy::Minimum));
-    }
+    titleBarAdd("114.exe");
+    titleBarAdd("514.exe");
 }
 
 MainWindow::~MainWindow() {
@@ -99,5 +95,14 @@ void MainWindow::goRelate() {
 
 void MainWindow::goPCA() {
     QMessageBox::information(this, "Debug", "主成分分析");
+}
+
+void MainWindow::titleBarAdd(const QString &name) {
+    auto *box = dynamic_cast<QHBoxLayout*>(ui->titleBarFrame->layout());
+    if(box!= nullptr){
+        box->removeItem(ui->titleBarSpacer);
+        box->addWidget(new FileTab(this,name));
+        box->addItem(ui->titleBarSpacer);
+    }
 }
 

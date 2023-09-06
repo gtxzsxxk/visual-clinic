@@ -6,7 +6,7 @@
 
 #include <QEvent>
 
-std::vector<FileTab*> FileTab::fileTabs;
+std::vector<FileTab *> FileTab::fileTabs;
 
 FileTab::FileTab(QWidget *parent, const QString &filename) :
         QFrame(parent), filename(filename), selected(false) {
@@ -65,6 +65,7 @@ FileTab::FileTab(QWidget *parent, const QString &filename) :
 
     horizontalLayout_6->addWidget(buttonCloseCurrentFile);
     unselect();
+    index = fileTabs.size();
     fileTabs.push_back(this);
     installEventFilter(this);
     label->installEventFilter(this);
@@ -83,6 +84,7 @@ void FileTab::select() {
                                     "border:1px solid #D1D3D5;\n"
                                     "}"));
     selected = true;
+    emit tabSelected(index);
 }
 
 void FileTab::unselect() {
@@ -106,6 +108,9 @@ bool FileTab::eventFilter(QObject *watched, QEvent *event) {
         if (!selected) {
             select();
         }
+        return true;
+    } else if (watched == buttonCloseCurrentFile && event->type() == QEvent::MouseButtonPress) {
+        emit tabClosed(index);
         return true;
     }
     return QObject::eventFilter(watched, event);

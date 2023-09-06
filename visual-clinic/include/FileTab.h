@@ -16,18 +16,28 @@ class FileTab : public QFrame {
 Q_OBJECT
 
 public:
-    static std::vector<FileTab*> fileTabs;
+    static std::vector<FileTab *> fileTabs;
+
     explicit FileTab(QWidget *parent, const QString &filename);
+
     void select();
+
     void unselect();
+
     bool eventFilter(QObject *watched, QEvent *event) override;
+
 private:
+    int index;
     bool selected;
     const QString &filename;
     QHBoxLayout *horizontalLayout_6;
     QLabel *label;
     QPushButton *buttonCloseCurrentFile;
+signals:
 
+    void tabSelected(int tabIndex);
+
+    void tabClosed(int tabIndex);
 };
 
 
