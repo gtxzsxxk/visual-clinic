@@ -15,7 +15,7 @@ std::vector<FileTab *> FileTab::fileTabs;
 FileTab::FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &filepath) :
         QFrame(parent), filepath(filepath), selected(false), tableWidget(tableWidget) {
     int width = QFontMetrics(this->font()).boundingRect(filename).width();
-    int container_width = width + 60;
+    int container_width = width + 40;
     QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(180);
     sizePolicy2.setVerticalStretch(0);

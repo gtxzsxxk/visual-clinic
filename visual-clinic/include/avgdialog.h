@@ -4,6 +4,9 @@
 #include <QDialog>
 #include <vector>
 #include <map>
+#include <QChart>
+#include <QPoint>
+#include <QSplineSeries>
 
 namespace Ui {
     class AvgDialog;
@@ -20,17 +23,24 @@ public:
 
 private:
     const QString name;
+    float average;
+    float variance;
+    bool normal_distribution_enabled;
+    QSplineSeries *lineseries = nullptr;
     Ui::AvgDialog *ui;
+    QChart *chart;
     std::vector<float> data;
     std::map<float, int> coordinates;
 
     void data_initialize(double groups = 0);
 
-    void chart_initialize() const;
+    void chart_initialize();
 
 private slots:
 
     void onSpinBoxValueChanged(int value);
+
+    void onNormalDistributionSet();
 };
 
 #endif // AVGDIALOG_H
