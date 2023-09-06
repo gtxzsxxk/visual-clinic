@@ -5,6 +5,7 @@
 #include <QMessageBox>
 #include <QFileDialog>
 #include <vector>
+#include <map>
 
 #define APP_BTN_FILTER_INSTALL(tag) do{ \
      ui->button_##tag->installEventFilter(this);\
@@ -82,16 +83,41 @@ void MainWindow::goAttributionAnalysis() {
 
 void MainWindow::goAvgAndVari() {
     std::vector<float> data;
-    for(int i=0;i<ui->tableWidget->rowCount();i++){
-        auto *item = ui->tableWidget->item(i,selected_column);
-        if(item->text()[0]>='A'){
-            //discrete
-        }else{
+    bool discrete_flag = false;
+    int discrete_num = 2;
+    for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
+        auto *item = ui->tableWidget->item(i, selected_column);
+        if (item->text()[0] >= 'A') {
+            discrete_flag = true;
+            break;
+        } else {
             data.push_back(item->text().toDouble());
         }
     }
-    auto avgDialog = new AvgDialog(this,std::move(data),
-                                   ui->tableWidget->horizontalHeaderItem(selected_column)->text());
+    if (discrete_flag) {
+        std::map<QString, int> categories;
+        for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
+            auto *item = ui->tableWidget->item(i, selected_column);
+            auto key = item->text();
+            if (categories.count(key)) {
+                categories[key]++;
+            } else {
+                categories[key] = 1;
+            }
+        }
+        discrete_num = categories.size();
+        int cnt = 0;
+        data.clear();
+        for (const auto &it: categories) {
+            for (int k = 0; k < it.second; k++) {
+                data.push_back((float) cnt);
+            }
+            cnt++;
+        }
+    }
+    auto avgDialog = new AvgDialog(this, std::move(data),
+                                   ui->tableWidget->horizontalHeaderItem(selected_column)->text(),
+                                   discrete_flag,discrete_num);
     avgDialog->setModal(true);
     avgDialog->show();
 }

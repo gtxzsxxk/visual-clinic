@@ -10,13 +10,19 @@
 #include <QBarCategoryAxis>
 #include <QValueAxis>
 
-AvgDialog::AvgDialog(QWidget *parent, std::vector<float> data, const QString &&name, bool discrete) :
+AvgDialog::AvgDialog(QWidget *parent, std::vector<float> data, const QString &&name, bool discrete,
+                     int discrete_categories) :
         QDialog(parent), name(name),
         ui(new Ui::AvgDialog), data(data) {
     ui->setupUi(this);
-    data_initialize();
+    if (discrete) {
+        data_initialize(discrete_categories);
+        ui->spinBox->setEnabled(false);
+    } else {
+        data_initialize();
+        connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
+    }
     chart_initialize();
-    connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
     auto tuple_avg_var = getAvgVar(data);
     ui->average_label->setText(QString::number(std::get<0>(tuple_avg_var), 'g', 3));
     ui->variance_label->setText(QString::number(std::get<1>(tuple_avg_var), 'g', 3));
@@ -38,13 +44,14 @@ void AvgDialog::data_initialize(double groups) {
     std::sort(data.begin(), data.end());
     double step = (data[data.size() - 1] - data[0]) / groups;
     double last = data[0];
-    for (int i = 0; i < data.size(); i += groups_n) {
+    int step_n = data.size() / groups;
+    for (int i = 0; i < data.size(); i += step_n) {
         double avg = 0;
         int n = 0;
         double r_l = last;
         double r_r = last + step;
         for (const auto &t: data) {
-            if (t > r_l && t < r_r) {
+            if (t >= r_l && t < r_r) {
                 n++;
                 avg += t;
             }

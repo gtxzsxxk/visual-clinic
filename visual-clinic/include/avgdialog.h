@@ -13,7 +13,8 @@ class AvgDialog : public QDialog {
 Q_OBJECT
 
 public:
-    explicit AvgDialog(QWidget *parent, std::vector<float> data, const QString &&name, bool discrete = false);
+    explicit AvgDialog(QWidget *parent, std::vector<float> data, const QString &&name, bool discrete = false,
+                       int discrete_categories = 2);
 
     ~AvgDialog();
 
