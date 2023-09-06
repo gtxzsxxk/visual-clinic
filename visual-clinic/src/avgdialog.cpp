@@ -95,15 +95,16 @@ void AvgDialog::chart_initialize() {
     axisX->setRange(start, end);
     axisX->setLabelsAngle(45);
     chart->addAxis(axisX, Qt::AlignBottom);
-    series->attachAxis(axisX);
 
     auto axisY = new QValueAxis((QObject *) this);
     axisY->setRange(0, upper + 10);
     axisY->setTickCount(10);
     axisY->setLabelFormat("%d");
     chart->addAxis(axisY, Qt::AlignLeft);
-    series->attachAxis(axisY);
+
     chart->addSeries(series);
+    series->attachAxis(axisX);
+    series->attachAxis(axisY);
     chart->setTitle(name);
     chart->setAnimationOptions(QChart::SeriesAnimations);
     chart->legend()->setVisible(true);

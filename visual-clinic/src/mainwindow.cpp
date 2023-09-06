@@ -139,7 +139,7 @@ void MainWindow::goMeans() {
 }
 
 void MainWindow::goScatter() {
-    auto scatterdial = new ScatterDialog(this);
+    auto scatterdial = new ScatterDialog(this,ui->tableWidget);
     scatterdial->setModal(true);
     scatterdial->show();
 }
