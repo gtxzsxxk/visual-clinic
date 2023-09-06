@@ -29,8 +29,7 @@ private:
     void goRelate();
     void goPCA();
     void importCSV();
-    void titleBarAdd(const QString& name);
-    void openCSVFile(const QString& path);
+    void titleBarAdd(const QString& path);
 public slots:
     void quit();
     void minimize();

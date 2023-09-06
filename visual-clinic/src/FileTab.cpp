@@ -6,11 +6,14 @@
 
 #include <QEvent>
 #include <QFontMetrics>
+#include <QFile>
+#include <QMessageBox>
+#include <QFileInfo>
 
 std::vector<FileTab *> FileTab::fileTabs;
 
-FileTab::FileTab(QWidget *parent, const QString &filename) :
-        QFrame(parent), filename(filename), selected(false) {
+FileTab::FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &filepath) :
+        QFrame(parent), filepath(filepath), selected(false), tableWidget(tableWidget) {
     int width = QFontMetrics(this->font()).boundingRect(filename).width();
     int container_width = width + 60;
     QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
@@ -66,12 +69,15 @@ FileTab::FileTab(QWidget *parent, const QString &filename) :
     setCursor(QCursor(Qt::PointingHandCursor));
 
     horizontalLayout_6->addWidget(buttonCloseCurrentFile);
+
+
     unselect();
     index = fileTabs.size();
     fileTabs.push_back(this);
     installEventFilter(this);
     label->installEventFilter(this);
     buttonCloseCurrentFile->installEventFilter(this);
+    readCSV();
 }
 
 void FileTab::select() {
@@ -87,6 +93,7 @@ void FileTab::select() {
                                     "}"));
     selected = true;
     emit tabSelected(index);
+    loadTable();
 }
 
 void FileTab::unselect() {
@@ -116,6 +123,46 @@ bool FileTab::eventFilter(QObject *watched, QEvent *event) {
         return true;
     }
     return QObject::eventFilter(watched, event);
+}
+
+void FileTab::readCSV() {
+    QFile f(filepath);
+    if (f.open(QIODevice::ReadOnly)) {
+        QTextStream stream(&f);
+        std::vector<QString> lines;
+        while (!stream.atEnd()) {
+            lines.push_back(stream.readLine());
+        }
+        if (lines.size() < 2) {
+            QMessageBox::warning(this, "错误", "文件是空的，或者文件格式错误");
+        }
+
+        QFileInfo info(filepath);
+        filename = info.fileName();
+        label->setText(filename);
+        CSVLines = std::move(lines);
+    } else {
+        QMessageBox::warning(this, "错误", "无法打开文件：" + filepath);
+    }
+}
+
+void FileTab::loadTable() {
+    auto header_src = CSVLines[0];
+    auto headers = header_src.split(',');
+    tableWidget->clear();
+    while (tableWidget->rowCount()) {
+        tableWidget->removeRow(0);
+    }
+    tableWidget->setColumnCount(headers.size());
+    tableWidget->setHorizontalHeaderLabels(headers);
+    for (size_t i = 1; i < CSVLines.size(); i++) {
+        auto data = CSVLines[i].split(',');
+        tableWidget->insertRow(tableWidget->rowCount());
+        int row_index = tableWidget->rowCount() - 1;
+        for (int j = 0; j < data.size(); j++) {
+            tableWidget->setItem(row_index, j, new QTableWidgetItem(data[j]));
+        }
+    }
 }
 
 

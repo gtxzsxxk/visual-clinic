@@ -1,5 +1,4 @@
 #include "../include/mainwindow.h"
-#include "../include/FileTab.h"
 #include "../ui_mainwindow.h"
 
 #include <QMessageBox>
@@ -82,7 +81,7 @@ void MainWindow::importCSV() {
     if (path.isEmpty()) {
         return;
     }
-    openCSVFile(path);
+    titleBarAdd(path);
 }
 
 void MainWindow::goMeans() {
@@ -101,42 +100,15 @@ void MainWindow::goPCA() {
     QMessageBox::information(this, "Debug", "主成分分析");
 }
 
-void MainWindow::titleBarAdd(const QString &name) {
+void MainWindow::titleBarAdd(const QString &path) {
     auto *box = dynamic_cast<QHBoxLayout *>(ui->titleBarFrame->layout());
     if (box != nullptr) {
         box->removeItem(ui->titleBarSpacer);
-        auto *item = new FileTab(ui->titleBarFrame, name);
-        connect(item,SIGNAL(tabClosed(int)),this,SLOT(tabClosed(int)));
+        auto *item = new FileTab(ui->titleBarFrame, ui->tableWidget, path);
+        connect(item, SIGNAL(tabClosed(int)), this, SLOT(tabClosed(int)));
         box->addWidget(item);
         box->addItem(ui->titleBarSpacer);
         item->select();
-    }
-}
-
-void MainWindow::openCSVFile(const QString &path) {
-    QFile f(path);
-    if (f.open(QIODevice::ReadOnly)) {
-        QTextStream stream(&f);
-        std::vector<QString> lines;
-        while (!stream.atEnd()) {
-            lines.push_back(stream.readLine());
-        }
-        if (lines.size() < 2) {
-            QMessageBox::warning(this, "错误", "文件是空的，或者文件格式错误");
-        }
-        auto header_src = lines[0];
-        auto headers = header_src.split(',');
-        ui->tableWidget->setColumnCount(headers.size());
-        ui->tableWidget->setHorizontalHeaderLabels(headers);
-
-        QFileInfo info(path);
-        auto real_name = info.fileName();
-        titleBarAdd(real_name);
-        fileOpened = true;
-        currentFilePath = path;
-        currentCSVLines = std::move(lines);
-    } else {
-        QMessageBox::warning(this, "错误", "无法打开文件：" + path);
     }
 }
 
@@ -151,6 +123,6 @@ void MainWindow::tabClosed(int tabIndex) {
         item->hide();
         box->removeWidget(item);
     }
-    FileTab::fileTabs.erase(FileTab::fileTabs.begin()+tabIndex);
+    FileTab::fileTabs.erase(FileTab::fileTabs.begin() + tabIndex);
 }
 

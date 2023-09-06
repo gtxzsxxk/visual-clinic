@@ -11,6 +11,7 @@
 #include <QPushButton>
 #include <QHBoxLayout>
 #include <vector>
+#include <QTableWidget>
 
 class FileTab : public QFrame {
 Q_OBJECT
@@ -18,7 +19,7 @@ Q_OBJECT
 public:
     static std::vector<FileTab *> fileTabs;
 
-    explicit FileTab(QWidget *parent, const QString &filename);
+    explicit FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &filepath);
 
     void select();
 
@@ -29,10 +30,18 @@ public:
 private:
     int index;
     bool selected;
-    const QString &filename;
-    QHBoxLayout *horizontalLayout_6;
+    QString filename;
+    const QString &filepath;
     QLabel *label;
+    QHBoxLayout *horizontalLayout_6;
     QPushButton *buttonCloseCurrentFile;
+    QTableWidget *tableWidget;
+    std::vector<QString> CSVLines;
+
+    void readCSV();
+
+    void loadTable();
+
 signals:
 
     void tabSelected(int tabIndex);
