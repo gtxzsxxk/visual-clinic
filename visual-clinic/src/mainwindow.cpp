@@ -124,5 +124,8 @@ void MainWindow::tabClosed(int tabIndex) {
         box->removeWidget(item);
     }
     FileTab::fileTabs.erase(FileTab::fileTabs.begin() + tabIndex);
+    if(!FileTab::fileTabs.empty()){
+        FileTab::fileTabs[0]->select();
+    }
 }
 

@@ -8,6 +8,7 @@
 #include <QMainWindow>
 #include <QMouseEvent>
 #include <QPoint>
+#include <QGraphicsDropShadowEffect>
 
 class XMainWindow : public QMainWindow {
 public:
