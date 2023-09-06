@@ -4,6 +4,11 @@
 #include <QDialog>
 #include <QTableWidget>
 #include <vector>
+#include <QMessageBox>
+#include <QScatterSeries>
+#include <QValueAxis>
+#include <QSplineSeries>
+#include <QChart>
 
 namespace Ui {
 class ScatterDialog;
@@ -23,6 +28,10 @@ private:
     float ind_min;
     float dep_max;
     float dep_min;
+    QScatterSeries *scatter_series= nullptr;
+    QValueAxis *axisX= nullptr;
+    QValueAxis *axisY= nullptr;
+    QChart *chart= nullptr;
     std::vector<float> data_col_ind;
     std::vector<float> data_col_dep;
     QString name_col_ind;
