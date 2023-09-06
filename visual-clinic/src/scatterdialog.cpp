@@ -64,14 +64,15 @@ void ScatterDialog::draw_chart() {
     auto *chart = new QChart();
 
     auto axisX = new QValueAxis((QObject *) this);
-    axisX->setRange(ind_min-10, ind_max+10);
+    double h_offset = (ind_max-ind_min)*0.05;
+    axisX->setRange(ind_min-h_offset, ind_max+h_offset);
     axisX->setTickCount(10);
     axisX->setLabelFormat("%d");
     chart->addAxis(axisX, Qt::AlignBottom);
 
-
+    double v_offset = (dep_max-dep_min)*0.05;
     auto axisY = new QValueAxis((QObject *) this);
-    axisY->setRange(dep_min-10, dep_max+10);
+    axisY->setRange(dep_min-v_offset, dep_max+v_offset);
     axisY->setTickCount(10);
     axisY->setLabelFormat("%d");
     chart->addAxis(axisY, Qt::AlignLeft);
