@@ -98,7 +98,7 @@ void AvgDialog::chart_initialize() {
     series->attachAxis(axisX);
 
     auto axisY = new QValueAxis((QObject *) this);
-    axisY->setRange(0, upper + 3);
+    axisY->setRange(0, upper + 10);
     axisY->setTickCount(10);
     axisY->setLabelFormat("%d");
     chart->addAxis(axisY, Qt::AlignLeft);
