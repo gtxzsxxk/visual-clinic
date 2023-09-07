@@ -28,6 +28,7 @@ set(PROJECT_SOURCES
         lib/leastsquare.hpp
         src/XGradientFrame.cpp
         include/XGradientFrame.h
+        lib/covariance.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

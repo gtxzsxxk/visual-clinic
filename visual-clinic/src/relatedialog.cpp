@@ -1,4 +1,5 @@
 #include "../include/relatedialog.h"
+#include "../lib/covariance.hpp"
 #include "../ui_relatedialog.h"
 
 #include <QTableWidgetItem>
@@ -60,12 +61,28 @@ void RelateDialog::draw_hotgraph() {
 }
 
 void RelateDialog::update_data() {
+    std::vector<std::vector<float>> mat_input;
     for(const auto &it:column_name_pairs){
-
+        std::vector<float> vec;
+        for(int r=0; r < tableWidget->rowCount(); r++){
+            auto data = tableWidget->item(r,it.first)->text();
+            vec.emplace_back(data.toFloat());
+        }
+        mat_input.emplace_back(std::move(vec));
     }
+    Eigen::MatrixXf mat_covariance = getCovariance(mat_input);
+    Eigen::MatrixXf result;
     if(!is_relate_co){
         //covariance
+        result = std::move(mat_covariance);
     }else{
         //relate coefficient
+        std::vector<float> vars;
+        for(const auto& vec:mat_input){
+            auto avg = getAvgVar(vec);
+            vars.emplace_back(std::get<1>(avg));
+        }
+        result = getPearsonCorr(mat_covariance,vars);
     }
+
 }
