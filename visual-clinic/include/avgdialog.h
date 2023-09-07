@@ -7,6 +7,8 @@
 #include <QChart>
 #include <QPoint>
 #include <QSplineSeries>
+#include <QBarCategoryAxis>
+#include <QValueAxis>
 
 namespace Ui {
     class AvgDialog;
@@ -27,8 +29,12 @@ private:
     float variance;
     bool normal_distribution_enabled;
     QSplineSeries *lineseries = nullptr;
+    QValueAxis *axisY_n = nullptr;
     Ui::AvgDialog *ui;
     QChart *chart;
+    QBarCategoryAxis *axisX;
+    QValueAxis *axisY;
+    int upper_bound = 0;
     std::vector<float> data;
     std::map<float, int> coordinates;
 

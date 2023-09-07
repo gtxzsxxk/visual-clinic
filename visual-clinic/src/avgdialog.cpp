@@ -72,7 +72,6 @@ void AvgDialog::chart_initialize() {
     auto *series = new QBarSeries((QObject *) this);
     chart = new QChart;
     QStringList categories;
-    int upper = 0;
     QString start, end;
     auto *st = new QBarSet("组内平均值", (QObject *) this);
     for (const auto &it: coordinates) {
@@ -83,28 +82,32 @@ void AvgDialog::chart_initialize() {
         end = cat;
         *st << it.second;
         categories.push_back(cat);
-        if (it.second > upper) {
-            upper = it.second;
+        if (it.second > upper_bound) {
+            upper_bound = it.second;
         }
     }
     series->append(st);
     series->setLabelsPosition(QAbstractBarSeries::LabelsInsideEnd);
     series->setLabelsVisible(true);
-    auto axisX = new QBarCategoryAxis((QObject *) this);
+    chart->addSeries(series);
+
+    axisX = new QBarCategoryAxis((QObject *) this);
     axisX->append(categories);
+    chart->addAxis(axisX, Qt::AlignBottom);
     axisX->setRange(start, end);
     axisX->setLabelsAngle(45);
-    chart->addAxis(axisX, Qt::AlignBottom);
 
-    auto axisY = new QValueAxis((QObject *) this);
-    axisY->setRange(0, upper + 10);
+
+    axisY = new QValueAxis((QObject *) this);
+    chart->addAxis(axisY, Qt::AlignLeft);
+    axisY->setRange(0, upper_bound + 10);
     axisY->setTickCount(10);
     axisY->setLabelFormat("%d");
-    chart->addAxis(axisY, Qt::AlignLeft);
 
-    chart->addSeries(series);
+
     series->attachAxis(axisX);
     series->attachAxis(axisY);
+
     chart->setTitle(name);
     chart->setAnimationOptions(QChart::SeriesAnimations);
     chart->legend()->setVisible(true);
@@ -125,14 +128,22 @@ void AvgDialog::onNormalDistributionSet() {
     if (lineseries == nullptr) {
         lineseries = new QSplineSeries;
         lineseries->setName("正态分布");
+        auto peak_value = static_cast<float>(1 / std::sqrt(2 * PI * variance));
         for (const auto &it: coordinates) {
             auto value = static_cast<float>(1 / std::sqrt(2 * PI * variance) *
                                             std::exp(-(it.first - average) * (it.first - average) / 2 / variance));
             lineseries->append(QPointF(it.first, value));
         }
+        axisY_n = new QValueAxis((QObject *) this);
+        axisY_n->setRange(0, peak_value * 1.05);
+        axisY_n->setTickCount(10);
+        axisY_n->setLabelFormat("%.1f");
+        chart->addAxis(axisY_n, Qt::AlignRight);
     }
     if (!normal_distribution_enabled) {
         chart->addSeries(lineseries);
+//        lineseries->attachAxis(axisX);
+        lineseries->attachAxis(axisY_n);
         normal_distribution_enabled = true;
     } else {
         chart->removeSeries(lineseries);
