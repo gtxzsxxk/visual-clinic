@@ -9,6 +9,7 @@ ScatterDialog::ScatterDialog(QWidget *parent, QTableWidget *tableWidget) :
         ui(new Ui::ScatterDialog) {
     setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(this);
+    int overlapping_counter = 0;
     int col = -1;
     int col_2;
     for (const auto &it: tableWidget->selectedItems()) {
@@ -19,10 +20,12 @@ ScatterDialog::ScatterDialog(QWidget *parent, QTableWidget *tableWidget) :
                 close();
             }
         }
+        float x = it->text().toFloat();
+        float y = it->text().toFloat();
         if (it->column() == col) {
-            data_col_ind.push_back(it->text().toFloat());
+            data_col_ind.push_back(x);
         } else {
-            data_col_dep.push_back(it->text().toFloat());
+            data_col_dep.push_back(y);
             col_2 = it->column();
         }
     }
@@ -30,6 +33,23 @@ ScatterDialog::ScatterDialog(QWidget *parent, QTableWidget *tableWidget) :
     ind_min = *std::min_element(data_col_ind.begin(), data_col_ind.end());
     dep_max = *std::max_element(data_col_dep.begin(), data_col_dep.end());
     dep_min = *std::min_element(data_col_dep.begin(), data_col_dep.end());
+    float dist = (ind_max - ind_min + dep_max - dep_min) / data_col_dep.size() / 3;
+    for (const auto &it: tableWidget->selectedItems()) {
+        float x = it->text().toFloat();
+        float y = it->text().toFloat();
+        bool overlap = false;
+        for (int k = 0; k < data_col_dep.size(); k++) {
+            float t_x = data_col_ind[k];
+            float t_y = data_col_dep[k];
+            if ((std::abs(t_x - x) + std::abs(t_y - y)) < dist) {
+                overlap = true;
+                break;
+            }
+        }
+        if (overlap) {
+            overlapping_counter++;
+        }
+    }
     name_col_ind = tableWidget->horizontalHeaderItem(col)->text();
     name_col_dep = tableWidget->horizontalHeaderItem(col_2)->text();
     ui->var_ind_label->setText(name_col_ind);
@@ -38,6 +58,11 @@ ScatterDialog::ScatterDialog(QWidget *parent, QTableWidget *tableWidget) :
     connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(onDegreeChange(int)));
     draw_chart();
     fit();
+    connect(scatter_series, SIGNAL(hovered(const QPointF &, bool)), this, SLOT(hoverTip(const QPointF &, bool)));
+    if (overlapping_counter) {
+        ui->overlapping_label->setText("重叠警告：有" + QString::number(overlapping_counter)
+                                       + "个点发生重叠");
+    }
 }
 
 ScatterDialog::~ScatterDialog() {
@@ -65,6 +90,7 @@ void ScatterDialog::draw_chart() {
         chart->removeSeries(scatter_series);
     }
     scatter_series->setName("散点图");
+    scatter_series->setMarkerSize(10);
     scatter_series->clear();
     for (int i = 0; i < data_col_ind.size(); i++) {
         scatter_series->append(QPointF(data_col_ind[i], data_col_dep[i]));
@@ -83,14 +109,14 @@ void ScatterDialog::draw_chart() {
     double h_offset = (ind_max - ind_min) * 0.05;
     axisX->setRange(ind_min - h_offset, ind_max + h_offset);
     axisX->setTickCount(10);
-    axisX->setLabelFormat("%d");
+    axisX->setLabelFormat("%.2f");
     axisX->setTitleText(name_col_ind);
     chart->addAxis(axisX, Qt::AlignBottom);
 
     double v_offset = (dep_max - dep_min) * 0.05;
     axisY->setRange(dep_min - v_offset, dep_max + v_offset);
     axisY->setTickCount(10);
-    axisY->setLabelFormat("%d");
+    axisY->setLabelFormat("%.2f");
     axisY->setTitleText(name_col_dep);
     chart->addAxis(axisY, Qt::AlignLeft);
 
@@ -143,4 +169,26 @@ void ScatterDialog::fit() {
 
 void ScatterDialog::onDegreeChange(int deg) {
     fit();
+}
+
+void ScatterDialog::hoverTip(const QPointF &point, bool status) {
+    //鼠标指向图表柱时提示数值文本
+    QChart *pchart = chart;
+    if (tipLabel == nullptr) {
+        tipLabel = new QLabel(ui->chart);    //头文件中的定义 QLabel*   m_tooltip = nullptr;  //柱状体鼠标提示信息
+        tipLabel->setStyleSheet("background: rgba(95,166,250,185);color: rgb(248, 248, 255);"
+                                "border:0px groove gray;border-radius:10px;padding:2px 4px;"
+                                "border:2px groove gray;border-radius:10px;padding:2px 4px");
+        tipLabel->setVisible(false);
+    }
+    if (status) {
+        QPointF pointLabel = pchart->mapToPosition(point);
+        QString sText = QString::number(point.y(), 'g', 4);
+
+        tipLabel->setText(sText);
+        tipLabel->move(pointLabel.x(), pointLabel.y() - tipLabel->height() * 1.5);
+        tipLabel->show();
+    } else {
+        tipLabel->hide();
+    }
 }
