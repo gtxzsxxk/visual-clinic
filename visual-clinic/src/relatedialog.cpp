@@ -1,6 +1,7 @@
 #include "../include/relatedialog.h"
 #include "../ui_relatedialog.h"
 
+#include <QTableWidgetItem>
 #include <set>
 
 RelateDialog::RelateDialog(QWidget *parent, QTableWidget *tableWidget) :
@@ -20,7 +21,7 @@ RelateDialog::RelateDialog(QWidget *parent, QTableWidget *tableWidget) :
         prev += col_name + "\r\n";
         ui->columns_label->setText(prev);
     }
-
+    draw_hotgraph();
 }
 
 RelateDialog::~RelateDialog() {
@@ -29,6 +30,24 @@ RelateDialog::~RelateDialog() {
 
 void RelateDialog::draw_hotgraph() {
     if(!graph_initialized){
-
+        QStringList headers;
+        ui->hotgraph->clear();
+        while(ui->hotgraph->rowCount()){
+            ui->hotgraph->removeRow(0);
+        }
+        ui->hotgraph->setColumnCount(column_name_pairs.size());
+        ui->hotgraph->setRowCount(column_name_pairs.size());
+        for(const auto &it:column_name_pairs){
+            headers.emplace_back(it.second);
+        }
+        ui->hotgraph->setHorizontalHeaderLabels(headers);
+        ui->hotgraph->setVerticalHeaderLabels(headers);
+        int row_cnt=0;
+        for(const auto &it:column_name_pairs){
+            for (int j = 0; j < column_name_pairs.size(); j++) {
+                tableWidget->setItem(row_cnt, j, new QTableWidgetItem("0"));
+            }
+            row_cnt++;
+        }
     }
 }
