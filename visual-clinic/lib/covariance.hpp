@@ -2,7 +2,20 @@
 #define COVARIANCE_HPP
 
 #include "common.h"
-#include "rowfeature.hpp"
+
+std::tuple<float, float> co_getAvgVar(const std::vector<float> &inX)
+{
+    if (inX.empty())
+    {
+        throw std::invalid_argument("inX.empty()");
+    }
+
+    Eigen::Map<const Eigen::VectorXf> x(inX.data(), inX.size());
+    float avg = x.mean();
+    auto diff = x.array() - avg;
+    float var = diff.square().sum() / (inX.size() - 1);
+    return { avg, var };
+}
 
 Eigen::MatrixXf getCovariance(const std::vector<std::vector<float>> &inMat)
 {
@@ -66,26 +79,5 @@ Eigen::MatrixXf getPearsonCorr(const Eigen::MatrixXf &cov, const std::vector<flo
     }
     return relativity;
 }
-
-void testCovariance()
-{
-    std::vector<std::vector<float>> mat = {
-        {1.2f, 2.3f, 3.4f, 8.8f},
-        {4.5f, 5.6f, 6.7f, 7.2f}
-    };
-
-    auto cov = getCovariance(mat);
-    std::cout << "cov: \n" << cov << std::endl;
-
-    std::vector<float> vars;
-    for (auto vec : mat)
-    {
-        auto avgVar = getAvgVar(vec);
-        vars.push_back(std::get<1>(avgVar));
-    }
-    auto rel = getPearsonCorr(cov, vars);
-    std::cout << "pearson corr: \n" << rel << std::endl;
-}
-
 
 #endif // COVARIANCE_HPP

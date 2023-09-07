@@ -17,11 +17,4 @@ std::tuple<float, float> getAvgVar(const std::vector<float> &inX)
     return { avg, var };
 }
 
-void testAvgVar()
-{
-    std::vector<float> x = {1, 2, 3, 4, 5};
-    auto avgVar = getAvgVar(x);
-    std::cout << "avgVar:" << std::get<0>(avgVar) << " " << std::get<1>(avgVar) << std::endl;
-}
-
 #endif // ROWFEATURE_HPP

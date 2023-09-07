@@ -79,10 +79,15 @@ void RelateDialog::update_data() {
         //relate coefficient
         std::vector<float> vars;
         for(const auto& vec:mat_input){
-            auto avg = getAvgVar(vec);
+            auto avg = co_getAvgVar(vec);
             vars.emplace_back(std::get<1>(avg));
         }
         result = getPearsonCorr(mat_covariance,vars);
     }
-
+    for(int i=0;i<column_name_pairs.size();i++){
+        for(int j=0;j<column_name_pairs.size();j++){
+            float value = result(i,j);
+            ui->hotgraph->item(i,j)->setText(QString::number(value,'g',3));
+        }
+    }
 }
