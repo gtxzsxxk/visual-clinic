@@ -25,6 +25,7 @@ set(PROJECT_SOURCES
         include/FileTab.h
         lib/rowfeature.hpp
         lib/common.h
+        lib/leastsquare.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

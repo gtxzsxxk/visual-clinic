@@ -558,6 +558,12 @@
 	padding: 6px 10px 6px 10px;
 }</string>
        </property>
+       <property name="minimum">
+        <number>1</number>
+       </property>
+       <property name="maximum">
+        <number>10</number>
+       </property>
        <property name="value">
         <number>4</number>
        </property>

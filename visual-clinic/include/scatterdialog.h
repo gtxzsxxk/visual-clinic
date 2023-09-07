@@ -29,6 +29,7 @@ private:
     float dep_max;
     float dep_min;
     QScatterSeries *scatter_series= nullptr;
+    QSplineSeries *spline_series= nullptr;
     QValueAxis *axisX= nullptr;
     QValueAxis *axisY= nullptr;
     QChart *chart= nullptr;
@@ -38,8 +39,10 @@ private:
     QString name_col_dep;
     QTableWidget *tableWidget;
     void draw_chart();
+    void fit();
 private slots:
     void swap_variables();
+void onDegreeChange(int deg);
 };
 
 #endif // SCATTERDIALOG_H
