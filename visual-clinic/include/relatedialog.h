@@ -20,9 +20,11 @@ public:
 private:
     Ui::RelateDialog *ui;
     bool graph_initialized=false;
+    bool is_relate_co=false;
     QTableWidget *tableWidget;
     std::vector<std::pair<int,QString>> column_name_pairs;
     void draw_hotgraph();
+    void update_data();
 };
 
 #endif // RELATEDIALOG_H

@@ -22,6 +22,7 @@ RelateDialog::RelateDialog(QWidget *parent, QTableWidget *tableWidget) :
         ui->columns_label->setText(prev);
     }
     draw_hotgraph();
+    update_data();
 }
 
 RelateDialog::~RelateDialog() {
@@ -42,6 +43,9 @@ void RelateDialog::draw_hotgraph() {
         }
         ui->hotgraph->setHorizontalHeaderLabels(headers);
         ui->hotgraph->setVerticalHeaderLabels(headers);
+        int section_size = 500/(column_name_pairs.size()+1);
+        ui->hotgraph->horizontalHeader()->setDefaultSectionSize(section_size);
+        ui->hotgraph->verticalHeader()->setDefaultSectionSize(section_size);
         int row_cnt = 0;
         for (const auto &it: column_name_pairs) {
             for (int j = 0; j < column_name_pairs.size(); j++) {
@@ -49,6 +53,19 @@ void RelateDialog::draw_hotgraph() {
             }
             row_cnt++;
         }
+
         graph_initialized = true;
+    }
+
+}
+
+void RelateDialog::update_data() {
+    for(const auto &it:column_name_pairs){
+
+    }
+    if(!is_relate_co){
+        //covariance
+    }else{
+        //relate coefficient
     }
 }

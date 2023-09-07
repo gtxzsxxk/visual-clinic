@@ -477,17 +477,11 @@
    <item>
     <widget class="QTableWidget" name="hotgraph">
      <property name="rowCount">
-      <number>3</number>
+      <number>0</number>
      </property>
      <property name="columnCount">
-      <number>3</number>
+      <number>0</number>
      </property>
-     <row/>
-     <row/>
-     <row/>
-     <column/>
-     <column/>
-     <column/>
     </widget>
    </item>
    <item>
