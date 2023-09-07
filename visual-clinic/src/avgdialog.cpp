@@ -12,7 +12,7 @@
 
 AvgDialog::AvgDialog(QWidget *parent, std::vector<float> data, const QString &&name, bool discrete,
                      int discrete_categories) :
-        QDialog(parent), name(name),
+        QDialog(parent), name(name), discrete_flag(discrete),
         ui(new Ui::AvgDialog), data(data), normal_distribution_enabled(false) {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -129,20 +129,32 @@ void AvgDialog::onNormalDistributionSet() {
         lineseries = new QSplineSeries;
         lineseries->setName("正态分布");
         auto peak_value = static_cast<float>(1 / std::sqrt(2 * PI * variance));
-        for (const auto &it: coordinates) {
-            auto value = static_cast<float>(1 / std::sqrt(2 * PI * variance) *
-                                            std::exp(-(it.first - average) * (it.first - average) / 2 / variance));
-            lineseries->append(QPointF(it.first, value));
+        int counter = 0;
+        if (discrete_flag) {
+            float stderror = std::sqrt(variance);
+            for (int i = -3; i < 4; i++) {
+                float x = average + (float) i * stderror;
+                auto value = static_cast<float>(1 / std::sqrt(2 * PI * variance) *
+                                                std::exp(-(x - average) * (x - average) / 2 / variance));
+                lineseries->append(QPointF(x, value));
+            }
+        } else {
+            for (const auto &it: coordinates) {
+                auto value = static_cast<float>(1 / std::sqrt(2 * PI * variance) *
+                                                std::exp(-(it.first - average) * (it.first - average) / 2 / variance));
+                lineseries->append(QPointF(counter++, value));
+            }
         }
+
         axisY_n = new QValueAxis((QObject *) this);
         axisY_n->setRange(0, peak_value * 1.05);
         axisY_n->setTickCount(10);
-        axisY_n->setLabelFormat("%.1f");
+        axisY_n->setLabelFormat("%.3f");
         chart->addAxis(axisY_n, Qt::AlignRight);
     }
     if (!normal_distribution_enabled) {
         chart->addSeries(lineseries);
-//        lineseries->attachAxis(axisX);
+        lineseries->attachAxis(axisX);
         lineseries->attachAxis(axisY_n);
         normal_distribution_enabled = true;
     } else {

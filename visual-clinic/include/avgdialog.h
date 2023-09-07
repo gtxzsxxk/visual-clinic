@@ -27,6 +27,7 @@ private:
     const QString name;
     float average;
     float variance;
+    bool discrete_flag;
     bool normal_distribution_enabled;
     QSplineSeries *lineseries = nullptr;
     QValueAxis *axisY_n = nullptr;
