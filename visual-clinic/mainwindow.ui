@@ -663,7 +663,7 @@ QFrame:hover{
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>resources/win_normal.png</normaloff>resources/win_normal.png</iconset>
+                 <normaloff>resources/import.png</normaloff>resources/import.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -757,7 +757,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
@@ -790,12 +790,12 @@ QFrame:hover{
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>resources/win_normal.png</normaloff>resources/win_normal.png</iconset>
+                 <normaloff>resources/avg.png</normaloff>resources/avg.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>48</width>
-                 <height>48</height>
+                 <width>40</width>
+                 <height>40</height>
                 </size>
                </property>
               </widget>
@@ -884,7 +884,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
@@ -917,12 +917,12 @@ QFrame:hover{
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>resources/win_normal.png</normaloff>resources/win_normal.png</iconset>
+                 <normaloff>resources/scatter.png</normaloff>resources/scatter.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>48</width>
-                 <height>48</height>
+                 <width>40</width>
+                 <height>40</height>
                 </size>
                </property>
               </widget>
@@ -1011,7 +1011,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
@@ -1044,12 +1044,12 @@ QFrame:hover{
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>resources/win_normal.png</normaloff>resources/win_normal.png</iconset>
+                 <normaloff>resources/relate.png</normaloff>resources/relate.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>48</width>
-                 <height>48</height>
+                 <width>40</width>
+                 <height>40</height>
                 </size>
                </property>
               </widget>
@@ -1138,7 +1138,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
@@ -1171,12 +1171,12 @@ QFrame:hover{
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>resources/win_normal.png</normaloff>resources/win_normal.png</iconset>
+                 <normaloff>resources/PCA.png</normaloff>resources/PCA.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>48</width>
-                 <height>48</height>
+                 <width>40</width>
+                 <height>40</height>
                 </size>
                </property>
               </widget>
@@ -1265,7 +1265,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
@@ -1298,12 +1298,12 @@ QFrame:hover{
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>resources/win_normal.png</normaloff>resources/win_normal.png</iconset>
+                 <normaloff>resources/means.png</normaloff>resources/means.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>48</width>
-                 <height>48</height>
+                 <width>40</width>
+                 <height>40</height>
                 </size>
                </property>
               </widget>
@@ -1392,7 +1392,7 @@ QFrame:hover{
               <number>0</number>
              </property>
              <property name="topMargin">
-              <number>0</number>
+              <number>5</number>
              </property>
              <property name="rightMargin">
               <number>0</number>
@@ -1425,12 +1425,12 @@ QFrame:hover{
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>resources/win_normal.png</normaloff>resources/win_normal.png</iconset>
+                 <normaloff>resources/attr.png</normaloff>resources/attr.png</iconset>
                </property>
                <property name="iconSize">
                 <size>
-                 <width>48</width>
-                 <height>48</height>
+                 <width>40</width>
+                 <height>40</height>
                 </size>
                </property>
               </widget>

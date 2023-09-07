@@ -26,6 +26,8 @@ set(PROJECT_SOURCES
         lib/rowfeature.hpp
         lib/common.h
         lib/leastsquare.hpp
+        src/XGradientFrame.cpp
+        include/XGradientFrame.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

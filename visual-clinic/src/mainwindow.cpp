@@ -1,6 +1,7 @@
 #include "../include/mainwindow.h"
 #include "../include/avgdialog.h"
 #include "../include/scatterdialog.h"
+#include "../include/relatedialog.h"
 #include "../ui_mainwindow.h"
 
 #include <QMessageBox>
@@ -145,7 +146,9 @@ void MainWindow::goScatter() {
 }
 
 void MainWindow::goRelate() {
-    QMessageBox::information(this, "Debug", "相关性分析");
+    auto relatedial = new RelateDialog(this,ui->tableWidget);
+    relatedial->setModal(true);
+    relatedial->show();
 }
 
 void MainWindow::goPCA() {
