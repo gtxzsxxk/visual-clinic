@@ -175,6 +175,11 @@ void MainWindow::tabSelected() {
     } else {
         APP_BTN_SET_ENABLE(avg, false);
     }
+    if(isSelectingMultipleColumns()){
+        APP_BTN_SET_ENABLE(relate, true);
+    } else {
+        APP_BTN_SET_ENABLE(relate, false);
+    }
 }
 
 void MainWindow::onTabClosed(int tabIndex) {
@@ -249,5 +254,40 @@ bool MainWindow::isSelectingEntireColumn() {
         return true;
     }
     return false;
+}
+
+bool MainWindow::isSelectingMultipleColumns() {
+    QList<QTableWidgetItem *> selected_items = ui->tableWidget->selectedItems();
+    int col = -1;
+    int column_cnt = 1;
+    std::map<int, int> row_counter;
+    for (const auto &it: selected_items) {
+        int r = it->row();
+        if (!row_counter.count(r)) {
+            row_counter[r] = 1;
+        } else {
+            row_counter[r]++;
+        }
+        if (col == -1) {
+            col = it->column();
+            continue;
+        }
+        if (it->column() == col) {
+            column_cnt++;
+        }
+    }
+    if (selected_items.size() % column_cnt) {
+        return false;
+    }
+    int counts = selected_items.size() / column_cnt;
+    if(counts<2){
+        return false;
+    }
+    for (const auto &it: row_counter) {
+        if (it.second != counts) {
+            return false;
+        }
+    }
+    return true;
 }
 

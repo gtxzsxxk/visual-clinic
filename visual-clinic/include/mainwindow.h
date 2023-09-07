@@ -41,6 +41,8 @@ private:
 
     void titleBarAdd(const QString &path);
 
+    bool isSelectingMultipleColumns();
+
     bool isSelectingTwoColumns();
 
     bool isSelectingEntireColumn();
