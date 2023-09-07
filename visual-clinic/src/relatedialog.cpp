@@ -29,25 +29,26 @@ RelateDialog::~RelateDialog() {
 }
 
 void RelateDialog::draw_hotgraph() {
-    if(!graph_initialized){
+    if (!graph_initialized) {
         QStringList headers;
         ui->hotgraph->clear();
-        while(ui->hotgraph->rowCount()){
+        while (ui->hotgraph->rowCount()) {
             ui->hotgraph->removeRow(0);
         }
         ui->hotgraph->setColumnCount(column_name_pairs.size());
         ui->hotgraph->setRowCount(column_name_pairs.size());
-        for(const auto &it:column_name_pairs){
+        for (const auto &it: column_name_pairs) {
             headers.emplace_back(it.second);
         }
         ui->hotgraph->setHorizontalHeaderLabels(headers);
         ui->hotgraph->setVerticalHeaderLabels(headers);
-        int row_cnt=0;
-        for(const auto &it:column_name_pairs){
+        int row_cnt = 0;
+        for (const auto &it: column_name_pairs) {
             for (int j = 0; j < column_name_pairs.size(); j++) {
-                tableWidget->setItem(row_cnt, j, new QTableWidgetItem("0"));
+                ui->hotgraph->setItem(row_cnt, j, new QTableWidgetItem("0"));
             }
             row_cnt++;
         }
+        graph_initialized = true;
     }
 }
