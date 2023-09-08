@@ -24,6 +24,8 @@ RelateDialog::RelateDialog(QWidget *parent, QTableWidget *tableWidget) :
     }
     draw_hotgraph();
     update_data();
+
+    connect(ui->toggle_btn, SIGNAL(clicked()), this, SLOT(onSwitchButtonClicked()));
 }
 
 RelateDialog::~RelateDialog() {
@@ -42,9 +44,11 @@ void RelateDialog::draw_hotgraph() {
         for (const auto &it: column_name_pairs) {
             headers.emplace_back(it.second);
         }
+        auto *vertical_headers = new QHeaderView(Qt::Vertical);
+        ui->hotgraph->setVerticalHeader(vertical_headers);
         ui->hotgraph->setHorizontalHeaderLabels(headers);
         ui->hotgraph->setVerticalHeaderLabels(headers);
-        int section_size = 500/(column_name_pairs.size()+1);
+        int section_size = 500 / (column_name_pairs.size() + 1);
         ui->hotgraph->horizontalHeader()->setDefaultSectionSize(section_size);
         ui->hotgraph->verticalHeader()->setDefaultSectionSize(section_size);
         int row_cnt = 0;
@@ -62,33 +66,79 @@ void RelateDialog::draw_hotgraph() {
 
 void RelateDialog::update_data() {
     std::vector<std::vector<float>> mat_input;
-    for(const auto &it:column_name_pairs){
+    for (const auto &it: column_name_pairs) {
         std::vector<float> vec;
-        for(int r=0; r < tableWidget->rowCount(); r++){
-            auto data = tableWidget->item(r,it.first)->text();
+        for (int r = 0; r < tableWidget->rowCount(); r++) {
+            auto data = tableWidget->item(r, it.first)->text();
             vec.emplace_back(data.toFloat());
         }
         mat_input.emplace_back(std::move(vec));
     }
     Eigen::MatrixXf mat_covariance = getCovariance(mat_input);
     Eigen::MatrixXf result;
-    if(!is_relate_co){
+    if (!is_relate_co) {
         //covariance
         result = std::move(mat_covariance);
-    }else{
+        ui->mode_label->setText("协方差模式");
+        ui->toggle_btn->setText("切换相关系数矩阵");
+    } else {
         //relate coefficient
         std::vector<float> vars;
-        for(const auto& vec:mat_input){
+        for (const auto &vec: mat_input) {
             auto avg = co_getAvgVar(vec);
             /* TODO: 热力图，状态切换 */
             vars.emplace_back(std::get<1>(avg));
         }
-        result = getPearsonCorr(mat_covariance,vars);
+        result = getPearsonCorr(mat_covariance, vars);
+        ui->mode_label->setText("Pearson相关系数模式");
+        ui->toggle_btn->setText("切换协方差矩阵");
     }
-    for(int i=0;i<column_name_pairs.size();i++){
-        for(int j=0;j<column_name_pairs.size();j++){
-            float value = result(i,j);
-            ui->hotgraph->item(i,j)->setText(QString::number(value,'g',3));
+
+    double max_value = -1000, min_value = 1000;
+    for (int i = 0; i < column_name_pairs.size(); i++) {
+        for (int j = 0; j < column_name_pairs.size(); j++) {
+            float value = result(i, j);
+            if (value > max_value) {
+                max_value = value;
+            }
+            if (value < min_value) {
+                min_value = value;
+            }
         }
     }
+    auto color = [&](float x){
+        float r_max = 160;
+        int offset = 20;
+        float k = (510-offset-r_max)/(min_value-max_value);
+        float b = r_max+(510-offset-r_max)*max_value/(max_value-min_value);
+        return static_cast<int>(k*x+b);
+    };
+
+    for (int i = 0; i < column_name_pairs.size(); i++) {
+        for (int j = 0; j < column_name_pairs.size(); j++) {
+            float value = result(i, j);
+            ui->hotgraph->item(i, j)->setText(QString::number(value, 'g', 3));
+            ui->hotgraph->item(i, j)->setFlags(
+                    ui->hotgraph->item(i, j)->flags() & ~Qt::ItemIsSelectable
+            );
+            int color_value = color(value);
+            if(color_value<255){
+                ui->hotgraph->item(i, j)->setBackground(QBrush(
+                        QColor(color_value, 0, 0))
+                );
+            }else{
+                color_value-=255;
+                ui->hotgraph->item(i, j)->setBackground(QBrush(
+                        QColor(255, color_value, color_value))
+                );
+            }
+        }
+    }
+    ui->hotgraph->setSelectionBehavior(QAbstractItemView::SelectRows);
+    ui->hotgraph->setEditTriggers(QAbstractItemView::NoEditTriggers);
+}
+
+void RelateDialog::onSwitchButtonClicked() {
+    is_relate_co = !is_relate_co;
+    update_data();
 }

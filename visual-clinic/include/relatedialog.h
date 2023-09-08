@@ -25,6 +25,8 @@ private:
     std::vector<std::pair<int,QString>> column_name_pairs;
     void draw_hotgraph();
     void update_data();
+private slots:
+    void onSwitchButtonClicked();
 };
 
 #endif // RELATEDIALOG_H
