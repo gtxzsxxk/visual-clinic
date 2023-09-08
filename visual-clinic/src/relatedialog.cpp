@@ -114,6 +114,14 @@ void RelateDialog::update_data() {
         return static_cast<int>(k * x + b);
     };
 
+    auto color_ploy = [&](float x) {
+        float r_max = 160;
+        float offset = 20;
+        float top = 510 - offset;
+        float A = (top - r_max) / (max_value - min_value) / (max_value - min_value);
+        return static_cast<int>(A * (x - max_value) * (x - max_value) + r_max);
+    };
+
     for (int i = 0; i < column_name_pairs.size(); i++) {
         for (int j = 0; j < column_name_pairs.size(); j++) {
             float value = result(i, j);
@@ -122,7 +130,7 @@ void RelateDialog::update_data() {
                     ui->hotgraph->item(i, j)->flags() & ~Qt::ItemIsSelectable
             );
             ui->hotgraph->item(i, j)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-            int color_value = color(value);
+            int color_value = color_ploy(value);
             if (color_value < 255) {
                 ui->hotgraph->item(i, j)->setBackground(QBrush(
                         QColor(color_value, 0, 0))
