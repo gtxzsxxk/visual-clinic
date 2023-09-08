@@ -12,6 +12,8 @@ Q_OBJECT
 
 public:
     explicit XGradientFrame(QWidget *parent);
+private:
+    void paintEvent(QPaintEvent *) override;
 };
 
 

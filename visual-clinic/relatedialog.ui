@@ -473,7 +473,7 @@
   <property name="windowTitle">
    <string>相关性分析</string>
   </property>
-  <layout class="QHBoxLayout" name="horizontalLayout" stretch="21,2,8">
+  <layout class="QHBoxLayout" name="horizontalLayout" stretch="18,2,8">
    <item>
     <widget class="QTableWidget" name="hotgraph">
      <property name="tabKeyNavigation">
