@@ -157,8 +157,10 @@ void AvgDialog::onNormalDistributionSet() {
         lineseries->attachAxis(axisX);
         lineseries->attachAxis(axisY_n);
         normal_distribution_enabled = true;
+        ui->pushButton->setText("隐藏正态分布曲线");
     } else {
         chart->removeSeries(lineseries);
         normal_distribution_enabled = false;
+        ui->pushButton->setText("正态分布");
     }
 }
