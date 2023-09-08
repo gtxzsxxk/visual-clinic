@@ -106,12 +106,12 @@ void RelateDialog::update_data() {
             }
         }
     }
-    auto color = [&](float x){
+    auto color = [&](float x) {
         float r_max = 160;
         int offset = 20;
-        float k = (510-offset-r_max)/(min_value-max_value);
-        float b = r_max+(510-offset-r_max)*max_value/(max_value-min_value);
-        return static_cast<int>(k*x+b);
+        float k = (510 - offset - r_max) / (min_value - max_value);
+        float b = r_max + (510 - offset - r_max) * max_value / (max_value - min_value);
+        return static_cast<int>(k * x + b);
     };
 
     for (int i = 0; i < column_name_pairs.size(); i++) {
@@ -121,16 +121,19 @@ void RelateDialog::update_data() {
             ui->hotgraph->item(i, j)->setFlags(
                     ui->hotgraph->item(i, j)->flags() & ~Qt::ItemIsSelectable
             );
+            ui->hotgraph->item(i, j)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
             int color_value = color(value);
-            if(color_value<255){
+            if (color_value < 255) {
                 ui->hotgraph->item(i, j)->setBackground(QBrush(
                         QColor(color_value, 0, 0))
                 );
-            }else{
-                color_value-=255;
+                ui->hotgraph->item(i, j)->setForeground(QBrush(QColor(255, 255, 255)));
+            } else {
+                color_value -= 255;
                 ui->hotgraph->item(i, j)->setBackground(QBrush(
                         QColor(255, color_value, color_value))
                 );
+                ui->hotgraph->item(i, j)->setForeground(QBrush(QColor(0, 0, 0)));
             }
         }
     }
