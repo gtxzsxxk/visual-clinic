@@ -19,6 +19,10 @@ public:
     void setPoints(std::function<int(float)> const &f, float max_value, float min_value);
 
 private:
+    float max_value;
+
+    float min_value;
+
     std::vector<std::pair<float, QColor>> color_maps;
 
     void paintEvent(QPaintEvent *) override;

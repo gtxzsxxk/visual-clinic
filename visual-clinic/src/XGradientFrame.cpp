@@ -16,7 +16,7 @@ void XGradientFrame::paintEvent(QPaintEvent *) {
     painter.setRenderHint(QPainter::Antialiasing, true);
 
     // 设置渐变色
-    QLinearGradient linear(10, 0, 10, this->height());
+    QLinearGradient linear(10, this->height(), 10, 0);
     for (const auto &it: color_maps) {
         linear.setColorAt(it.first, it.second);
     }
@@ -32,16 +32,31 @@ void XGradientFrame::paintEvent(QPaintEvent *) {
     // 绘制椭圆
     painter.drawRect(QRect(0, 0, 20, this->height()));
     painter.setPen(QPen(QColor(0, 0, 0), 2));
-    painter.drawText(20, 10, "114");
+    float step = this->height() / 6;
+    float y = this->height();
+    float value = min_value;
+    float value_step = (max_value - min_value) / 6;
+    for (int i = 0; i < 6; i++) {
+        painter.drawText(20, static_cast<int>(y), "- " + QString::number(value, 'f', 2));
+        y -= step;
+        value += value_step;
+    }
+    y += step;
+    value -= value_step;
+    y -= step * 0.85;
+    value += value_step * 0.85;
+    painter.drawText(20, static_cast<int>(y), "- " + QString::number(value, 'g', 4));
 }
 
 void XGradientFrame::setPoints(const std::function<int(float)> &f, float max_value, float min_value) {
     float k = 1 / (max_value - min_value);
     float step = (max_value - min_value) / 10;
     float x = min_value;
+    this->max_value = max_value;
+    this->min_value = min_value;
     color_maps.clear();
     for (int i = 0; i < 10; i++) {
-        float x_1 = (x-min_value) * k;
+        float x_1 = (x - min_value) * k;
         auto color = f(x);
         QColor qColor;
         if (color < 255) {
