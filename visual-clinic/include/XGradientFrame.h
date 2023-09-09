@@ -15,9 +15,12 @@ Q_OBJECT
 
 public:
     explicit XGradientFrame(QWidget *parent);
-    void setPoints(std::function<int (float)> const &f,float max_value,float min_value);
+
+    void setPoints(std::function<int(float)> const &f, float max_value, float min_value);
+
 private:
-    std::vector<std::pair<float,QColor>> color_maps;
+    std::vector<std::pair<float, QColor>> color_maps;
+
     void paintEvent(QPaintEvent *) override;
 };
 

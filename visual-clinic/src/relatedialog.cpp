@@ -116,10 +116,10 @@ void RelateDialog::update_data() {
 
     auto color_ploy = [&](float x) {
         float r_max = 140;
-        float offset = 20;
+        float offset = 15;
         float top = 510 - offset;
         float A = (top - r_max) / (max_value - min_value) / (max_value - min_value);
-        return static_cast<int>(A * (x - max_value) * (x - max_value) + r_max);
+        return static_cast<int>(-A * (x - min_value) * (x - min_value) + top);
     };
 
     auto color_func = color_ploy;
@@ -152,7 +152,7 @@ void RelateDialog::update_data() {
     }
     ui->hotgraph->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->hotgraph->setEditTriggers(QAbstractItemView::NoEditTriggers);
-    ui->gradient_frame->setPoints(color_func,max_value,min_value);
+    ui->gradient_frame->setPoints(color_func, max_value, min_value);
 }
 
 void RelateDialog::onSwitchButtonClicked() {
