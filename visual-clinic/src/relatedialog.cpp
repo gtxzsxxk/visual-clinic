@@ -106,6 +106,8 @@ void RelateDialog::update_data() {
             }
         }
     }
+    min_value = is_relate_co ? 0 : min_value;
+
     auto color = [&](float x) {
         float r_max = 160;
         int offset = 20;
