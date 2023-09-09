@@ -2,6 +2,7 @@
 #include "../include/avgdialog.h"
 #include "../include/scatterdialog.h"
 #include "../include/relatedialog.h"
+#include "../include/pcadialog.h"
 #include "../ui_mainwindow.h"
 
 #include <QMessageBox>
@@ -152,7 +153,9 @@ void MainWindow::goRelate() {
 }
 
 void MainWindow::goPCA() {
-    QMessageBox::information(this, "Debug", "主成分分析");
+    auto pcadial = new PCADialog(this, ui->tableWidget);
+    pcadial->setModal(true);
+    pcadial->show();
 }
 
 void MainWindow::titleBarAdd(const QString &path) {
@@ -181,11 +184,14 @@ void MainWindow::tabSelected() {
     if (isSelectingMultipleColumns()) {
         if (column_selected_num <= 10) {
             APP_BTN_SET_ENABLE(relate, true);
+            APP_BTN_SET_ENABLE(PCA, true);
         } else {
             APP_BTN_SET_ENABLE(relate, false);
+            APP_BTN_SET_ENABLE(PCA, false);
         }
     } else {
         APP_BTN_SET_ENABLE(relate, false);
+        APP_BTN_SET_ENABLE(PCA, false);
     }
 }
 

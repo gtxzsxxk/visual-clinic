@@ -14,6 +14,7 @@ set(CMAKE_PREFIX_PATH "D:\\Qt\\6.5.2\\mingw_64")
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Charts)
+find_package(Qt6 REQUIRED COMPONENTS DataVisualization)
 
 set(PROJECT_SOURCES
         src/main.cpp
@@ -29,6 +30,7 @@ set(PROJECT_SOURCES
         src/XGradientFrame.cpp
         include/XGradientFrame.h
         lib/covariance.hpp
+        lib/pca.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
