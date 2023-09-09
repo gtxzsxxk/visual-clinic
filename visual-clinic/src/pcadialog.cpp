@@ -38,7 +38,9 @@ PCADialog::PCADialog(QWidget *parent,QTableWidget *tableWidget) :
     series->dataProxy()->addItems(data);
     q3DScatter->addSeries(series);
 
-    ui->horizontalLayout->addWidget(static_cast<QWidget *>(q3DScatter));
+    chartWidget = QWidget::createWindowContainer(q3DScatter);
+
+    ui->horizontalLayout->addWidget(chartWidget);
 
     ui->horizontalLayout->setStretch(0,1);
     ui->horizontalLayout->setStretch(1,3);
