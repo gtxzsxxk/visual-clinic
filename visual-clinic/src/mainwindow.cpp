@@ -147,12 +147,14 @@ void MainWindow::goScatter() {
 }
 
 void MainWindow::goRelate() {
+    /* TODO: B and M should not be allowed to go relate */
     auto relatedial = new RelateDialog(this, ui->tableWidget);
     relatedial->setModal(true);
     relatedial->show();
 }
 
 void MainWindow::goPCA() {
+    /* TODO: B and M should not be allowed to go PCA，统一命名风格 */
     auto pcadial = new PCADialog(this, ui->tableWidget);
     pcadial->setModal(true);
     pcadial->show();

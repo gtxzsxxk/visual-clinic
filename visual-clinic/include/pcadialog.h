@@ -3,6 +3,7 @@
 
 #include <QDialog>
 #include <QTableWidget>
+#include <vector>
 
 namespace Ui {
 class PCADialog;
@@ -18,6 +19,9 @@ public:
 
 private:
     Ui::PCADialog *ui;
+    QTableWidget *tableWidget;
+    std::vector<std::vector<float>> points;
+    void go_PCA();
 };
 
 #endif // PCADIALOG_H

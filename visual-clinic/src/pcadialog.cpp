@@ -6,7 +6,7 @@
 
 PCADialog::PCADialog(QWidget *parent,QTableWidget *tableWidget) :
     QDialog(parent),
-    ui(new Ui::PCADialog)
+    ui(new Ui::PCADialog),tableWidget(tableWidget)
 {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
@@ -20,10 +20,20 @@ PCADialog::PCADialog(QWidget *parent,QTableWidget *tableWidget) :
         auto prev = ui->columns_label->text();
         prev += col_name + "\r\n";
         ui->columns_label->setText(prev);
+        std::vector<float> data;
+        for(int i=0;i<tableWidget->rowCount();i++){
+            data.emplace_back(tableWidget->item(i,it)->text().toFloat());
+        }
+        points.emplace_back(data);
     }
+    go_PCA();
 }
 
 PCADialog::~PCADialog()
 {
     delete ui;
+}
+
+void PCADialog::go_PCA() {
+
 }
