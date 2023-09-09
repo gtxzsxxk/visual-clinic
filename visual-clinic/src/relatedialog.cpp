@@ -94,7 +94,7 @@ void RelateDialog::update_data() {
         ui->toggle_btn->setText("切换协方差矩阵");
     }
 
-    double max_value = -1000, min_value = 1000;
+    float max_value = -1000, min_value = 1000;
     for (int i = 0; i < column_name_pairs.size(); i++) {
         for (int j = 0; j < column_name_pairs.size(); j++) {
             float value = result(i, j);
@@ -115,12 +115,14 @@ void RelateDialog::update_data() {
     };
 
     auto color_ploy = [&](float x) {
-        float r_max = 160;
+        float r_max = 140;
         float offset = 20;
         float top = 510 - offset;
         float A = (top - r_max) / (max_value - min_value) / (max_value - min_value);
         return static_cast<int>(A * (x - max_value) * (x - max_value) + r_max);
     };
+
+    auto color_func = color_ploy;
 
     for (int i = 0; i < column_name_pairs.size(); i++) {
         for (int j = 0; j < column_name_pairs.size(); j++) {
@@ -130,23 +132,27 @@ void RelateDialog::update_data() {
                     ui->hotgraph->item(i, j)->flags() & ~Qt::ItemIsSelectable
             );
             ui->hotgraph->item(i, j)->setTextAlignment(Qt::AlignHCenter | Qt::AlignVCenter);
-            int color_value = color_ploy(value);
+            int color_value = color_func(value);
+            QColor qColor;
             if (color_value < 255) {
+                qColor = QColor(color_value, 0, 0);
                 ui->hotgraph->item(i, j)->setBackground(QBrush(
-                        QColor(color_value, 0, 0))
-                );
+                        qColor
+                ));
                 ui->hotgraph->item(i, j)->setForeground(QBrush(QColor(255, 255, 255)));
             } else {
                 color_value -= 255;
+                qColor = QColor(255, color_value, color_value);
                 ui->hotgraph->item(i, j)->setBackground(QBrush(
-                        QColor(255, color_value, color_value))
-                );
+                        qColor
+                ));
                 ui->hotgraph->item(i, j)->setForeground(QBrush(QColor(0, 0, 0)));
             }
         }
     }
     ui->hotgraph->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->hotgraph->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->gradient_frame->setPoints(color_func,max_value,min_value);
 }
 
 void RelateDialog::onSwitchButtonClicked() {
