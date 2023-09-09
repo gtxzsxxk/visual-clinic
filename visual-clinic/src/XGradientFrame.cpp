@@ -41,7 +41,7 @@ void XGradientFrame::setPoints(const std::function<int(float)> &f, float max_val
     float x = min_value;
     color_maps.clear();
     for (int i = 0; i < 10; i++) {
-        float x_1 = x * k;
+        float x_1 = (x-min_value) * k;
         auto color = f(x);
         QColor qColor;
         if (color < 255) {
@@ -53,4 +53,6 @@ void XGradientFrame::setPoints(const std::function<int(float)> &f, float max_val
         color_maps.emplace_back(x_1, qColor);
         x += step;
     }
+    update();
+    repaint();
 }
