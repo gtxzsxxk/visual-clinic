@@ -917,7 +917,7 @@ QFrame:hover{
                </property>
                <property name="icon">
                 <iconset>
-                 <normaloff>resources/scatter.png</normaloff>resources/scatter.png</iconset>
+                 <normaloff>resources/q3DScatter.png</normaloff>resources/q3DScatter.png</iconset>
                </property>
                <property name="iconSize">
                 <size>

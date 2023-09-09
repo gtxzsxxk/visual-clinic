@@ -4,6 +4,7 @@
 #include <QDialog>
 #include <QTableWidget>
 #include <vector>
+#include <QtDataVisualization/Q3DScatter>
 
 namespace Ui {
 class PCADialog;
@@ -20,6 +21,7 @@ public:
 private:
     Ui::PCADialog *ui;
     QTableWidget *tableWidget;
+    Q3DScatter *q3DScatter;
     std::vector<std::vector<float>> points;
     void go_PCA();
 };

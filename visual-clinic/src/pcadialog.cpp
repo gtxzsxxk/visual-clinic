@@ -3,6 +3,9 @@
 #include "../ui_pcadialog.h"
 
 #include <set>
+#include <QChartView>
+#include <QtDataVisualization/QScatter3DSeries>
+#include <QtDataVisualization/QScatterDataArray>
 
 PCADialog::PCADialog(QWidget *parent,QTableWidget *tableWidget) :
     QDialog(parent),
@@ -26,12 +29,29 @@ PCADialog::PCADialog(QWidget *parent,QTableWidget *tableWidget) :
         }
         points.emplace_back(data);
     }
+
+    q3DScatter = new Q3DScatter();
+    q3DScatter->setFlags(q3DScatter->flags() ^ Qt::FramelessWindowHint);
+    QScatter3DSeries *series = new QScatter3DSeries;
+    QScatterDataArray data;
+    data << QVector3D(0.5f, 0.5f, 0.5f) << QVector3D(-0.3f, -0.5f, -0.4f) << QVector3D(0.0f, -0.3f, 0.2f);
+    series->dataProxy()->addItems(data);
+    q3DScatter->addSeries(series);
+
+    ui->horizontalLayout->addWidget(static_cast<QWidget *>(q3DScatter));
+
+    ui->horizontalLayout->setStretch(0,1);
+    ui->horizontalLayout->setStretch(1,3);
+
     go_PCA();
 }
 
 PCADialog::~PCADialog()
 {
     delete ui;
+    if(q3DScatter != nullptr){
+        delete q3DScatter;
+    }
 }
 
 void PCADialog::go_PCA() {
