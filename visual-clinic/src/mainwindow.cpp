@@ -140,13 +140,13 @@ void MainWindow::goMeans() {
 }
 
 void MainWindow::goScatter() {
-    auto scatterdial = new ScatterDialog(this,ui->tableWidget);
+    auto scatterdial = new ScatterDialog(this, ui->tableWidget);
     scatterdial->setModal(true);
     scatterdial->show();
 }
 
 void MainWindow::goRelate() {
-    auto relatedial = new RelateDialog(this,ui->tableWidget);
+    auto relatedial = new RelateDialog(this, ui->tableWidget);
     relatedial->setModal(true);
     relatedial->show();
 }
@@ -178,8 +178,12 @@ void MainWindow::tabSelected() {
     } else {
         APP_BTN_SET_ENABLE(avg, false);
     }
-    if(isSelectingMultipleColumns()){
-        APP_BTN_SET_ENABLE(relate, true);
+    if (isSelectingMultipleColumns()) {
+        if (column_selected_num <= 10) {
+            APP_BTN_SET_ENABLE(relate, true);
+        } else {
+            APP_BTN_SET_ENABLE(relate, false);
+        }
     } else {
         APP_BTN_SET_ENABLE(relate, false);
     }
@@ -283,7 +287,7 @@ bool MainWindow::isSelectingMultipleColumns() {
         return false;
     }
     int counts = selected_items.size() / column_cnt;
-    if(counts<2){
+    if (counts < 2) {
         return false;
     }
     for (const auto &it: row_counter) {
@@ -291,6 +295,7 @@ bool MainWindow::isSelectingMultipleColumns() {
             return false;
         }
     }
+    column_selected_num = counts;
     return true;
 }
 

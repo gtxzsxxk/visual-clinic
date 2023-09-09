@@ -20,6 +20,7 @@ private:
     Ui::MainWindow *ui;
     bool fileOpened;
     int selected_column;
+    int column_selected_num=0;
     QString currentFilePath;
     std::vector<QString> currentCSVLines;
 
