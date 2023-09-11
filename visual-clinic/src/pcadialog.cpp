@@ -7,10 +7,9 @@
 #include <QtDataVisualization/QScatter3DSeries>
 #include <QtDataVisualization/QScatterDataArray>
 
-PCADialog::PCADialog(QWidget *parent,QTableWidget *tableWidget) :
-    QDialog(parent),
-    ui(new Ui::PCADialog),tableWidget(tableWidget)
-{
+PCADialog::PCADialog(QWidget *parent, QTableWidget *tableWidget) :
+        QDialog(parent),
+        ui(new Ui::PCADialog), tableWidget(tableWidget) {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
     std::set<int> columns;
@@ -23,39 +22,43 @@ PCADialog::PCADialog(QWidget *parent,QTableWidget *tableWidget) :
         auto prev = ui->columns_label->text();
         prev += col_name + "\r\n";
         ui->columns_label->setText(prev);
+    }
+    for (int i = 0; i < tableWidget->rowCount(); i++) {
         std::vector<float> data;
-        for(int i=0;i<tableWidget->rowCount();i++){
-            data.emplace_back(tableWidget->item(i,it)->text().toFloat());
+        for (const auto &it: columns) {
+            data.emplace_back(tableWidget->item(i, it)->text().toFloat());
         }
         points.emplace_back(data);
     }
 
-    q3DScatter = new Q3DScatter();
-    q3DScatter->setFlags(q3DScatter->flags() ^ Qt::FramelessWindowHint);
-    QScatter3DSeries *series = new QScatter3DSeries;
-    QScatterDataArray data;
-    data << QVector3D(0.5f, 0.5f, 0.5f) << QVector3D(-0.3f, -0.5f, -0.4f) << QVector3D(0.0f, -0.3f, 0.2f);
-    series->dataProxy()->addItems(data);
-    q3DScatter->addSeries(series);
-
-    chartWidget = QWidget::createWindowContainer(q3DScatter);
-
-    ui->horizontalLayout->addWidget(chartWidget);
-
-    ui->horizontalLayout->setStretch(0,1);
-    ui->horizontalLayout->setStretch(1,3);
-
     go_PCA();
 }
 
-PCADialog::~PCADialog()
-{
+PCADialog::~PCADialog() {
     delete ui;
-    if(q3DScatter != nullptr){
-        delete q3DScatter;
-    }
 }
 
 void PCADialog::go_PCA() {
-
+    int dim = ui->spinBox->value();
+    /* TODO: manage the memory use */
+    if (dim == 3) {
+        auto *q3DScatter = new Q3DScatter();
+        q3DScatter->setFlags(q3DScatter->flags() ^ Qt::FramelessWindowHint);
+        chartWidget = QWidget::createWindowContainer(q3DScatter);
+        /* todo: check here */
+        ui->horizontalLayout->addWidget(chartWidget);
+        ui->horizontalLayout->setStretch(0, 1);
+        ui->horizontalLayout->setStretch(1, 3);
+        auto *series = new QScatter3DSeries;
+        QScatterDataArray data;
+        auto res = pca(points, 3);
+        for (int i = 0; i < points.size(); i++) {
+            float v_0 = res(i, 0);
+            float v_1 = res(i, 1);
+            float v_2 = res(i, 2);
+            data << QVector3D(v_0, v_1, v_2);
+        }
+        series->dataProxy()->addItems(data);
+        q3DScatter->addSeries(series);
+    }
 }
