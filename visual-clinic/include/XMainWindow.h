@@ -5,15 +5,18 @@
 #ifndef VISUAL_CLINIC_XMAINWINDOW_H
 #define VISUAL_CLINIC_XMAINWINDOW_H
 
-#include <QMainWindow>
+#include <QDialog>
 #include <QMouseEvent>
 #include <QPoint>
 #include <QGraphicsDropShadowEffect>
 
-class XMainWindow : public QMainWindow {
+class XMainWindow : public QDialog {
 public:
-    explicit XMainWindow(QWidget *parent = nullptr): QMainWindow(parent) {
+    explicit XMainWindow(QWidget *parent = nullptr): QDialog(parent) {
+        setAutoFillBackground(false);
         setWindowFlag(Qt::FramelessWindowHint);
+        setAttribute(Qt::WA_NoSystemBackground,true);
+        setAttribute(Qt::WA_TranslucentBackground,true);
     }
 
     void mousePressEvent(QMouseEvent *event) override {

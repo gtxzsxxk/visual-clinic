@@ -18,9 +18,6 @@ find_package(Qt6 REQUIRED COMPONENTS DataVisualization)
 
 set(PROJECT_SOURCES
         src/main.cpp
-        src/mainwindow.cpp
-        include/mainwindow.h
-        mainwindow.ui
         include/XMainWindow.h
         src/FileTab.cpp
         include/FileTab.h
@@ -43,6 +40,7 @@ if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
             include/pcadialog.h src/pcadialog.cpp pcadialog.ui
             include/meansdialog.h src/meansdialog.cpp meansdialog.ui
             include/attrdialog.h src/attrdialog.cpp attrdialog.ui
+            include/index.h src/index.cpp index.ui
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET visual-clinic APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

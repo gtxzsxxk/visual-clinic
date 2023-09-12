@@ -1,9 +1,9 @@
-#include "../include/mainwindow.h"
+#include "../include/index.h"
 #include "../include/avgdialog.h"
 #include "../include/scatterdialog.h"
 #include "../include/relatedialog.h"
 #include "../include/pcadialog.h"
-#include "../ui_mainwindow.h"
+#include "../ui_index.h"
 
 #include <QMessageBox>
 #include <QFileDialog>
@@ -25,8 +25,9 @@ ui->pushButton_##tag->installEventFilter(this);\
             ui->pushButton_##tag->setEnabled(value);                               \
 } while (0);
 
-MainWindow::MainWindow(QWidget *parent)
-        : XMainWindow(parent), ui(new Ui::MainWindow), fileOpened(false) {
+Index::Index(QWidget *parent) :
+        XMainWindow(parent),
+        ui(new Ui::Index) {
     ui->setupUi(this);
     connect(ui->buttonClose, SIGNAL(clicked()), this, SLOT(quit()));
     connect(ui->buttonMinimize, SIGNAL(clicked()), this, SLOT(minimize()));
@@ -45,19 +46,19 @@ MainWindow::MainWindow(QWidget *parent)
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectColumns);
 }
 
-MainWindow::~MainWindow() {
+Index::~Index() {
     delete ui;
 }
 
-void MainWindow::quit() {
+void Index::quit() {
     qApp->quit();
 }
 
-void MainWindow::minimize() {
+void Index::minimize() {
     this->showMinimized();
 }
 
-bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
+bool Index::eventFilter(QObject *watched, QEvent *event) {
     if APP_BTN_TAG_HIT(attr) {
         goAttributionAnalysis();
         return true;
@@ -83,11 +84,11 @@ bool MainWindow::eventFilter(QObject *watched, QEvent *event) {
     return QObject::eventFilter(watched, event);
 }
 
-void MainWindow::goAttributionAnalysis() {
+void Index::goAttributionAnalysis() {
     QMessageBox::information(this, "Debug", "归因分析");
 }
 
-void MainWindow::goAvgAndVari() {
+void Index::goAvgAndVari() {
     std::vector<float> data;
     bool discrete_flag = false;
     int discrete_num = 2;
@@ -128,7 +129,7 @@ void MainWindow::goAvgAndVari() {
     avgDialog->show();
 }
 
-void MainWindow::importCSV() {
+void Index::importCSV() {
     auto path = QFileDialog::getOpenFileName(this, "选择病例文件", ".", "*.csv");
     if (path.isEmpty()) {
         return;
@@ -136,31 +137,31 @@ void MainWindow::importCSV() {
     titleBarAdd(path);
 }
 
-void MainWindow::goMeans() {
+void Index::goMeans() {
     QMessageBox::information(this, "Debug", "聚类分析");
 }
 
-void MainWindow::goScatter() {
+void Index::goScatter() {
     auto scatterdial = new ScatterDialog(this, ui->tableWidget);
     scatterdial->setModal(true);
     scatterdial->show();
 }
 
-void MainWindow::goRelate() {
+void Index::goRelate() {
     /* TODO: B and M should not be allowed to go relate */
     auto relatedial = new RelateDialog(this, ui->tableWidget);
     relatedial->setModal(true);
     relatedial->show();
 }
 
-void MainWindow::goPCA() {
+void Index::goPCA() {
     /* TODO: B and M should not be allowed to go PCA，统一命名风格 */
     auto pcadial = new PCADialog(this, ui->tableWidget);
     pcadial->setModal(true);
     pcadial->show();
 }
 
-void MainWindow::titleBarAdd(const QString &path) {
+void Index::titleBarAdd(const QString &path) {
     auto *box = dynamic_cast<QHBoxLayout *>(ui->titleBarFrame->layout());
     if (box != nullptr) {
         box->removeItem(ui->titleBarSpacer);
@@ -172,7 +173,7 @@ void MainWindow::titleBarAdd(const QString &path) {
     }
 }
 
-void MainWindow::tabSelected() {
+void Index::tabSelected() {
     if (isSelectingTwoColumns()) {
         APP_BTN_SET_ENABLE(scatter, true);
     } else {
@@ -186,9 +187,9 @@ void MainWindow::tabSelected() {
     if (isSelectingMultipleColumns()) {
         if (column_selected_num <= 10) {
             APP_BTN_SET_ENABLE(relate, true);
-            if(column_selected_num>2){
+            if (column_selected_num > 2) {
                 APP_BTN_SET_ENABLE(PCA, true);
-            }else{
+            } else {
                 APP_BTN_SET_ENABLE(PCA, false);
             }
         } else {
@@ -201,7 +202,7 @@ void MainWindow::tabSelected() {
     }
 }
 
-void MainWindow::onTabClosed(int tabIndex) {
+void Index::onTabClosed(int tabIndex) {
     auto *item = FileTab::fileTabs[tabIndex];
     auto *box = dynamic_cast<QHBoxLayout *>(ui->titleBarFrame->layout());
     if (box != nullptr) {
@@ -214,14 +215,14 @@ void MainWindow::onTabClosed(int tabIndex) {
     }
 }
 
-void MainWindow::onTableHeaderSelected(int index) {
+void Index::onTableHeaderSelected(int index) {
     if (!FileTab::fileTabs.empty()) {
         APP_BTN_SET_ENABLE(avg, true);
         selected_column = index;
     }
 }
 
-bool MainWindow::isSelectingTwoColumns() {
+bool Index::isSelectingTwoColumns() {
     QList<QTableWidgetItem *> selected_items = ui->tableWidget->selectedItems();
     int col = -1;
     int column_cnt = 1;
@@ -252,7 +253,7 @@ bool MainWindow::isSelectingTwoColumns() {
     return true;
 }
 
-bool MainWindow::isSelectingEntireColumn() {
+bool Index::isSelectingEntireColumn() {
     auto selected_items = ui->tableWidget->selectedItems();
     int col = -1;
     int column_cnt = 1;
@@ -275,7 +276,7 @@ bool MainWindow::isSelectingEntireColumn() {
     return false;
 }
 
-bool MainWindow::isSelectingMultipleColumns() {
+bool Index::isSelectingMultipleColumns() {
     QList<QTableWidgetItem *> selected_items = ui->tableWidget->selectedItems();
     int col = -1;
     int column_cnt = 1;
@@ -310,4 +311,3 @@ bool MainWindow::isSelectingMultipleColumns() {
     column_selected_num = counts;
     return true;
 }
-

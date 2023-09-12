@@ -1,26 +1,27 @@
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef INDEX_H
+#define INDEX_H
 
-#include "../include/XMainWindow.h"
+#include "XMainWindow.h"
 #include "FileTab.h"
 
-QT_BEGIN_NAMESPACE
-namespace Ui { class MainWindow; }
-QT_END_NAMESPACE
+#include <QDialog>
 
-class MainWindow : public XMainWindow {
+namespace Ui {
+    class Index;
+}
+
+class Index : public XMainWindow {
 Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    explicit Index(QWidget *parent = nullptr);
 
-    ~MainWindow();
+    ~Index();
 
 private:
-    Ui::MainWindow *ui;
-    bool fileOpened;
-    int selected_column;
-    int column_selected_num=0;
+    Ui::Index *ui;
+    int selected_column = 0;
+    int column_selected_num = 0;
     QString currentFilePath;
     std::vector<QString> currentCSVLines;
 
@@ -61,4 +62,4 @@ public slots:
     void onTableHeaderSelected(int index);
 };
 
-#endif // MAINWINDOW_H
+#endif // INDEX_H
