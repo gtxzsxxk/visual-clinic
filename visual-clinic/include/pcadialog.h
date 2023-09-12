@@ -24,6 +24,7 @@ private:
     QTableWidget *tableWidget;
     QWidget *chartWidget;
     std::vector<std::vector<float>> points;
+
     void go_PCA();
 };
 
