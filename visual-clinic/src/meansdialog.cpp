@@ -1,6 +1,5 @@
 #include "../include/meansdialog.h"
 #include "../lib/kmeans.hpp"
-#include "../lib/pca.hpp"
 #include "../ui_meansdialog.h"
 
 #include <set>
@@ -22,15 +21,24 @@
     v_##id##_offset = (v_##id##_max-v_##id##_min)*0.1;         \
 } while(0);
 
-MeansDialog::MeansDialog(QWidget *parent, QTableWidget* tableWidget) :
-    QDialog(parent),
-    ui(new Ui::MeansDialog),tableWidget(tableWidget)
-{
+MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
+        QDialog(parent),
+        ui(new Ui::MeansDialog), tableWidget(tableWidget) {
     ui->setupUi(this);
-    std::set<int> columns;
+    std::set<int> columns, rows;
     for (const auto &item: tableWidget->selectedItems()) {
         columns.insert(item->column());
+        rows.insert(item->row());
     }
+    /* 把数据加到自己的小表格里 */
+    ui->tableWidget->setRowCount(rows.size());
+    ui->tableWidget->setColumnCount(columns.size());
+    for (const auto &item: tableWidget->selectedItems()) {
+        int col = get_set_index(columns, item->column());
+        int ro = get_set_index(rows, item->row());
+        ui->tableWidget->setItem(ro, col, new QTableWidgetItem(item->text()));
+    }
+
     int diagnosis_column;
     for (int i = 0; i < tableWidget->columnCount(); i++) {
         auto item_data = tableWidget->item(1, i)->text();
@@ -57,8 +65,7 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget* tableWidget) :
     }
 }
 
-MeansDialog::~MeansDialog()
-{
+MeansDialog::~MeansDialog() {
     delete ui;
 }
 
@@ -76,7 +83,7 @@ void MeansDialog::init_3d_scatter() {
     auto *m_series = new QScatter3DSeries;
     QScatterDataArray b_data;
     QScatterDataArray m_data;
-    auto res = pca(points, 3);
+    auto res = kpca(points, 3);
     float v_0_max = -1000, v_1_max = -1000, v_2_max = -1000;
     float v_0_min = 1000, v_1_min = 1000, v_2_min = 1000;
     for (int i = 0; i < points.size(); i++) {
@@ -131,7 +138,7 @@ void MeansDialog::init_2d_scatter() {
     m_series->setMarkerSize(10);
     m_series->setColor(QColor("Crimson"));
 
-    auto res = pca(points, 2);
+    auto res = kpca(points, 2);
     float v_0_max = -1000, v_1_max = -1000;
     float v_0_min = 1000, v_1_min = 1000;
     for (int i = 0; i < points.size(); i++) {
@@ -185,24 +192,25 @@ void MeansDialog::reset_memory() {
 }
 
 void MeansDialog::go_Means() {
-    if(means_flag==0){
+    if (means_flag == 0) {
         int k = ui->point_spinbox->text().toInt();
         int iter = ui->iterate_spinbox->text().toInt();
-        auto res = clusterKMeans(points,k,iter);
+        auto res = clusterKMeans(points, k, iter);
         point_categories = std::get<1>(res);
         int number = 0;
-        for(const auto &it:point_categories){
-            if(it>number){
+        for (const auto &it: point_categories) {
+            if (it > number) {
                 number = it;
             }
         }
         std::random_device r_dev;
         std::mt19937 gen(r_dev());
-        std::uniform_int_distribution<> distribution(0,255);
+        std::uniform_int_distribution<> distribution(0, 255);
         point_colors.clear();
-        for(int i=0;i<=number;i++){
-            point_colors.emplace_back(distribution(gen),distribution(gen),distribution(gen));
+        for (int i = 0; i <= number; i++) {
+            point_colors.emplace_back(distribution(gen), distribution(gen), distribution(gen));
         }
+
     }
     int dim = ui->dim_spinbox->value();
     if (dim == 3) {
@@ -210,4 +218,22 @@ void MeansDialog::go_Means() {
     } else {
         init_2d_scatter();
     }
+}
+
+void MeansDialog::set_table_colors() {
+}
+
+void MeansDialog::reset_table_colors() {
+
+}
+
+int MeansDialog::get_set_index(const std::set<int> &data, int value) {
+    int cnt = 0;
+    for (const auto &it: data) {
+        if (it == value) {
+            return cnt;
+        }
+        cnt++;
+    }
+    return cnt;
 }

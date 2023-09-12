@@ -3,6 +3,7 @@
 #include "../include/scatterdialog.h"
 #include "../include/relatedialog.h"
 #include "../include/pcadialog.h"
+#include "../include/meansdialog.h"
 #include "../ui_index.h"
 
 #include <QMessageBox>
@@ -143,7 +144,9 @@ void Index::importCSV() {
 }
 
 void Index::goMeans() {
-    QMessageBox::information(this, "Debug", "聚类分析");
+    auto meansdial = new MeansDialog(this, ui->tableWidget);
+    meansdial->setModal(true);
+    meansdial->show();
 }
 
 void Index::goScatter() {
@@ -194,16 +197,20 @@ void Index::tabSelected() {
             APP_BTN_SET_ENABLE(relate, true);
             if (column_selected_num > 2) {
                 APP_BTN_SET_ENABLE(PCA, true);
+                APP_BTN_SET_ENABLE(means, true);
             } else {
                 APP_BTN_SET_ENABLE(PCA, false);
+                APP_BTN_SET_ENABLE(means, false);
             }
         } else {
             APP_BTN_SET_ENABLE(relate, false);
             APP_BTN_SET_ENABLE(PCA, false);
+            APP_BTN_SET_ENABLE(means, false);
         }
     } else {
         APP_BTN_SET_ENABLE(relate, false);
         APP_BTN_SET_ENABLE(PCA, false);
+        APP_BTN_SET_ENABLE(means, false);
     }
 }
 

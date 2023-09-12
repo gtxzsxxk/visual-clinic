@@ -34,6 +34,11 @@ private:
 
     void go_Means();
 
+    int get_set_index(const std::set<int> & data, int value);
+
+    void set_table_colors();
+    void reset_table_colors();
+
     void reset_memory();
 
     void init_3d_scatter();

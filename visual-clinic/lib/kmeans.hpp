@@ -3,6 +3,46 @@
 
 #include "common.h"
 
+Eigen::MatrixXf kpca(const std::vector<std::vector<float>> &in, const int k)
+{
+    if (in.empty())
+    {
+        throw std::invalid_argument("in.empty()");
+    }
+
+    if (k <= 0)
+    {
+        throw std::invalid_argument("k <= 0");
+    }
+
+    size_t row = in.size();
+    size_t col = in[0].size();
+
+    Eigen::MatrixXf mat(row, col);
+    for (int i = 0; i < row; i++)
+    {
+        if (in[i].size() != col)
+        {
+            throw std::invalid_argument("in[i].size() != col");
+        }
+        for (int j = 0; j < col; j++)
+        {
+            mat(i, j) = in[i][j];
+        }
+    }
+
+    Eigen::VectorXf avg = mat.colwise().mean();
+    Eigen::MatrixXf centered = mat.rowwise() - avg.transpose();
+
+    Eigen::MatrixXf cov = centered.adjoint() * centered;
+    Eigen::SelfAdjointEigenSolver<Eigen::MatrixXf> eig(cov);
+    Eigen::MatrixXf eigenVectors = eig.eigenvectors();
+
+    Eigen::MatrixXf result = centered * eigenVectors.rightCols(k);
+
+    return result;
+}
+
 std::tuple<Eigen::MatrixXf, std::vector<int>>
 clusterKMeans(const std::vector<std::vector<float>> &in, const int k, const int maxIter)
 {
@@ -91,39 +131,6 @@ clusterKMeans(const std::vector<std::vector<float>> &in, const int k, const int 
 
     }
     return { centers, labels };
-}
-
-std::tuple<Eigen::MatrixXf, std::vector<int>>
-clusterKMeans(const std::vector<std::vector<float>> &in, const int k)
-{
-    return clusterKMeans(in, k, 100);
-}
-
-void testCluster()
-{
-    std::vector<std::vector<float>> points = {
-        {1, 2},
-        {2, 1},
-        {3, 1},
-        {5, 4},
-        {5, 5},
-        {6, 5},
-        {10, 8},
-        {7, 9},
-        {11, 5},
-        {14, 9},
-        {14, 14},
-        {15, 11}
-    };
-
-    auto res = clusterKMeans(points, 3);
-    std::cout << "centers: \n" << std::get<0>(res) << std::endl;
-    std::cout << "labels: \n";
-    for (auto &label : std::get<1>(res))
-    {
-        std::cout << label << " ";
-    }
-    std::cout << std::endl;
 }
 
 #endif // KMENAS_HPP
