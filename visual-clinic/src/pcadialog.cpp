@@ -86,20 +86,11 @@ void PCADialog::dimValueChanged(int value) {
 }
 
 void PCADialog::init_3d_scatter() {
+    reset_memory();
     auto *q3DScatter = new Q3DScatter();
     q3DScatter->activeTheme()->setType(Q3DTheme::ThemePrimaryColors);
     q3DScatter->setShadowQuality(QAbstract3DGraph::ShadowQualitySoftLow);
     q3DScatter->scene()->activeCamera()->setCameraPreset(Q3DCamera::CameraPresetFront);
-    if (scatter_3d_widget && ui->horizontalLayout->count() == 2) {
-        ui->horizontalLayout->removeWidget(scatter_3d_widget);
-        delete scatter_3d_widget;
-        scatter_3d_widget = nullptr;
-    }
-    if (scatter_2d_widget && ui->horizontalLayout->count() == 2) {
-        ui->horizontalLayout->removeWidget(scatter_2d_widget);
-        delete scatter_2d_widget;
-        scatter_2d_widget = nullptr;
-    }
     scatter_3d_widget = QWidget::createWindowContainer(q3DScatter);
     q3DScatter->setFlags(q3DScatter->flags() ^ Qt::FramelessWindowHint);
     scatter_3d_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
@@ -151,16 +142,8 @@ void PCADialog::init_3d_scatter() {
 }
 
 void PCADialog::init_2d_scatter() {
-    if (scatter_3d_widget && ui->horizontalLayout->count() == 2) {
-        ui->horizontalLayout->removeWidget(scatter_3d_widget);
-        delete scatter_3d_widget;
-        scatter_3d_widget = nullptr;
-    }
-    if (scatter_2d_widget && ui->horizontalLayout->count() == 2) {
-        ui->horizontalLayout->removeWidget(scatter_2d_widget);
-        delete scatter_2d_widget;
-        scatter_2d_widget = nullptr;
-    }
+    reset_memory();
+
     scatter_2d_widget = new QChartView(this);
     ui->horizontalLayout->addWidget(scatter_2d_widget);
     ui->horizontalLayout->setStretch(0, 1);
@@ -216,5 +199,14 @@ void PCADialog::init_2d_scatter() {
 }
 
 void PCADialog::reset_memory() {
-
+    if (scatter_3d_widget && ui->horizontalLayout->count() == 2) {
+        ui->horizontalLayout->removeWidget(scatter_3d_widget);
+        delete scatter_3d_widget;
+        scatter_3d_widget = nullptr;
+    }
+    if (scatter_2d_widget && ui->horizontalLayout->count() == 2) {
+        ui->horizontalLayout->removeWidget(scatter_2d_widget);
+        delete scatter_2d_widget;
+        scatter_2d_widget = nullptr;
+    }
 }
