@@ -19,13 +19,15 @@ public:
 
 private:
     Ui::MeansDialog *ui;
+    /* 聚类算法，0 for K-means */
+    int means_flag = 0;
     QTableWidget *tableWidget;
     QWidget *scatter_3d_widget = nullptr;
     QChartView *scatter_2d_widget = nullptr;
     std::vector<std::vector<float>> points;
     std::vector<bool> point_status;
 
-    void go_PCA();
+    void go_Means();
 
     void reset_memory();
 

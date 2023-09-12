@@ -1,4 +1,5 @@
 #include "../include/meansdialog.h"
+#include "../lib/kmeans.hpp"
 #include "../lib/pca.hpp"
 #include "../ui_meansdialog.h"
 
@@ -150,5 +151,17 @@ void MeansDialog::reset_memory() {
         ui->horizontalLayout_3->removeWidget(scatter_2d_widget);
         delete scatter_2d_widget;
         scatter_2d_widget = nullptr;
+    }
+}
+
+void MeansDialog::go_Means() {
+    if(means_flag==0){
+
+    }
+    int dim = ui->dim_spinbox->value();
+    if (dim == 3) {
+        init_3d_scatter();
+    } else {
+        init_2d_scatter();
     }
 }

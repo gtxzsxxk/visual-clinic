@@ -28,6 +28,7 @@ set(PROJECT_SOURCES
         include/XGradientFrame.h
         lib/covariance.hpp
         lib/pca.hpp
+        lib/kmeans.hpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

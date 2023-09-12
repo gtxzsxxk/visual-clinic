@@ -73,7 +73,6 @@ PCADialog::~PCADialog() {
 
 void PCADialog::go_PCA() {
     int dim = ui->spinBox->value();
-    /* TODO: manage the memory use */
     if (dim == 3) {
         init_3d_scatter();
     } else {
