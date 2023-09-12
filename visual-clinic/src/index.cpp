@@ -29,6 +29,11 @@ Index::Index(QWidget *parent) :
         XMainWindow(parent),
         ui(new Ui::Index) {
     ui->setupUi(this);
+    auto *shadow = new QGraphicsDropShadowEffect();
+    shadow->setBlurRadius(16);
+    shadow->setOffset(0);
+    shadow->setColor(QColor(0, 0, 0, 100));
+    ui->widget->setGraphicsEffect(shadow);
     connect(ui->buttonClose, SIGNAL(clicked()), this, SLOT(quit()));
     connect(ui->buttonMinimize, SIGNAL(clicked()), this, SLOT(minimize()));
     connect(ui->tableWidget->horizontalHeader(),
