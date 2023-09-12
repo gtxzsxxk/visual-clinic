@@ -73,8 +73,13 @@ void PCADialog::go_PCA() {
     /* TODO: manage the memory use */
     if (dim == 3) {
         auto *q3DScatter = new Q3DScatter();
-        q3DScatter->setFlags(q3DScatter->flags() ^ Qt::FramelessWindowHint);
+        q3DScatter->activeTheme()->setType(Q3DTheme::ThemePrimaryColors);
+        q3DScatter->setShadowQuality(QAbstract3DGraph::ShadowQualitySoftLow);
+        q3DScatter->scene()->activeCamera()->setCameraPreset(Q3DCamera::CameraPresetFront);
         chartWidget = QWidget::createWindowContainer(q3DScatter);
+        q3DScatter->setFlags(q3DScatter->flags() ^ Qt::FramelessWindowHint);
+//        chartWidget = new QWidget(this);
+        chartWidget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
         /* todo: check here */
         ui->horizontalLayout->addWidget(chartWidget);
         ui->horizontalLayout->setStretch(0, 1);
@@ -103,6 +108,9 @@ void PCADialog::go_PCA() {
         OFFSET(0);
         OFFSET(1);
         OFFSET(2);
+        q3DScatter->axisX()->setTitle("PC1");
+        q3DScatter->axisY()->setTitle("PC2");
+        q3DScatter->axisZ()->setTitle("PC3");
         q3DScatter->axisX()->setRange(v_0_min - v_0_offset, v_0_max + v_0_offset);
         q3DScatter->axisY()->setRange(v_1_min - v_1_offset, v_1_max + v_1_offset);
         q3DScatter->axisZ()->setRange(v_2_min - v_2_offset, v_2_max + v_2_offset);
