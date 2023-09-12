@@ -30,6 +30,8 @@ private:
 
     void go_PCA();
 
+    void reset_memory();
+
     void init_3d_scatter();
 
     void init_2d_scatter();
