@@ -37,7 +37,7 @@ PCADialog::PCADialog(QWidget *parent, QTableWidget *tableWidget) :
             break;
         }
     }
-    for(int i = 0;i<tableWidget->rowCount();i++){
+    for (int i = 0; i < tableWidget->rowCount(); i++) {
         auto item_data = tableWidget->item(i, diagnosis_column)->text();
         if (item_data[0] == 'B') {
             point_status.emplace_back(false);
@@ -90,9 +90,9 @@ void PCADialog::go_PCA() {
             float v_0 = res(i, 0);
             float v_1 = res(i, 1);
             float v_2 = res(i, 2);
-            if(point_status[i]){
+            if (point_status[i]) {
                 m_data << QVector3D(v_0, v_1, v_2);
-            }else{
+            } else {
                 b_data << QVector3D(v_0, v_1, v_2);
             }
             MAX_MIN_SET(0);
@@ -107,7 +107,13 @@ void PCADialog::go_PCA() {
         q3DScatter->axisY()->setRange(v_1_min - v_1_offset, v_1_max + v_1_offset);
         q3DScatter->axisZ()->setRange(v_2_min - v_2_offset, v_2_max + v_2_offset);
         b_series->dataProxy()->addItems(b_data);
+        b_series->setName("良性肿瘤");
+        b_series->setItemSize(0.1f);
+        b_series->setBaseColor(QColor("LimeGreen"));
         m_series->dataProxy()->addItems(m_data);
+        m_series->setName("恶性肿瘤");
+        m_series->setItemSize(0.1f);
+        m_series->setBaseColor(QColor("Crimson"));
         q3DScatter->addSeries(b_series);
         q3DScatter->addSeries(m_series);
         q3DScatter->setAspectRatio(1);
