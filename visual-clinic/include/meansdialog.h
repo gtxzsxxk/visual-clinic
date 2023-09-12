@@ -1,6 +1,9 @@
 #ifndef MEANSDIALOG_H
 #define MEANSDIALOG_H
 
+#include <vector>
+#include <set>
+#include <QColor>
 #include <QDialog>
 #include <QTableWidget>
 #include <QChartView>
@@ -26,6 +29,8 @@ private:
     QChartView *scatter_2d_widget = nullptr;
     std::vector<std::vector<float>> points;
     std::vector<bool> point_status;
+    std::vector<int> point_categories;
+    std::vector<QColor> point_colors;
 
     void go_Means();
 

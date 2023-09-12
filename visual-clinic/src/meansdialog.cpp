@@ -3,6 +3,8 @@
 #include "../lib/pca.hpp"
 #include "../ui_meansdialog.h"
 
+#include <set>
+#include <random>
 #include <Q3DScatter>
 #include <QScatterSeries>
 #include <QValueAxis>
@@ -25,6 +27,34 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget* tableWidget) :
     ui(new Ui::MeansDialog),tableWidget(tableWidget)
 {
     ui->setupUi(this);
+    std::set<int> columns;
+    for (const auto &item: tableWidget->selectedItems()) {
+        columns.insert(item->column());
+    }
+    int diagnosis_column;
+    for (int i = 0; i < tableWidget->columnCount(); i++) {
+        auto item_data = tableWidget->item(1, i)->text();
+        if (item_data[0] == 'B' || item_data[0] == 'M') {
+            diagnosis_column = i;
+            break;
+        }
+    }
+    for (int i = 0; i < tableWidget->rowCount(); i++) {
+        auto item_data = tableWidget->item(i, diagnosis_column)->text();
+        if (item_data[0] == 'B') {
+            point_status.emplace_back(false);
+        }
+        if (item_data[0] == 'M') {
+            point_status.emplace_back(true);
+        }
+    }
+    for (int i = 0; i < tableWidget->rowCount(); i++) {
+        std::vector<float> data;
+        for (const auto &it: columns) {
+            data.emplace_back(tableWidget->item(i, it)->text().toFloat());
+        }
+        points.emplace_back(data);
+    }
 }
 
 MeansDialog::~MeansDialog()
@@ -156,7 +186,23 @@ void MeansDialog::reset_memory() {
 
 void MeansDialog::go_Means() {
     if(means_flag==0){
-
+        int k = ui->point_spinbox->text().toInt();
+        int iter = ui->iterate_spinbox->text().toInt();
+        auto res = clusterKMeans(points,k,iter);
+        point_categories = std::get<1>(res);
+        int number = 0;
+        for(const auto &it:point_categories){
+            if(it>number){
+                number = it;
+            }
+        }
+        std::random_device r_dev;
+        std::mt19937 gen(r_dev());
+        std::uniform_int_distribution<> distribution(0,255);
+        point_colors.clear();
+        for(int i=0;i<=number;i++){
+            point_colors.emplace_back(distribution(gen),distribution(gen),distribution(gen));
+        }
     }
     int dim = ui->dim_spinbox->value();
     if (dim == 3) {
