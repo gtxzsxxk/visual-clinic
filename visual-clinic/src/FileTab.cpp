@@ -14,15 +14,26 @@ std::vector<FileTab *> FileTab::fileTabs;
 
 FileTab::FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &filepath) :
         QFrame(parent), filepath(filepath), selected(false), tableWidget(tableWidget) {
-    int width = QFontMetrics(this->font()).boundingRect(filename).width();
-    int container_width = width + 40;
+
+    QFile f(filepath);
+    if (f.open(QIODevice::ReadOnly)) {
+        QFileInfo info(filepath);
+        filename = info.fileName();
+    } else {
+        QMessageBox::warning(this, "错误", "无法打开文件：" + filepath);
+    }
+    f.close();
+
+    int width = QFontMetrics(this->font()).boundingRect(filename).width() + 10;
+    int container_width = width + 50;
+
     QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(180);
     sizePolicy2.setVerticalStretch(0);
     sizePolicy2.setHeightForWidth(sizePolicy().hasHeightForWidth());
     setSizePolicy(sizePolicy2);
     setMinimumSize(QSize(container_width, 28));
-    setMaximumSize(QSize(260, 28));
+    setMaximumSize(QSize(container_width, 28));
     setStyleSheet(QString::fromUtf8("QFrame{\n"
                                     "	background:white;\n"
                                     "border:none;\n"
@@ -37,7 +48,7 @@ FileTab::FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &file
     horizontalLayout_6->setContentsMargins(0, 0, 0, 0);
     label = new QLabel(this);
     label->setMinimumSize(QSize(width, 20));
-    label->setMaximumSize(QSize(200, 20));
+    label->setMaximumSize(QSize(width, 20));
     label->setStyleSheet(QString::fromUtf8("QLabel {\n"
                                            "	border:none;\n"
                                            "padding-left:0px;background: transparent;\n"
@@ -144,6 +155,7 @@ void FileTab::readCSV() {
     } else {
         QMessageBox::warning(this, "错误", "无法打开文件：" + filepath);
     }
+    f.close();
 }
 
 void FileTab::loadTable() {
