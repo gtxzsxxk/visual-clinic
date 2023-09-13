@@ -132,6 +132,8 @@ void MeansDialog::init_2d_scatter() {
 
     scatter_2d_widget = new QChartView(this);
     ui->horizontalLayout_3->addWidget(scatter_2d_widget);
+    ui->horizontalLayout_3->setStretch(0,3);
+    ui->horizontalLayout_3->setStretch(1,5);
     auto *chart = new QChart();
     if (real_categories) {
         auto *b_series = new QScatterSeries(this);
