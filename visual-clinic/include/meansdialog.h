@@ -49,6 +49,8 @@ private:
     void init_2d_scatter();
 private slots:
     void onColorSwitchClicked();
+    void onDisplayTypeChanged();
+    void onSpinBoxValueChanged(int value);
 };
 
 #endif // MEANSDIALOG_H

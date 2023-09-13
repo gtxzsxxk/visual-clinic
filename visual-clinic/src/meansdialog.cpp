@@ -65,6 +65,10 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
     }
 
     connect(ui->showcolor_btn, SIGNAL(clicked()), this, SLOT(onColorSwitchClicked()));
+    connect(ui->swap_type_btn,SIGNAL(clicked()),this,SLOT(onDisplayTypeChanged()));
+    connect(ui->dim_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
+    connect(ui->point_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
+    connect(ui->iterate_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
 
     go_Means();
 }
@@ -86,46 +90,87 @@ void MeansDialog::init_3d_scatter() {
     ui->horizontalLayout_3->setStretch(0, 3);
     ui->horizontalLayout_3->setStretch(1, 5);
 
-    auto *b_series = new QScatter3DSeries;
-    auto *m_series = new QScatter3DSeries;
-    QScatterDataArray b_data;
-    QScatterDataArray m_data;
-    auto res = kpca(points, 3);
-    float v_0_max = -1000, v_1_max = -1000, v_2_max = -1000;
-    float v_0_min = 1000, v_1_min = 1000, v_2_min = 1000;
-    for (int i = 0; i < points.size(); i++) {
-        float v_0 = res(i, 0);
-        float v_1 = res(i, 1);
-        float v_2 = res(i, 2);
-        if (point_status[i]) {
-            m_data << QVector3D(v_0, v_1, v_2);
-        } else {
-            b_data << QVector3D(v_0, v_1, v_2);
+    if (real_categories) {
+        auto *b_series = new QScatter3DSeries;
+        auto *m_series = new QScatter3DSeries;
+        QScatterDataArray b_data;
+        QScatterDataArray m_data;
+        auto res = kpca(points, 3);
+        float v_0_max = -1000, v_1_max = -1000, v_2_max = -1000;
+        float v_0_min = 1000, v_1_min = 1000, v_2_min = 1000;
+        for (int i = 0; i < points.size(); i++) {
+            float v_0 = res(i, 0);
+            float v_1 = res(i, 1);
+            float v_2 = res(i, 2);
+            if (point_status[i]) {
+                m_data << QVector3D(v_0, v_1, v_2);
+            } else {
+                b_data << QVector3D(v_0, v_1, v_2);
+            }
+            MAX_MIN_SET(0);
+            MAX_MIN_SET(1);
+            MAX_MIN_SET(2);
         }
-        MAX_MIN_SET(0);
-        MAX_MIN_SET(1);
-        MAX_MIN_SET(2);
+        float v_0_offset, v_1_offset, v_2_offset;
+        OFFSET(0);
+        OFFSET(1);
+        OFFSET(2);
+        q3DScatter->axisX()->setTitle("PC1");
+        q3DScatter->axisY()->setTitle("PC2");
+        q3DScatter->axisZ()->setTitle("PC3");
+        q3DScatter->axisX()->setRange(v_0_min - v_0_offset, v_0_max + v_0_offset);
+        q3DScatter->axisY()->setRange(v_1_min - v_1_offset, v_1_max + v_1_offset);
+        q3DScatter->axisZ()->setRange(v_2_min - v_2_offset, v_2_max + v_2_offset);
+        b_series->dataProxy()->addItems(b_data);
+        b_series->setName("良性肿瘤");
+        b_series->setItemSize(0.1f);
+        b_series->setBaseColor(QColor("LimeGreen"));
+        m_series->dataProxy()->addItems(m_data);
+        m_series->setName("恶性肿瘤");
+        m_series->setItemSize(0.1f);
+        m_series->setBaseColor(QColor("Crimson"));
+        q3DScatter->addSeries(b_series);
+        q3DScatter->addSeries(m_series);
+    } else {
+
+        QScatterDataArray b_data;
+        auto res = kpca(points, 3);
+        float v_0_max = -1000, v_1_max = -1000, v_2_max = -1000;
+        float v_0_min = 1000, v_1_min = 1000, v_2_min = 1000;
+        for (int i = 0; i < points.size(); i++) {
+            float v_0 = res(i, 0);
+            float v_1 = res(i, 1);
+            float v_2 = res(i, 2);
+            MAX_MIN_SET(0);
+            MAX_MIN_SET(1);
+            MAX_MIN_SET(2);
+        }
+        float v_0_offset, v_1_offset, v_2_offset;
+        OFFSET(0);
+        OFFSET(1);
+        OFFSET(2);
+        q3DScatter->axisX()->setTitle("PC1");
+        q3DScatter->axisY()->setTitle("PC2");
+        q3DScatter->axisZ()->setTitle("PC3");
+        q3DScatter->axisX()->setRange(v_0_min - v_0_offset, v_0_max + v_0_offset);
+        q3DScatter->axisY()->setRange(v_1_min - v_1_offset, v_1_max + v_1_offset);
+        q3DScatter->axisZ()->setRange(v_2_min - v_2_offset, v_2_max + v_2_offset);
+
+        for (int i = 0; i < point_colors.size(); i++) {
+            auto *series = new QScatter3DSeries;
+            series->setName("聚类" + QString::number(i));
+            series->setItemSize(0.1f);
+            series->setBaseColor(point_colors[i]);
+            QScatterDataArray data;
+            for (int j = 0; j < points.size(); j++) {
+                if (point_categories[j] == i) {
+                    data << QVector3D(res(j, 0), res(j, 1), res(j, 2));
+                }
+            }
+            series->dataProxy()->addItems(data);
+            q3DScatter->addSeries(series);
+        }
     }
-    float v_0_offset, v_1_offset, v_2_offset;
-    OFFSET(0);
-    OFFSET(1);
-    OFFSET(2);
-    q3DScatter->axisX()->setTitle("PC1");
-    q3DScatter->axisY()->setTitle("PC2");
-    q3DScatter->axisZ()->setTitle("PC3");
-    q3DScatter->axisX()->setRange(v_0_min - v_0_offset, v_0_max + v_0_offset);
-    q3DScatter->axisY()->setRange(v_1_min - v_1_offset, v_1_max + v_1_offset);
-    q3DScatter->axisZ()->setRange(v_2_min - v_2_offset, v_2_max + v_2_offset);
-    b_series->dataProxy()->addItems(b_data);
-    b_series->setName("良性肿瘤");
-    b_series->setItemSize(0.1f);
-    b_series->setBaseColor(QColor("LimeGreen"));
-    m_series->dataProxy()->addItems(m_data);
-    m_series->setName("恶性肿瘤");
-    m_series->setItemSize(0.1f);
-    m_series->setBaseColor(QColor("Crimson"));
-    q3DScatter->addSeries(b_series);
-    q3DScatter->addSeries(m_series);
     q3DScatter->setAspectRatio(1);
     q3DScatter->setHorizontalAspectRatio(1);
 }
@@ -315,4 +360,19 @@ void MeansDialog::onColorSwitchClicked() {
         ui->showcolor_btn->setText("关闭表格颜色");
         show_color = true;
     }
+}
+
+void MeansDialog::onSpinBoxValueChanged(int value) {
+    go_Means();
+}
+
+void MeansDialog::onDisplayTypeChanged() {
+    if (real_categories) {
+        ui->swap_type_btn->setText("显示真实类别");
+        real_categories = false;
+    } else {
+        ui->swap_type_btn->setText("显示聚类结果");
+        real_categories = true;
+    }
+    go_Means();
 }
