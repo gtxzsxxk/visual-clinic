@@ -22,6 +22,7 @@ private:
     Ui::Index *ui;
     int selected_column = 0;
     int column_selected_num = 0;
+    bool file_full=false;
     QString currentFilePath;
     std::vector<QString> currentCSVLines;
 

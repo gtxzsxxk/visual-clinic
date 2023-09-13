@@ -136,11 +136,15 @@ void Index::goAvgAndVari() {
 }
 
 void Index::importCSV() {
-    auto path = QFileDialog::getOpenFileName(this, "选择病例文件", ".", "*.csv");
-    if (path.isEmpty()) {
-        return;
+    if (!file_full) {
+        auto path = QFileDialog::getOpenFileName(this, "选择病例文件", ".", "*.csv");
+        if (path.isEmpty()) {
+            return;
+        }
+        titleBarAdd(path);
+    } else {
+        QMessageBox::warning(this, "错误", "无法打开更多的文件");
     }
-    titleBarAdd(path);
 }
 
 void Index::goMeans() {
@@ -172,12 +176,18 @@ void Index::goPCA() {
 void Index::titleBarAdd(const QString &path) {
     auto *box = dynamic_cast<QHBoxLayout *>(ui->titleBarFrame->layout());
     if (box != nullptr) {
-        box->removeItem(ui->titleBarSpacer);
         auto *item = new FileTab(ui->titleBarFrame, ui->tableWidget, path);
-        connect(item, SIGNAL(onTabClosed(int)), this, SLOT(onTabClosed(int)));
-        box->addWidget(item);
-        box->addItem(ui->titleBarSpacer);
-        item->select();
+        if (FileTab::tab_total_size > ui->titleBarFrame->geometry().width() - 150) {
+            QMessageBox::warning(this, "错误", "无法打开更多的文件");
+            file_full = true;
+            delete item;
+        } else {
+            box->removeItem(ui->titleBarSpacer);
+            connect(item, SIGNAL(onTabClosed(int)), this, SLOT(onTabClosed(int)));
+            box->addWidget(item);
+            box->addItem(ui->titleBarSpacer);
+            item->select();
+        }
     }
 }
 

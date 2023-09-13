@@ -12,6 +12,8 @@
 
 std::vector<FileTab *> FileTab::fileTabs;
 
+int FileTab::tab_total_size = 0;
+
 FileTab::FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &filepath) :
         QFrame(parent), filepath(filepath), selected(false), tableWidget(tableWidget) {
 
@@ -25,7 +27,8 @@ FileTab::FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &file
     f.close();
 
     int width = QFontMetrics(this->font()).boundingRect(filename).width() + 10;
-    int container_width = width + 50;
+    container_width = width + 50;
+    tab_total_size += container_width;
 
     QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(180);
@@ -91,6 +94,10 @@ FileTab::FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &file
     readCSV();
 }
 
+FileTab::~FileTab() {
+    /* TODO: deconstruct */
+}
+
 void FileTab::select() {
     for (auto &it: fileTabs) {
         it->unselect();
@@ -130,6 +137,7 @@ bool FileTab::eventFilter(QObject *watched, QEvent *event) {
         }
         return true;
     } else if (watched == buttonCloseCurrentFile && event->type() == QEvent::MouseButtonPress) {
+        tab_total_size -= container_width;
         emit tabClosed(index);
         return true;
     }

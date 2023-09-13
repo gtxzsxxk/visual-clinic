@@ -18,8 +18,11 @@ Q_OBJECT
 
 public:
     static std::vector<FileTab *> fileTabs;
+    static int tab_total_size;
 
     explicit FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &filepath);
+
+    ~FileTab();
 
     void select();
 
@@ -28,6 +31,7 @@ public:
     bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:
+    int container_width;
     int index;
     bool selected;
     QString filename;
