@@ -133,7 +133,7 @@ void MeansDialog::init_2d_scatter() {
     scatter_2d_widget = new QChartView(this);
     ui->horizontalLayout_3->addWidget(scatter_2d_widget);
     auto *chart = new QChart();
-    if(real_categories) {
+    if (real_categories) {
         auto *b_series = new QScatterSeries(this);
         b_series->setName("良性肿瘤");
         b_series->setMarkerSize(10);
@@ -179,8 +179,7 @@ void MeansDialog::init_2d_scatter() {
         chart->addSeries(b_series);
         b_series->attachAxis(axisX);
         b_series->attachAxis(axisY);
-    }
-    else{
+    } else {
         auto res = kpca(points, 2);
         float v_0_max = -1000, v_1_max = -1000;
         float v_0_min = 1000, v_1_min = 1000;
@@ -205,13 +204,14 @@ void MeansDialog::init_2d_scatter() {
         axisY->setLabelFormat("%.2f");
         axisY->setTitleText("PC2");
         chart->addAxis(axisY, Qt::AlignLeft);
-        for(int i=0;i<point_colors.size();i++){
+        for (int i = 0; i < point_colors.size(); i++) {
             auto *series = new QScatterSeries(this);
-            series->setName("聚类"+QString::number(i));
+            series->setName("聚类" + QString::number(i));
             series->setMarkerSize(10);
-            for (int j = 0; j < points.size(); j++){
-                if(point_categories[j]==i){
-                    series->append(QPointF(res(j,0), res(j,1)));
+            series->setColor(point_colors[i]);
+            for (int j = 0; j < points.size(); j++) {
+                if (point_categories[j] == i) {
+                    series->append(QPointF(res(j, 0), res(j, 1)));
                 }
             }
             chart->addSeries(series);
