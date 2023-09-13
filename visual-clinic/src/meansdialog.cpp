@@ -63,6 +63,8 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
         }
         points.emplace_back(data);
     }
+
+    go_Means();
 }
 
 MeansDialog::~MeansDialog() {
@@ -210,8 +212,8 @@ void MeansDialog::go_Means() {
         for (int i = 0; i <= number; i++) {
             point_colors.emplace_back(distribution(gen), distribution(gen), distribution(gen));
         }
-
     }
+    set_table_colors();
     int dim = ui->dim_spinbox->value();
     if (dim == 3) {
         init_3d_scatter();
@@ -221,10 +223,23 @@ void MeansDialog::go_Means() {
 }
 
 void MeansDialog::set_table_colors() {
+    for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
+        for (int j = 0; j < ui->tableWidget->columnCount(); j++) {
+            int category = point_categories[i];
+            ui->tableWidget->item(i, j)->setBackground(
+                    QBrush(point_colors[category])
+            );
+        }
+    }
 }
 
 void MeansDialog::reset_table_colors() {
-
+    QTableWidgetItem deflt;
+    for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
+        for (int j = 0; j < ui->tableWidget->columnCount(); j++) {
+            ui->tableWidget->item(i, j)->setBackground(deflt.background());
+        }
+    }
 }
 
 int MeansDialog::get_set_index(const std::set<int> &data, int value) {
