@@ -9,19 +9,21 @@
 #include <QChartView>
 
 namespace Ui {
-class MeansDialog;
+    class MeansDialog;
 }
 
-class MeansDialog : public QDialog
-{
-    Q_OBJECT
+class MeansDialog : public QDialog {
+Q_OBJECT
 
 public:
-    explicit MeansDialog(QWidget *parent, QTableWidget* tableWidget);
+    explicit MeansDialog(QWidget *parent, QTableWidget *tableWidget);
+
     ~MeansDialog();
 
 private:
     Ui::MeansDialog *ui;
+    bool show_color = true;
+    bool real_categories = false;
     /* 聚类算法，0 for K-means */
     int means_flag = 0;
     QTableWidget *tableWidget;
@@ -34,9 +36,10 @@ private:
 
     void go_Means();
 
-    int get_set_index(const std::set<int> & data, int value);
+    int get_set_index(const std::set<int> &data, int value);
 
     void set_table_colors();
+
     void reset_table_colors();
 
     void reset_memory();
@@ -44,6 +47,8 @@ private:
     void init_3d_scatter();
 
     void init_2d_scatter();
+private slots:
+    void onColorSwitchClicked();
 };
 
 #endif // MEANSDIALOG_H

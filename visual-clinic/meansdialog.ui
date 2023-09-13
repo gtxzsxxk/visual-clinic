@@ -526,7 +526,7 @@
               <number>3</number>
              </property>
              <property name="value">
-              <number>3</number>
+              <number>2</number>
              </property>
             </widget>
            </item>
@@ -658,7 +658,7 @@ QPushButton:hover {
 }</string>
            </property>
            <property name="text">
-            <string>在表格中显示聚类结果颜色</string>
+            <string>关闭表格颜色</string>
            </property>
           </widget>
          </item>

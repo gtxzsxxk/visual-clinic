@@ -64,6 +64,8 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
         points.emplace_back(data);
     }
 
+    connect(ui->showcolor_btn, SIGNAL(clicked()), this, SLOT(onColorSwitchClicked()));
+
     go_Means();
 }
 
@@ -131,52 +133,93 @@ void MeansDialog::init_2d_scatter() {
     scatter_2d_widget = new QChartView(this);
     ui->horizontalLayout_3->addWidget(scatter_2d_widget);
     auto *chart = new QChart();
-    auto *b_series = new QScatterSeries(this);
-    b_series->setName("良性肿瘤");
-    b_series->setMarkerSize(10);
-    b_series->setColor(QColor("LimeGreen"));
-    auto *m_series = new QScatterSeries(this);
-    m_series->setName("恶性肿瘤");
-    m_series->setMarkerSize(10);
-    m_series->setColor(QColor("Crimson"));
+    if(real_categories) {
+        auto *b_series = new QScatterSeries(this);
+        b_series->setName("良性肿瘤");
+        b_series->setMarkerSize(10);
+        b_series->setColor(QColor("LimeGreen"));
+        auto *m_series = new QScatterSeries(this);
+        m_series->setName("恶性肿瘤");
+        m_series->setMarkerSize(10);
+        m_series->setColor(QColor("Crimson"));
 
-    auto res = kpca(points, 2);
-    float v_0_max = -1000, v_1_max = -1000;
-    float v_0_min = 1000, v_1_min = 1000;
-    for (int i = 0; i < points.size(); i++) {
-        float v_0 = res(i, 0);
-        float v_1 = res(i, 1);
-        if (point_status[i]) {
-            m_series->append(QPointF(v_0, v_1));
-        } else {
-            b_series->append(QPointF(v_0, v_1));
+        auto res = kpca(points, 2);
+        float v_0_max = -1000, v_1_max = -1000;
+        float v_0_min = 1000, v_1_min = 1000;
+        for (int i = 0; i < points.size(); i++) {
+            float v_0 = res(i, 0);
+            float v_1 = res(i, 1);
+            if (point_status[i]) {
+                m_series->append(QPointF(v_0, v_1));
+            } else {
+                b_series->append(QPointF(v_0, v_1));
+            }
+            MAX_MIN_SET(0);
+            MAX_MIN_SET(1);
         }
-        MAX_MIN_SET(0);
-        MAX_MIN_SET(1);
+        auto *axisX = new QValueAxis((QObject *) this);
+        auto *axisY = new QValueAxis((QObject *) this);
+        double h_offset = (v_0_max - v_0_min) * 0.05;
+        axisX->setRange(v_0_min - h_offset, v_0_max + h_offset);
+        axisX->setTickCount(10);
+        axisX->setLabelFormat("%.2f");
+        axisX->setTitleText("PC1");
+        chart->addAxis(axisX, Qt::AlignBottom);
+
+        double v_offset = (v_1_max - v_1_min) * 0.05;
+        axisY->setRange(v_1_min - v_offset, v_1_max + v_offset);
+        axisY->setTickCount(10);
+        axisY->setLabelFormat("%.2f");
+        axisY->setTitleText("PC2");
+        chart->addAxis(axisY, Qt::AlignLeft);
+
+        chart->addSeries(m_series);
+        m_series->attachAxis(axisX);
+        m_series->attachAxis(axisY);
+        chart->addSeries(b_series);
+        b_series->attachAxis(axisX);
+        b_series->attachAxis(axisY);
+    }
+    else{
+        auto res = kpca(points, 2);
+        float v_0_max = -1000, v_1_max = -1000;
+        float v_0_min = 1000, v_1_min = 1000;
+        for (int i = 0; i < points.size(); i++) {
+            float v_0 = res(i, 0);
+            float v_1 = res(i, 1);
+            MAX_MIN_SET(0);
+            MAX_MIN_SET(1);
+        }
+        auto *axisX = new QValueAxis((QObject *) this);
+        auto *axisY = new QValueAxis((QObject *) this);
+        double h_offset = (v_0_max - v_0_min) * 0.05;
+        axisX->setRange(v_0_min - h_offset, v_0_max + h_offset);
+        axisX->setTickCount(10);
+        axisX->setLabelFormat("%.2f");
+        axisX->setTitleText("PC1");
+        chart->addAxis(axisX, Qt::AlignBottom);
+
+        double v_offset = (v_1_max - v_1_min) * 0.05;
+        axisY->setRange(v_1_min - v_offset, v_1_max + v_offset);
+        axisY->setTickCount(10);
+        axisY->setLabelFormat("%.2f");
+        axisY->setTitleText("PC2");
+        chart->addAxis(axisY, Qt::AlignLeft);
+        for(int i=0;i<point_colors.size();i++){
+            auto *series = new QScatterSeries(this);
+            series->setName("聚类"+QString::number(i));
+            series->setMarkerSize(10);
+            for (int j = 0; j < points.size(); j++){
+                if(point_categories[j]==i){
+                    series->append(QPointF(res(j,0), res(j,1)));
+                }
+            }
+            chart->addSeries(series);
+            series->attachAxis(axisX);
+            series->attachAxis(axisY);
+        }
     }
 
-    auto *axisX = new QValueAxis((QObject *) this);
-    auto *axisY = new QValueAxis((QObject *) this);
-    double h_offset = (v_0_max - v_0_min) * 0.05;
-    axisX->setRange(v_0_min - h_offset, v_0_max + h_offset);
-    axisX->setTickCount(10);
-    axisX->setLabelFormat("%.2f");
-    axisX->setTitleText("PC1");
-    chart->addAxis(axisX, Qt::AlignBottom);
-
-    double v_offset = (v_1_max - v_1_min) * 0.05;
-    axisY->setRange(v_1_min - v_offset, v_1_max + v_offset);
-    axisY->setTickCount(10);
-    axisY->setLabelFormat("%.2f");
-    axisY->setTitleText("PC2");
-    chart->addAxis(axisY, Qt::AlignLeft);
-
-    chart->addSeries(m_series);
-    m_series->attachAxis(axisX);
-    m_series->attachAxis(axisY);
-    chart->addSeries(b_series);
-    b_series->attachAxis(axisX);
-    b_series->attachAxis(axisY);
     scatter_2d_widget->setChart(chart);
 }
 
@@ -213,7 +256,11 @@ void MeansDialog::go_Means() {
             point_colors.emplace_back(distribution(gen), distribution(gen), distribution(gen));
         }
     }
-    set_table_colors();
+    if (show_color) {
+        set_table_colors();
+    } else {
+        reset_table_colors();
+    }
     int dim = ui->dim_spinbox->value();
     if (dim == 3) {
         init_3d_scatter();
@@ -251,4 +298,14 @@ int MeansDialog::get_set_index(const std::set<int> &data, int value) {
         cnt++;
     }
     return cnt;
+}
+
+void MeansDialog::onColorSwitchClicked() {
+    if (show_color) {
+        reset_table_colors();
+        show_color = false;
+    } else {
+        set_table_colors();
+        show_color = true;
+    }
 }
