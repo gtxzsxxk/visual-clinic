@@ -207,7 +207,7 @@ void MeansDialog::go_Means() {
         }
         std::random_device r_dev;
         std::mt19937 gen(r_dev());
-        std::uniform_int_distribution<> distribution(0, 255);
+        std::uniform_int_distribution<> distribution(100, 255);
         point_colors.clear();
         for (int i = 0; i <= number; i++) {
             point_colors.emplace_back(distribution(gen), distribution(gen), distribution(gen));
