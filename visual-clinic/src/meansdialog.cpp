@@ -83,6 +83,9 @@ void MeansDialog::init_3d_scatter() {
     q3DScatter->setFlags(q3DScatter->flags() ^ Qt::FramelessWindowHint);
     scatter_3d_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     ui->horizontalLayout_3->addWidget(scatter_3d_widget);
+    ui->horizontalLayout_3->setStretch(0,3);
+    ui->horizontalLayout_3->setStretch(1,5);
+
     auto *b_series = new QScatter3DSeries;
     auto *m_series = new QScatter3DSeries;
     QScatterDataArray b_data;
