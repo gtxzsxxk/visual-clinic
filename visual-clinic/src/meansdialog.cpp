@@ -83,8 +83,8 @@ void MeansDialog::init_3d_scatter() {
     q3DScatter->setFlags(q3DScatter->flags() ^ Qt::FramelessWindowHint);
     scatter_3d_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
     ui->horizontalLayout_3->addWidget(scatter_3d_widget);
-    ui->horizontalLayout_3->setStretch(0,3);
-    ui->horizontalLayout_3->setStretch(1,5);
+    ui->horizontalLayout_3->setStretch(0, 3);
+    ui->horizontalLayout_3->setStretch(1, 5);
 
     auto *b_series = new QScatter3DSeries;
     auto *m_series = new QScatter3DSeries;
@@ -135,8 +135,8 @@ void MeansDialog::init_2d_scatter() {
 
     scatter_2d_widget = new QChartView(this);
     ui->horizontalLayout_3->addWidget(scatter_2d_widget);
-    ui->horizontalLayout_3->setStretch(0,3);
-    ui->horizontalLayout_3->setStretch(1,5);
+    ui->horizontalLayout_3->setStretch(0, 3);
+    ui->horizontalLayout_3->setStretch(1, 5);
     auto *chart = new QChart();
     if (real_categories) {
         auto *b_series = new QScatterSeries(this);
@@ -308,9 +308,11 @@ int MeansDialog::get_set_index(const std::set<int> &data, int value) {
 void MeansDialog::onColorSwitchClicked() {
     if (show_color) {
         reset_table_colors();
+        ui->showcolor_btn->setText("打开表格颜色");
         show_color = false;
     } else {
         set_table_colors();
+        ui->showcolor_btn->setText("关闭表格颜色");
         show_color = true;
     }
 }
