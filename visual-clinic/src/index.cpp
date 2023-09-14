@@ -230,8 +230,8 @@ void Index::onTabClosed(int tabIndex) {
     if (box != nullptr) {
         item->hide();
         box->removeWidget(item);
+        delete item;
     }
-    FileTab::fileTabs.erase(FileTab::fileTabs.begin() + tabIndex);
     if (!FileTab::fileTabs.empty()) {
         FileTab::fileTabs[0]->select();
     }

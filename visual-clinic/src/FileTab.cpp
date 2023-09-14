@@ -96,6 +96,7 @@ FileTab::FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &file
 
 FileTab::~FileTab() {
     /* TODO: deconstruct */
+    FileTab::fileTabs.erase(FileTab::fileTabs.begin() + index);
 }
 
 void FileTab::select() {
