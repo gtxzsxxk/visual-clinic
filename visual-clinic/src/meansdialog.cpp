@@ -26,15 +26,25 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
         ui(new Ui::MeansDialog), tableWidget(tableWidget) {
     ui->setupUi(this);
     std::set<int> columns, rows;
+    QStringList header_names;
     for (const auto &item: tableWidget->selectedItems()) {
         columns.insert(item->column());
         rows.insert(item->row());
     }
+    /* 处理表头 */
+    header_names << "algo";
+    for (const auto &it: columns) {
+        header_names << tableWidget->horizontalHeaderItem(it)->text();
+    }
     /* 把数据加到自己的小表格里 */
     ui->tableWidget->setRowCount(rows.size());
-    ui->tableWidget->setColumnCount(columns.size());
+    ui->tableWidget->setColumnCount(columns.size() + 1);
+    ui->tableWidget->setHorizontalHeaderLabels(header_names);
+    for (int i = 0; i < rows.size(); i++) {
+        ui->tableWidget->setItem(i, 0, new QTableWidgetItem("category"));
+    }
     for (const auto &item: tableWidget->selectedItems()) {
-        int col = get_set_index(columns, item->column());
+        int col = get_set_index(columns, item->column()) + 1;
         int ro = get_set_index(rows, item->row());
         ui->tableWidget->setItem(ro, col, new QTableWidgetItem(item->text()));
     }
@@ -65,7 +75,7 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
     }
 
     connect(ui->showcolor_btn, SIGNAL(clicked()), this, SLOT(onColorSwitchClicked()));
-    connect(ui->swap_type_btn,SIGNAL(clicked()),this,SLOT(onDisplayTypeChanged()));
+    connect(ui->swap_type_btn, SIGNAL(clicked()), this, SLOT(onDisplayTypeChanged()));
     connect(ui->dim_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
     connect(ui->point_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
     connect(ui->iterate_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
@@ -288,10 +298,12 @@ void MeansDialog::reset_memory() {
 
 void MeansDialog::go_Means() {
     if (means_flag == 0) {
+        set_algorithm_name("K-Means");
         int k = ui->point_spinbox->text().toInt();
         int iter = ui->iterate_spinbox->text().toInt();
         auto res = clusterKMeans(points, k, iter);
         point_categories = std::get<1>(res);
+        set_table_column_categories();
         int number = 0;
         for (const auto &it: point_categories) {
             if (it > number) {
@@ -375,4 +387,15 @@ void MeansDialog::onDisplayTypeChanged() {
         real_categories = true;
     }
     go_Means();
+}
+
+void MeansDialog::set_algorithm_name(const QString &&name) {
+    auto tmp = ui->tableWidget->horizontalHeaderItem(0);
+    ui->tableWidget->horizontalHeaderItem(0)->setText(name);
+}
+
+void MeansDialog::set_table_column_categories() {
+    for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
+        ui->tableWidget->item(i, 0)->setText(QString::number(point_categories[i]));
+    }
 }

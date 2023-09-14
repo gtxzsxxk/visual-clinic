@@ -40,6 +40,10 @@ private:
 
     void set_table_colors();
 
+    void set_algorithm_name(const QString &&name);
+
+    void set_table_column_categories();
+
     void reset_table_colors();
 
     void reset_memory();
@@ -47,9 +51,13 @@ private:
     void init_3d_scatter();
 
     void init_2d_scatter();
+
 private slots:
+
     void onColorSwitchClicked();
+
     void onDisplayTypeChanged();
+
     void onSpinBoxValueChanged(int value);
 };
 
