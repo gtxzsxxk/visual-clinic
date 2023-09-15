@@ -31,6 +31,7 @@ set(PROJECT_SOURCES
         lib/kmeans.cpp
         lib/dbscan.cpp
         lib/mean_shift.cpp
+        lib/spectral_cluster.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
