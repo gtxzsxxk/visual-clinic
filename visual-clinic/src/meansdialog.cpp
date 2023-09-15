@@ -410,6 +410,7 @@ void MeansDialog::onDisplayTypeChanged() {
 void MeansDialog::set_algorithm_name(const QString &&name) {
     auto tmp = ui->tableWidget->horizontalHeaderItem(0);
     ui->tableWidget->horizontalHeaderItem(0)->setText(name);
+    ui->algo_label->setText(name);
 }
 
 void MeansDialog::set_table_column_categories() {
