@@ -80,7 +80,7 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
     std::mt19937 gen(r_dev());
     std::uniform_int_distribution<> distribution(100, 255);
     point_colors.clear();
-    for (int i = 0; i <= 255; i++) {
+    for (int i = 0; i <= 1024; i++) {
         point_colors.emplace_back(distribution(gen), distribution(gen), distribution(gen));
     }
 
@@ -342,20 +342,21 @@ void MeansDialog::go_Means() {
                 in(i, j) = points[i][j];
             }
         }
-        auto res = clusterMeanShift(in, 50, 1e-2);
+        auto res = clusterMeanShift(in, 300, 1e-6);
         point_categories.clear();
         for (int i = 0; i < rows; ++i) {
             point_categories.emplace_back(res(i));
         }
     }
     set_table_column_categories();
-    int number = 0;
+    std::set<int> categories_tmp;
     for (const auto &it: point_categories) {
-        if (it > number) {
-            number = it;
-        }
+        categories_tmp.insert(it);
     }
-    categories_number = number + 1;
+    for (int &point_category: point_categories) {
+        point_category = get_set_index(categories_tmp, point_category);
+    }
+    categories_number = categories_tmp.size();
 
     if (show_color) {
         set_table_colors();
