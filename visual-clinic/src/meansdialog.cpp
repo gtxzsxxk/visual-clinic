@@ -75,6 +75,15 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
         points.emplace_back(data);
     }
 
+    /* 直接把颜色一次性都设置好，免得变来变去 */
+    std::random_device r_dev;
+    std::mt19937 gen(r_dev());
+    std::uniform_int_distribution<> distribution(100, 255);
+    point_colors.clear();
+    for (int i = 0; i <= 255; i++) {
+        point_colors.emplace_back(distribution(gen), distribution(gen), distribution(gen));
+    }
+
     connect(ui->showcolor_btn, SIGNAL(clicked()), this, SLOT(onColorSwitchClicked()));
     connect(ui->swap_type_btn, SIGNAL(clicked()), this, SLOT(onDisplayTypeChanged()));
     connect(ui->dim_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
@@ -169,7 +178,7 @@ void MeansDialog::init_3d_scatter() {
         q3DScatter->axisY()->setRange(v_1_min - v_1_offset, v_1_max + v_1_offset);
         q3DScatter->axisZ()->setRange(v_2_min - v_2_offset, v_2_max + v_2_offset);
 
-        for (int i = 0; i < point_colors.size(); i++) {
+        for (int i = 0; i < categories_number; i++) {
             auto *series = new QScatter3DSeries;
             series->setName("聚类" + QString::number(i));
             series->setItemSize(0.1f);
@@ -267,7 +276,7 @@ void MeansDialog::init_2d_scatter() {
         axisY->setLabelFormat("%.2f");
         axisY->setTitleText("PC2");
         chart->addAxis(axisY, Qt::AlignLeft);
-        for (int i = 0; i < point_colors.size(); i++) {
+        for (int i = 0; i < categories_number; i++) {
             auto *series = new QScatterSeries(this);
             series->setName("聚类" + QString::number(i));
             series->setMarkerSize(10);
@@ -329,13 +338,8 @@ void MeansDialog::go_Means() {
             number = it;
         }
     }
-    std::random_device r_dev;
-    std::mt19937 gen(r_dev());
-    std::uniform_int_distribution<> distribution(100, 255);
-    point_colors.clear();
-    for (int i = 0; i <= number; i++) {
-        point_colors.emplace_back(distribution(gen), distribution(gen), distribution(gen));
-    }
+    categories_number = number + 1;
+
     if (show_color) {
         set_table_colors();
     } else {

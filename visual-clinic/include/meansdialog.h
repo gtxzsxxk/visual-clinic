@@ -27,6 +27,7 @@ private:
     bool real_categories = false;
     /* 聚类算法，0 for K-means */
     int means_flag = 0;
+    int categories_number = 0;
     QTableWidget *tableWidget;
     QWidget *scatter_3d_widget = nullptr;
     QChartView *scatter_2d_widget = nullptr;
