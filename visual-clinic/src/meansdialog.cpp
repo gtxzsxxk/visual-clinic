@@ -96,9 +96,9 @@ void MeansDialog::init_3d_scatter() {
     scatter_3d_widget = QWidget::createWindowContainer(q3DScatter);
     q3DScatter->setFlags(q3DScatter->flags() ^ Qt::FramelessWindowHint);
     scatter_3d_widget->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
-    ui->horizontalLayout_3->addWidget(scatter_3d_widget);
-    ui->horizontalLayout_3->setStretch(0, 3);
-    ui->horizontalLayout_3->setStretch(1, 5);
+    ui->horizontalLayout_4->addWidget(scatter_3d_widget);
+    ui->horizontalLayout_4->setStretch(0, 3);
+    ui->horizontalLayout_4->setStretch(1, 5);
 
     if (real_categories) {
         auto *b_series = new QScatter3DSeries;
@@ -189,9 +189,9 @@ void MeansDialog::init_2d_scatter() {
     reset_memory();
 
     scatter_2d_widget = new QChartView(this);
-    ui->horizontalLayout_3->addWidget(scatter_2d_widget);
-    ui->horizontalLayout_3->setStretch(0, 3);
-    ui->horizontalLayout_3->setStretch(1, 5);
+    ui->horizontalLayout_4->addWidget(scatter_2d_widget);
+    ui->horizontalLayout_4->setStretch(0, 3);
+    ui->horizontalLayout_4->setStretch(1, 5);
     auto *chart = new QChart();
     if (real_categories) {
         auto *b_series = new QScatterSeries(this);
@@ -284,13 +284,13 @@ void MeansDialog::init_2d_scatter() {
 }
 
 void MeansDialog::reset_memory() {
-    if (scatter_3d_widget && ui->horizontalLayout_3->count() == 2) {
-        ui->horizontalLayout_3->removeWidget(scatter_3d_widget);
+    if (scatter_3d_widget && ui->horizontalLayout_4->count() == 2) {
+        ui->horizontalLayout_4->removeWidget(scatter_3d_widget);
         delete scatter_3d_widget;
         scatter_3d_widget = nullptr;
     }
-    if (scatter_2d_widget && ui->horizontalLayout_3->count() == 2) {
-        ui->horizontalLayout_3->removeWidget(scatter_2d_widget);
+    if (scatter_2d_widget && ui->horizontalLayout_4->count() == 2) {
+        ui->horizontalLayout_4->removeWidget(scatter_2d_widget);
         delete scatter_2d_widget;
         scatter_2d_widget = nullptr;
     }

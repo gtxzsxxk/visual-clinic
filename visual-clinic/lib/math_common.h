@@ -14,6 +14,8 @@ Eigen::MatrixXf getPearsonCorr(const Eigen::MatrixXf &cov, const std::vector<flo
 std::tuple<Eigen::MatrixXf, std::vector<int>>
 clusterKMeans(const std::vector<std::vector<float>> &in, const int k, const int maxIter);
 
+std::vector<int> dbscan_cluster(const std::vector<Eigen::VectorXf> &in, const double epsilon, const int min_points);
+
 std::tuple<Eigen::VectorXf, float, float>
 fitLeastSquareAndPR(const std::vector<float> &inX, const std::vector<float> &inY, const int inDegree);
 
