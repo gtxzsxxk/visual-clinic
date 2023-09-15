@@ -338,11 +338,17 @@ bool Index::isSelectingMultipleColumns() {
 void Index::normal_maximum() {
     if (maximum_flag) {
         showNormal();
-        setMinimumSize(900,620);
-        setMaximumSize(900,620);
+        setMinimumSize(900, 620);
+        setMaximumSize(900, 620);
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("resources/win_normal.png"), QSize(), QIcon::Normal, QIcon::Off);
+        ui->buttonMiddle->setIcon(icon);
         maximum_flag = false;
     } else {
         showMaximized();
+        QIcon icon;
+        icon.addFile(QString::fromUtf8("resources/win_full.png"), QSize(), QIcon::Normal, QIcon::Off);
+        ui->buttonMiddle->setIcon(icon);
         maximum_flag = true;
     }
 }
