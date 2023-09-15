@@ -345,6 +345,7 @@ void Index::normal_maximum() {
         ui->buttonMiddle->setIcon(icon);
         maximum_flag = false;
     } else {
+        setMaximumSize(10000, 10000);
         showMaximized();
         QIcon icon;
         icon.addFile(QString::fromUtf8("resources/win_full.png"), QSize(), QIcon::Normal, QIcon::Off);
