@@ -65,6 +65,8 @@ private slots:
     void onSetKmeans();
 
     void onSetDBSCAN();
+
+    void onSetMeanShift();
 };
 
 #endif // MEANSDIALOG_H

@@ -12,12 +12,14 @@ Eigen::MatrixXf getCovariance(const std::vector<std::vector<float>> &inMat);
 Eigen::MatrixXf getPearsonCorr(const Eigen::MatrixXf &cov, const std::vector<float> &vars);
 
 std::tuple<Eigen::MatrixXf, std::vector<int>>
-clusterKMeans(const std::vector<std::vector<float>> &in, const int k, const int maxIter);
+clusterKMeans(const std::vector<std::vector<float>> &in, int k, int maxIter);
 
-std::vector<int> clusterDBSCAN(const std::vector<Eigen::VectorXf> &in, const double epsilon, const int min_points);
+std::vector<int> clusterDBSCAN(const std::vector<Eigen::VectorXf> &in, double epsilon, int min_points);
+
+Eigen::VectorXd clusterMeanShift(const Eigen::MatrixXd &data, double bandwidth, double convergence_threshold);
 
 std::tuple<Eigen::VectorXf, float, float>
-fitLeastSquareAndPR(const std::vector<float> &inX, const std::vector<float> &inY, const int inDegree);
+fitLeastSquareAndPR(const std::vector<float> &inX, const std::vector<float> &inY, int inDegree);
 
 Eigen::MatrixXf pca(const std::vector<std::vector<float>> &in, const int k);
 

@@ -91,6 +91,7 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
     connect(ui->iterate_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
     connect(ui->kmeans_btn, SIGNAL(clicked()), this, SLOT(onSetKmeans()));
     connect(ui->dbscan_btn, SIGNAL(clicked()), this, SLOT(onSetDBSCAN()));
+    connect(ui->meanshift_btn, SIGNAL(clicked()), this, SLOT(onSetMeanShift()));
 
     go_Means();
 }
@@ -330,6 +331,22 @@ void MeansDialog::go_Means() {
             in.emplace_back(vector);
         }
         point_categories = clusterDBSCAN(in, k, k + 1);
+    } else if (means_flag == 2) {
+        set_algorithm_name("Mean Shift");
+        const int rows = points.size();
+        const int cols = points[0].size();
+        Eigen::MatrixXd in(rows, cols);
+
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                in(i, j) = points[i][j];
+            }
+        }
+        auto res = clusterMeanShift(in, 50, 1e-2);
+        point_categories.clear();
+        for (int i = 0; i < rows; ++i) {
+            point_categories.emplace_back(res(i));
+        }
     }
     set_table_column_categories();
     int number = 0;
@@ -430,5 +447,10 @@ void MeansDialog::onSetKmeans() {
 
 void MeansDialog::onSetDBSCAN() {
     means_flag = 1;
+    go_Means();
+}
+
+void MeansDialog::onSetMeanShift() {
+    means_flag = 2;
     go_Means();
 }

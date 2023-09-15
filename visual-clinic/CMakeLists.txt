@@ -30,6 +30,7 @@ set(PROJECT_SOURCES
         lib/pca.cpp
         lib/kmeans.cpp
         lib/dbscan.cpp
+        lib/mean_shift.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
