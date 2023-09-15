@@ -20,6 +20,7 @@ public:
 
 private:
     Ui::Index *ui;
+    bool maximum_flag = false;
     int selected_column = 0;
     int column_selected_num = 0;
     bool file_full = false;
@@ -55,6 +56,8 @@ public slots:
     void quit();
 
     void minimize();
+
+    void normal_maximum();
 
     void tabSelected();
 

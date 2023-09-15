@@ -37,6 +37,7 @@ Index::Index(QWidget *parent) :
     ui->widget->setGraphicsEffect(shadow);
     connect(ui->buttonClose, SIGNAL(clicked()), this, SLOT(quit()));
     connect(ui->buttonMinimize, SIGNAL(clicked()), this, SLOT(minimize()));
+    connect(ui->buttonMiddle, SIGNAL(clicked()), this, SLOT(normal_maximum()));
     connect(ui->tableWidget->horizontalHeader(),
             SIGNAL(sectionClicked(int)), this, SLOT(onTableHeaderSelected(int)));
     connect(ui->tableWidget, SIGNAL(itemSelectionChanged()), this, SLOT(tabSelected()));
@@ -332,4 +333,16 @@ bool Index::isSelectingMultipleColumns() {
     }
     column_selected_num = counts;
     return true;
+}
+
+void Index::normal_maximum() {
+    if (maximum_flag) {
+        showNormal();
+        setMinimumSize(900,620);
+        setMaximumSize(900,620);
+        maximum_flag = false;
+    } else {
+        showMaximized();
+        maximum_flag = true;
+    }
 }
