@@ -100,6 +100,10 @@ FileTab::~FileTab() {
     for(int i=0;i<FileTab::fileTabs.size();i++){
         FileTab::fileTabs[i]->index = i;
     }
+    tableWidget->clear();
+    while (tableWidget->rowCount()) {
+        tableWidget->removeRow(0);
+    }
 }
 
 void FileTab::select() {
