@@ -15,7 +15,7 @@ std::vector<int> region_query(const std::vector<Eigen::VectorXf> &in, int point_
 }
 
 // Output includes the class of all input points
-std::vector<int> dbscan_cluster(const std::vector<Eigen::VectorXf> &in, const double epsilon, const int min_points)
+std::vector<int> clusterDBSCAN(const std::vector<Eigen::VectorXf> &in, const double epsilon, const int min_points)
 {
     int point_count = in.size();
 
@@ -103,7 +103,7 @@ void testDBSCANCluster()
             {15, 13}};
     auto points = vector_array_to_vectorXf_array(initial_points);
 
-    auto res = dbscan_cluster(points, 2, 3);
+    auto res = clusterDBSCAN(points, 2, 3);
     for (int i = 0; i < res.size(); ++i)
     {
         std::cout << "point " << i << " (" << points[i](0) << ", " << points[i](1)

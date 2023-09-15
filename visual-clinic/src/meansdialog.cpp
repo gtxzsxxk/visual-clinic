@@ -31,6 +31,7 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
         columns.insert(item->column());
         rows.insert(item->row());
     }
+    columns_number = columns.size();
     /* 处理表头 */
     header_names << "algo";
     for (const auto &it: columns) {
@@ -79,6 +80,8 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
     connect(ui->dim_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
     connect(ui->point_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
     connect(ui->iterate_spinbox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
+    connect(ui->kmeans_btn, SIGNAL(clicked()), this, SLOT(onSetKmeans()));
+    connect(ui->dbscan_btn, SIGNAL(clicked()), this, SLOT(onSetDBSCAN()));
 
     go_Means();
 }
@@ -303,20 +306,35 @@ void MeansDialog::go_Means() {
         int iter = ui->iterate_spinbox->text().toInt();
         auto res = clusterKMeans(points, k, iter);
         point_categories = std::get<1>(res);
-        set_table_column_categories();
-        int number = 0;
-        for (const auto &it: point_categories) {
-            if (it > number) {
-                number = it;
+    } else if (means_flag == 1) {
+        set_algorithm_name("DBSCAN");
+        int k = pow(2, columns_number) - 1;
+        const int rows = points.size();
+        const int cols = points[0].size();
+        std::vector<Eigen::VectorXf> in;
+
+        for (int i = 0; i < rows; ++i) {
+            Eigen::VectorXf vector(cols);
+            for (int j = 0; j < cols; ++j) {
+                vector(j) = points[i][j];
             }
+            in.emplace_back(vector);
         }
-        std::random_device r_dev;
-        std::mt19937 gen(r_dev());
-        std::uniform_int_distribution<> distribution(100, 255);
-        point_colors.clear();
-        for (int i = 0; i <= number; i++) {
-            point_colors.emplace_back(distribution(gen), distribution(gen), distribution(gen));
+        point_categories = clusterDBSCAN(in, k, k + 1);
+    }
+    set_table_column_categories();
+    int number = 0;
+    for (const auto &it: point_categories) {
+        if (it > number) {
+            number = it;
         }
+    }
+    std::random_device r_dev;
+    std::mt19937 gen(r_dev());
+    std::uniform_int_distribution<> distribution(100, 255);
+    point_colors.clear();
+    for (int i = 0; i <= number; i++) {
+        point_colors.emplace_back(distribution(gen), distribution(gen), distribution(gen));
     }
     if (show_color) {
         set_table_colors();
@@ -398,4 +416,14 @@ void MeansDialog::set_table_column_categories() {
     for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
         ui->tableWidget->item(i, 0)->setText(QString::number(point_categories[i]));
     }
+}
+
+void MeansDialog::onSetKmeans() {
+    means_flag = 0;
+    go_Means();
+}
+
+void MeansDialog::onSetDBSCAN() {
+    means_flag = 1;
+    go_Means();
 }

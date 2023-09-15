@@ -22,6 +22,7 @@ public:
 
 private:
     Ui::MeansDialog *ui;
+    int columns_number;
     bool show_color = true;
     bool real_categories = false;
     /* 聚类算法，0 for K-means */
@@ -59,6 +60,10 @@ private slots:
     void onDisplayTypeChanged();
 
     void onSpinBoxValueChanged(int value);
+
+    void onSetKmeans();
+
+    void onSetDBSCAN();
 };
 
 #endif // MEANSDIALOG_H
