@@ -21,14 +21,14 @@ set(PROJECT_SOURCES
         include/XMainWindow.h
         src/FileTab.cpp
         include/FileTab.h
-        lib/rowfeature.hpp
-        lib/common.h
-        lib/leastsquare.hpp
+        lib/rowfeature.cpp
+        lib/math_common.h
+        lib/leastsquare.cpp
         src/XGradientFrame.cpp
         include/XGradientFrame.h
-        lib/covariance.hpp
-        lib/pca.hpp
-        lib/kmeans.hpp
+        lib/covariance.cpp
+        lib/pca.cpp
+        lib/kmeans.cpp
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

@@ -1,5 +1,5 @@
 #include "../include/meansdialog.h"
-#include "../lib/kmeans.hpp"
+#include "../lib/math_common.h"
 #include "../ui_meansdialog.h"
 
 #include <set>
@@ -105,7 +105,7 @@ void MeansDialog::init_3d_scatter() {
         auto *m_series = new QScatter3DSeries;
         QScatterDataArray b_data;
         QScatterDataArray m_data;
-        auto res = kpca(points, 3);
+        auto res = pca(points, 3);
         float v_0_max = -1000, v_1_max = -1000, v_2_max = -1000;
         float v_0_min = 1000, v_1_min = 1000, v_2_min = 1000;
         for (int i = 0; i < points.size(); i++) {
@@ -144,7 +144,7 @@ void MeansDialog::init_3d_scatter() {
     } else {
 
         QScatterDataArray b_data;
-        auto res = kpca(points, 3);
+        auto res = pca(points, 3);
         float v_0_max = -1000, v_1_max = -1000, v_2_max = -1000;
         float v_0_min = 1000, v_1_min = 1000, v_2_min = 1000;
         for (int i = 0; i < points.size(); i++) {
@@ -203,7 +203,7 @@ void MeansDialog::init_2d_scatter() {
         m_series->setMarkerSize(10);
         m_series->setColor(QColor("Crimson"));
 
-        auto res = kpca(points, 2);
+        auto res = pca(points, 2);
         float v_0_max = -1000, v_1_max = -1000;
         float v_0_min = 1000, v_1_min = 1000;
         for (int i = 0; i < points.size(); i++) {
@@ -240,7 +240,7 @@ void MeansDialog::init_2d_scatter() {
         b_series->attachAxis(axisX);
         b_series->attachAxis(axisY);
     } else {
-        auto res = kpca(points, 2);
+        auto res = pca(points, 2);
         float v_0_max = -1000, v_1_max = -1000;
         float v_0_min = 1000, v_1_min = 1000;
         for (int i = 0; i < points.size(); i++) {

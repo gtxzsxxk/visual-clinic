@@ -1,5 +1,5 @@
 #include "../include/pcadialog.h"
-#include "../lib/pca.hpp"
+#include "../lib/math_common.h"
 #include "../ui_pcadialog.h"
 
 #include <set>

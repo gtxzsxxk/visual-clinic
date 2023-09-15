@@ -1,5 +1,5 @@
 #include "../include/avgdialog.h"
-#include "../lib/rowfeature.hpp"
+#include "../lib/math_common.h"
 #include "../ui_avgdialog.h"
 
 #include <cmath>

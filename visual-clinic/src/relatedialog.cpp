@@ -1,5 +1,5 @@
 #include "../include/relatedialog.h"
-#include "../lib/covariance.hpp"
+#include "../lib/math_common.h"
 #include "../ui_relatedialog.h"
 
 #include <QTableWidgetItem>
@@ -85,7 +85,7 @@ void RelateDialog::update_data() {
         //relate coefficient
         std::vector<float> vars;
         for (const auto &vec: mat_input) {
-            auto avg = co_getAvgVar(vec);
+            auto avg = getAvgVar(vec);
             /* TODO: 热力图，状态切换 */
             vars.emplace_back(std::get<1>(avg));
         }

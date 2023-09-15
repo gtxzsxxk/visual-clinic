@@ -1,5 +1,5 @@
 #include "../include/scatterdialog.h"
-#include "../lib/leastsquare.hpp"
+#include "../lib/math_common.h"
 #include "../ui_scatterdialog.h"
 
 #include <algorithm>
