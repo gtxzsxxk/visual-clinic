@@ -183,7 +183,7 @@ void Index::titleBarAdd(const QString &path) {
             delete item;
         } else {
             box->removeItem(ui->titleBarSpacer);
-            connect(item, SIGNAL(onTabClosed(int)), this, SLOT(onTabClosed(int)));
+            connect(item, SIGNAL(tabClosed(int)), this, SLOT(onTabClosed(int)));
             box->addWidget(item);
             box->addItem(ui->titleBarSpacer);
             item->select();
