@@ -7,6 +7,7 @@
 #include <Q3DScatter>
 #include <QScatterSeries>
 #include <QValueAxis>
+#include <QMessageBox>
 
 #define MAX_MIN_SET(id) do { \
     if(v_##id>v_##id##_max){\
@@ -360,7 +361,10 @@ void MeansDialog::go_Means() {
             }
         }
         auto res = clusterSpectral(in,k);
-
+        point_categories.clear();
+        for (int i = 0; i < rows; ++i) {
+            point_categories.emplace_back(res(i));
+        }
     }
     set_table_column_categories();
     std::set<int> categories_tmp;
@@ -467,5 +471,11 @@ void MeansDialog::onSetDBSCAN() {
 
 void MeansDialog::onSetMeanShift() {
     means_flag = 2;
+    go_Means();
+}
+
+void MeansDialog::onSetSpectral() {
+    QMessageBox::warning(this,"错误","Still in Progess");
+    means_flag = 3;
     go_Means();
 }

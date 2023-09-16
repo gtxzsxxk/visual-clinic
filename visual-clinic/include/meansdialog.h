@@ -67,6 +67,8 @@ private slots:
     void onSetDBSCAN();
 
     void onSetMeanShift();
+
+    void onSetSpectral();
 };
 
 #endif // MEANSDIALOG_H
