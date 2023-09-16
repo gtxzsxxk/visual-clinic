@@ -11,12 +11,19 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_PREFIX_PATH "D:\\Qt\\6.5.2\\mingw_64")
 
+set(app_WINRC resources/app_win32.rc)
+
 find_package(QT NAMES Qt6 Qt5 REQUIRED COMPONENTS Widgets)
 find_package(Qt${QT_VERSION_MAJOR} REQUIRED COMPONENTS Widgets)
 find_package(Qt6 REQUIRED COMPONENTS Charts)
 find_package(Qt6 REQUIRED COMPONENTS DataVisualization)
 
+set_property(SOURCE resources/app_win32.rc APPEND PROPERTY
+        OBJECT_DEPENDS ${PROJECT_SOURCE_DIR}/resources/favicon.ico
+)
+
 set(PROJECT_SOURCES
+        ${app_WINRC}
         src/main.cpp
         include/XMainWindow.h
         src/FileTab.cpp
