@@ -131,27 +131,27 @@ end
 
 #### K-Means 目标维度：2
 
-![K-Means 目标维度：2](doc_cluster_kmeans_2.png)
+![K-Means 目标维度：2](resources/doc_cluster_kmeans_2.png)
 
 #### K-Means 目标维度：3
 
-![K-Means 目标维度：3](doc_cluster_kmeans_3.png)
+![K-Means 目标维度：3](resources/doc_cluster_kmeans_3.png)
 
 #### DBSCAN聚类 目标维度：2
 
-![DBSCAN聚类 目标维度：2](doc_cluster_dbscan_2.png)
+![DBSCAN聚类 目标维度：2](resources/doc_cluster_dbscan_2.png)
 
 #### DBSCAN聚类 目标维度：3
 
-![DBSCAN聚类 目标维度：3](doc_cluster_dbscan_3.png)
+![DBSCAN聚类 目标维度：3](resources/doc_cluster_dbscan_3.png)
 
 #### 漂移聚类 目标维度：2
 
-![漂移聚类 目标维度：2](doc_cluster_meanshift_2.png)
+![漂移聚类 目标维度：2](resources/doc_cluster_meanshift_2.png)
 
 #### 漂移聚类 目标维度：3
 
-![漂移聚类 目标维度：3](doc_cluster_meanshift_3.png)
+![漂移聚类 目标维度：3](resources/doc_cluster_meanshift_3.png)
 
 ## 参考文献
 
