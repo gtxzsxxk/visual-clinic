@@ -9,6 +9,8 @@ ScatterDialog::ScatterDialog(QWidget *parent, QTableWidget *tableWidget) :
         ui(new Ui::ScatterDialog) {
     setAttribute(Qt::WA_DeleteOnClose);
     ui->setupUi(this);
+    setWindowIcon(QIcon("resources/logo128.png"));
+
     int overlapping_counter = 0;
     int col = -1;
     int col_2;

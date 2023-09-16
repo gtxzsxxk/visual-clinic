@@ -26,6 +26,7 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
         QDialog(parent),
         ui(new Ui::MeansDialog), tableWidget(tableWidget) {
     ui->setupUi(this);
+    setWindowIcon(QIcon("resources/logo128.png"));
     std::set<int> columns, rows;
     QStringList header_names;
     for (const auto &item: tableWidget->selectedItems()) {

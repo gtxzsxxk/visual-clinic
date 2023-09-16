@@ -25,6 +25,7 @@ PCADialog::PCADialog(QWidget *parent, QTableWidget *tableWidget) :
         QDialog(parent),
         ui(new Ui::PCADialog), tableWidget(tableWidget) {
     ui->setupUi(this);
+    setWindowIcon(QIcon("resources/logo128.png"));
     connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(dimValueChanged(int)));
 
     setAttribute(Qt::WA_DeleteOnClose);

@@ -30,6 +30,7 @@ Index::Index(QWidget *parent) :
         XMainWindow(parent),
         ui(new Ui::Index) {
     ui->setupUi(this);
+    setWindowIcon(QIcon("resources/logo128.png"));
     auto *shadow = new QGraphicsDropShadowEffect();
     shadow->setBlurRadius(16);
     shadow->setOffset(0);

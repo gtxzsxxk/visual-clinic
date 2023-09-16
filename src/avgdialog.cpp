@@ -16,6 +16,7 @@ AvgDialog::AvgDialog(QWidget *parent, std::vector<float> data, const QString &&n
         ui(new Ui::AvgDialog), data(data), normal_distribution_enabled(false) {
     ui->setupUi(this);
     setAttribute(Qt::WA_DeleteOnClose);
+    setWindowIcon(QIcon("resources/logo128.png"));
     if (discrete) {
         data_initialize(discrete_categories);
         ui->spinBox->setEnabled(false);

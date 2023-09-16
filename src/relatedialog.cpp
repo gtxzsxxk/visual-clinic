@@ -9,6 +9,7 @@ RelateDialog::RelateDialog(QWidget *parent, QTableWidget *tableWidget) :
         QDialog(parent),
         ui(new Ui::RelateDialog), tableWidget(tableWidget) {
     ui->setupUi(this);
+    setWindowIcon(QIcon("resources/logo128.png"));
     setAttribute(Qt::WA_DeleteOnClose);
     std::set<int> columns;
     for (const auto &item: tableWidget->selectedItems()) {
