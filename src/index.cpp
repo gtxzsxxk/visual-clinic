@@ -205,17 +205,11 @@ void Index::tabSelected() {
         APP_BTN_SET_ENABLE(avg, false);
     }
     if (isSelectingMultipleColumns()) {
-        if (column_selected_num <= 10) {
-            APP_BTN_SET_ENABLE(relate, true);
-            if (column_selected_num > 2) {
-                APP_BTN_SET_ENABLE(PCA, true);
-                APP_BTN_SET_ENABLE(means, true);
-            } else {
-                APP_BTN_SET_ENABLE(PCA, false);
-                APP_BTN_SET_ENABLE(means, false);
-            }
+        APP_BTN_SET_ENABLE(relate, true);
+        if (column_selected_num > 2) {
+            APP_BTN_SET_ENABLE(PCA, true);
+            APP_BTN_SET_ENABLE(means, true);
         } else {
-            APP_BTN_SET_ENABLE(relate, false);
             APP_BTN_SET_ENABLE(PCA, false);
             APP_BTN_SET_ENABLE(means, false);
         }
