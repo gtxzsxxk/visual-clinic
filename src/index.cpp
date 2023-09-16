@@ -236,6 +236,7 @@ void Index::onTabClosed(int tabIndex) {
     if (!FileTab::fileTabs.empty()) {
         FileTab::fileTabs[0]->select();
     }
+    file_full = false;
 }
 
 void Index::onTableHeaderSelected(int index) {
