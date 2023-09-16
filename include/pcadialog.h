@@ -3,10 +3,11 @@
 
 #include <QDialog>
 #include <QTableWidget>
-#include <vector>
+#include <QLabel>
 #include <QWidget>
 #include <QChartView>
 #include <QtDataVisualization/Q3DScatter>
+#include <vector>
 
 namespace Ui {
     class PCADialog;
@@ -22,6 +23,7 @@ public:
 
 private:
     Ui::PCADialog *ui;
+    QLabel *tipLabel = nullptr;
     QTableWidget *tableWidget;
     QWidget *scatter_3d_widget = nullptr;
     QChartView *scatter_2d_widget = nullptr;
@@ -39,6 +41,8 @@ private:
 private slots:
 
     void dimValueChanged(int value);
+
+    void hoverTip_2d(const QPointF &point, bool status);
 };
 
 #endif // PCADIALOG_H

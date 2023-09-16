@@ -65,6 +65,7 @@ PCADialog::PCADialog(QWidget *parent, QTableWidget *tableWidget) :
         points.emplace_back(data);
     }
 
+    ui->spinBox->setValue(2);
     go_PCA();
 }
 
@@ -139,6 +140,7 @@ void PCADialog::init_3d_scatter() {
     q3DScatter->addSeries(m_series);
     q3DScatter->setAspectRatio(1);
     q3DScatter->setHorizontalAspectRatio(1);
+
 }
 
 void PCADialog::init_2d_scatter() {
@@ -157,6 +159,9 @@ void PCADialog::init_2d_scatter() {
     m_series->setName("恶性肿瘤");
     m_series->setMarkerSize(10);
     m_series->setColor(QColor("Crimson"));
+
+    connect(b_series, SIGNAL(hovered(const QPointF &, bool)), this, SLOT(hoverTip_2d(const QPointF &, bool)));
+    connect(m_series, SIGNAL(hovered(const QPointF &, bool)), this, SLOT(hoverTip_2d(const QPointF &, bool)));
 
     auto res = pca(points, 2);
     float v_0_max = -1000, v_1_max = -1000;
@@ -208,5 +213,27 @@ void PCADialog::reset_memory() {
         ui->horizontalLayout->removeWidget(scatter_2d_widget);
         delete scatter_2d_widget;
         scatter_2d_widget = nullptr;
+    }
+}
+
+void PCADialog::hoverTip_2d(const QPointF &point, bool status) {
+//鼠标指向图表柱时提示数值文本
+    QChart *pchart = scatter_2d_widget->chart();
+    if (tipLabel == nullptr) {
+        tipLabel = new QLabel(scatter_2d_widget);    //头文件中的定义 QLabel*   m_tooltip = nullptr;  //柱状体鼠标提示信息
+        tipLabel->setStyleSheet("background: rgba(95,166,250,185);color: rgb(248, 248, 255);"
+                                "border:0px groove gray;border-radius:10px;padding:2px 4px;"
+                                "border:2px groove gray;border-radius:10px;padding:2px 4px");
+        tipLabel->setVisible(false);
+    }
+    if (status) {
+        QPointF pointLabel = pchart->mapToPosition(point);
+        QString sText = "PC1 = " + QString::number(point.x(), 'g', 4) + ", PC2 = " + QString::number(point.y(), 'g', 4);
+
+        tipLabel->setText(sText);
+        tipLabel->move(pointLabel.x(), pointLabel.y() - tipLabel->height() * 1.5);
+        tipLabel->show();
+    } else {
+        tipLabel->hide();
     }
 }
