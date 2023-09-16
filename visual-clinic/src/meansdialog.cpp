@@ -348,6 +348,20 @@ void MeansDialog::go_Means() {
             point_categories.emplace_back(res(i));
         }
     }
+    else if (means_flag == 3) {
+        set_algorithm_name("Spectral");
+        int k = ui->point_spinbox->text().toInt();
+        const int rows = points.size();
+        const int cols = points[0].size();
+        Eigen::MatrixXd in(rows, cols);
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                in(i, j) = points[i][j];
+            }
+        }
+        auto res = clusterSpectral(in,k);
+
+    }
     set_table_column_categories();
     std::set<int> categories_tmp;
     for (const auto &it: point_categories) {
