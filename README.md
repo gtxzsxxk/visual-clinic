@@ -65,8 +65,8 @@ end
 因此我创建了一个`XMainWindow`类，这个类继承了`QDialog`，并且在构造函数中实现了隐藏边框和加载阴影的代码。
 同时，也覆盖了`void mousePressEvent(QMouseEvent *event)`和`void mouseMoveEvent(QMouseEvent *event)`，用于实现无边框窗体的鼠标拖动移动。
 
-
-为了仿WPS实现顶部标题栏文件tab的切换效果，我单独实现了一个`FileTab`类，这个类在构造时会自动添加`QLabel`、`QButton`等控件来实现一个文件tab。
+为了仿WPS实现顶部标题栏文件tab的切换效果，我单独实现了一个`FileTab`类，这个类在构造时会自动添加`QLabel`、`QButton`
+等控件来实现一个文件tab。
 ![FileTab](resources/doc_filetab.png)
 
 为了进一步抽象`FileTab`类切换文件的功能，我直接将读取CSV文件和加载表格内容全部抽象给了这个类。在构造时，FileTab会根据给定的路径去加载CSV文件，并且把数据保存到堆上。
@@ -109,7 +109,7 @@ end
 
 ### 需求三：相关性与协方差矩阵
 
-该按钮将被激活，当且仅当选中的列数大于等于2列小于等于10列。选中列后，点击该按钮，弹出子页面：
+该按钮将被激活，当且仅当选中的列数大于等于2列。选中列后，点击该按钮，弹出子页面：
 
 ![皮尔逊系数模式](resources/doc_relate_1.png)
 
@@ -119,4 +119,42 @@ end
 
 ### 需求四：降维绘制
 
-选中
+选中多列后，主成分分析按钮将被激活。点击该按钮，弹出子页面：
+
+![三维展示](resources/doc_pca_3d.png)
+
+默认将显示将数据降维到三维后的结果，也可以调节`spinBox`的值来调节维度，以下是降维到2位的结果。
+
+![二维展示](resources/doc_pca_2d.png)
+
+### 需求五：聚类分析
+
+#### K-Means 目标维度：2
+
+![K-Means 目标维度：2](doc_cluster_kmeans_2.png)
+
+#### K-Means 目标维度：3
+
+![K-Means 目标维度：3](doc_cluster_kmeans_3.png)
+
+#### DBSCAN聚类 目标维度：2
+
+![DBSCAN聚类 目标维度：2](doc_cluster_dbscan_2.png)
+
+#### DBSCAN聚类 目标维度：3
+
+![DBSCAN聚类 目标维度：3](doc_cluster_dbscan_3.png)
+
+#### 漂移聚类 目标维度：2
+
+![漂移聚类 目标维度：2](doc_cluster_meanshift_2.png)
+
+#### 漂移聚类 目标维度：3
+
+![漂移聚类 目标维度：3](doc_cluster_meanshift_3.png)
+
+## 参考文献
+
+> [Qt Source Code](https://github.com/qt/qtbase)
+>
+> [Qt Documentation](https://doc.qt.io/)
