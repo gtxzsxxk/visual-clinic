@@ -176,13 +176,13 @@
                  </property>
                  <property name="minimumSize">
                   <size>
-                   <width>120</width>
+                   <width>130</width>
                    <height>27</height>
                   </size>
                  </property>
                  <property name="maximumSize">
                   <size>
-                   <width>120</width>
+                   <width>130</width>
                    <height>27</height>
                   </size>
                  </property>
@@ -195,7 +195,17 @@ padding: 3px 10px 3px 10px
 }</string>
                  </property>
                  <property name="text">
-                  <string>Visual Clinic</string>
+                  <string>   Visual Clinic</string>
+                 </property>
+                 <property name="icon">
+                  <iconset>
+                   <normaloff>resources/logo64.png</normaloff>resources/logo64.png</iconset>
+                 </property>
+                 <property name="iconSize">
+                  <size>
+                   <width>15</width>
+                   <height>15</height>
+                  </size>
                  </property>
                 </widget>
                </item>
@@ -349,7 +359,7 @@ QPushButton:hover{
            </property>
            <property name="sizeHint" stdset="0">
             <size>
-             <width>40</width>
+             <width>20</width>
              <height>20</height>
             </size>
            </property>
