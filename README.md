@@ -59,3 +59,20 @@ end
 - `src`用于存放工程的c文件
 - `.`根目录用于存放qt设计师的ui文件与其它杂项
 
+## 模块之间逻辑关系
+
+我基于面向对象编程思想设计了本项目。为了实现主页面中的仿WPS效果，我需要实现一个无边框窗体。
+因此我创建了一个`XMainWindow`类，这个类继承了`QDialog`，并且在构造函数中实现了隐藏边框和加载阴影的代码。
+同时，也覆盖了`void mousePressEvent(QMouseEvent *event)`和`void mouseMoveEvent(QMouseEvent *event)`，用于实现无边框窗体的鼠标拖动移动。
+
+
+为了仿WPS实现顶部标题栏文件tab的切换效果，我单独实现了一个`FileTab`类，这个类在构造时会自动添加`QLabel`、`QButton`等控件来实现一个文件tab。
+![FileTab](resources/doc_filetab.png)
+
+为了进一步抽象`FileTab`类切换文件的功能，我直接将读取CSV文件和加载表格内容全部抽象给了这个类。在构造时，FileTab会根据给定的路径去加载CSV文件，并且把数据保存到堆上。
+构造的同时，也会将自身加入一个静态向量中。
+
+事件过滤器会检测用户是否点击了整个`FileTab`或者只是点击了那个叉的按钮。
+如果某个tab被选中，其`select`函数就会先设置这个tab成员控件的属性，通过遍历静态的filetab向量，执行它们的`unselect`函数。
+这样就实现了每次只能有一个tab被选中
+
