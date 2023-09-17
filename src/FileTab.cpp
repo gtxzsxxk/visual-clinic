@@ -17,6 +17,7 @@ int FileTab::tab_total_size = 0;
 FileTab::FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &filepath) :
         QFrame(parent), filepath(filepath), selected(false), tableWidget(tableWidget) {
 
+    /* 获取文件名 */
     QFile f(filepath);
     if (f.open(QIODevice::ReadOnly)) {
         QFileInfo info(filepath);
@@ -26,10 +27,12 @@ FileTab::FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &file
     }
     f.close();
 
+    /* 通过文件名设置容器大小 */
     int width = QFontMetrics(this->font()).boundingRect(filename).width() + 10;
     container_width = width + 50;
     tab_total_size += container_width;
 
+    /* 初始化UI界面 */
     QSizePolicy sizePolicy2(QSizePolicy::Preferred, QSizePolicy::Preferred);
     sizePolicy2.setHorizontalStretch(180);
     sizePolicy2.setVerticalStretch(0);
@@ -95,6 +98,7 @@ FileTab::FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &file
 }
 
 FileTab::~FileTab() {
+    /* 析构时在filetabs中删掉自己的对象 */
     FileTab::fileTabs.erase(FileTab::fileTabs.begin() + index);
     for(int i=0;i<FileTab::fileTabs.size();i++){
         FileTab::fileTabs[i]->index = i;
@@ -106,6 +110,7 @@ FileTab::~FileTab() {
 }
 
 void FileTab::select() {
+    /* 更新ui，emit信号 */
     for (auto &it: fileTabs) {
         it->unselect();
     }
@@ -122,6 +127,7 @@ void FileTab::select() {
 }
 
 void FileTab::unselect() {
+    /* 更新ui*/
     setStyleSheet(QString::fromUtf8("QFrame{"
                                     "border:none;"
                                     "background:rgb(219, 222, 224);"

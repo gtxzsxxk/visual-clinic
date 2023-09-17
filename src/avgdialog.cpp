@@ -15,8 +15,11 @@ AvgDialog::AvgDialog(QWidget *parent, std::vector<float> data, const QString &&n
         QDialog(parent), name(name), discrete_flag(discrete),
         ui(new Ui::AvgDialog), data(data), normal_distribution_enabled(false) {
     ui->setupUi(this);
+    /* 设置内存管理策略 */
     setAttribute(Qt::WA_DeleteOnClose);
     setWindowIcon(QIcon("resources/logo128.png"));
+
+    /* 检测离散数据 */
     if (discrete) {
         data_initialize(discrete_categories);
         ui->spinBox->setEnabled(false);
@@ -24,12 +27,15 @@ AvgDialog::AvgDialog(QWidget *parent, std::vector<float> data, const QString &&n
         data_initialize();
         connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(onSpinBoxValueChanged(int)));
     }
+
+    /* 初始化数据与表格 */
     chart_initialize();
     auto tuple_avg_var = getAvgVar(data);
     average = std::get<0>(tuple_avg_var);
     variance = std::get<1>(tuple_avg_var);
     ui->average_label->setText(QString::number(average, 'g', 3));
     ui->variance_label->setText(QString::number(variance, 'g', 3));
+
     connect(ui->pushButton, SIGNAL(clicked()), this, SLOT(onNormalDistributionSet()));
 }
 

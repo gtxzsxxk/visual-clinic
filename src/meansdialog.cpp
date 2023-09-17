@@ -27,6 +27,8 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
         ui(new Ui::MeansDialog), tableWidget(tableWidget) {
     ui->setupUi(this);
     setWindowIcon(QIcon("resources/logo128.png"));
+
+    /* 使用集合查找选中的列 */
     std::set<int> columns, rows;
     QStringList header_names;
     for (const auto &item: tableWidget->selectedItems()) {
@@ -104,7 +106,9 @@ MeansDialog::~MeansDialog() {
 }
 
 void MeansDialog::init_3d_scatter() {
+    /* 释放内存 */
     reset_memory();
+
     auto *q3DScatter = new Q3DScatter();
     q3DScatter->activeTheme()->setType(Q3DTheme::ThemePrimaryColors);
     q3DScatter->setShadowQuality(QAbstract3DGraph::ShadowQualitySoftLow);
@@ -202,6 +206,7 @@ void MeansDialog::init_3d_scatter() {
 }
 
 void MeansDialog::init_2d_scatter() {
+    /* 释放内存 */
     reset_memory();
 
     scatter_2d_widget = new QChartView(this);
@@ -300,6 +305,7 @@ void MeansDialog::init_2d_scatter() {
 }
 
 void MeansDialog::reset_memory() {
+    /* 处理内存 */
     if (scatter_3d_widget && ui->horizontalLayout_4->count() == 2) {
         ui->horizontalLayout_4->removeWidget(scatter_3d_widget);
         delete scatter_3d_widget;

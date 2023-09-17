@@ -108,6 +108,7 @@ void Index::goAttributionAnalysis() {
 }
 
 void Index::goAvgAndVari() {
+    /* 检查是否选中带有离散数据的列并且将其转化为0和1 */
     auto parsed_data = tableValidator->parseDiscreteColumn(selected_column);
     auto avgDialog = new AvgDialog(this, std::move(std::get<0>(parsed_data)),
                                    ui->tableWidget->horizontalHeaderItem(selected_column)->text(),
@@ -169,24 +170,30 @@ void Index::goPCA() {
 }
 
 void Index::titleBarAdd(const QString &path) {
+    /* 将layout向下转换 */
     auto *box = dynamic_cast<QHBoxLayout *>(ui->titleBarFrame->layout());
     if (box != nullptr) {
+        /* 先构造变量 */
         auto *item = new FileTab(ui->titleBarFrame, ui->tableWidget, path);
         if (FileTab::tab_total_size > ui->titleBarFrame->geometry().width() - 150) {
+            /* 如果titlebar的空间已经满了后，就删除这个变量，调用其析构函数，释放资源 */
             QMessageBox::warning(this, "错误", "无法打开更多的文件");
             file_full = true;
             delete item;
         } else {
+            /* 删掉spacer，加入item，再加入spacer，确保外观合理 */
             box->removeItem(ui->titleBarSpacer);
             connect(item, SIGNAL(tabClosed(int)), this, SLOT(onTabClosed(int)));
             box->addWidget(item);
             box->addItem(ui->titleBarSpacer);
+            /* 调用新增项目的select函数，选中该filetab */
             item->select();
         }
     }
 }
 
 void Index::tabSelected() {
+    /* 槽函数，当表格中的列被选中时，自动根据规则使能或重置按钮 */
     bool selectingTwoColumns = tableValidator->selectingTwoColumns();
     if (selectingTwoColumns) {
         APP_BTN_SET_ENABLE(scatter, true);
@@ -219,6 +226,7 @@ void Index::tabSelected() {
 }
 
 void Index::onTabClosed(int tabIndex) {
+    /* 该槽接收FileTab的信号，用于处理与UI界面有关的代码 */
     auto *item = FileTab::fileTabs[tabIndex];
     auto *box = dynamic_cast<QHBoxLayout *>(ui->titleBarFrame->layout());
     if (box != nullptr) {

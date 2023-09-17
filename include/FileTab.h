@@ -17,7 +17,9 @@ class FileTab : public QFrame {
 Q_OBJECT
 
 public:
+    /* 用于存储所有FileTab的对象 */
     static std::vector<FileTab *> fileTabs;
+    /* 当前所有打开的FileTab所占用的空间大小 */
     static int tab_total_size;
 
     explicit FileTab(QWidget *parent, QTableWidget *tableWidget, const QString &filepath);
@@ -31,10 +33,13 @@ public:
     bool eventFilter(QObject *watched, QEvent *event) override;
 
 private:
+    /* 容器x坐标占用大小 */
     int container_width;
+    /* 当前对象的下标 */
     int index;
     bool selected;
     QString filename;
+    /* 当前Tab对应的文件路径 */
     const QString &filepath;
     QLabel *label;
     QHBoxLayout *horizontalLayout_6;

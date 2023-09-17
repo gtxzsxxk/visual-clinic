@@ -24,10 +24,13 @@ public:
     ~AvgDialog();
 
 private:
+    /* 选中的列 */
     const QString name;
     float average;
     float variance;
+    /* 本列是否为离散数据的一列 */
     bool discrete_flag;
+    /* 是否启用了正态分布的显示 */
     bool normal_distribution_enabled;
     QSplineSeries *lineseries = nullptr;
     QValueAxis *axisY_n = nullptr;
@@ -35,6 +38,7 @@ private:
     QChart *chart;
     QBarCategoryAxis *axisX;
     QValueAxis *axisY;
+    /* chart的上界 */
     int upper_bound = 0;
     std::vector<float> data;
     std::map<float, int> coordinates;

@@ -22,8 +22,11 @@ public:
 
 private:
     Ui::MeansDialog *ui;
+    /* 选中的列的数量 */
     int columns_number;
+    /* 是否在表格中显示颜色 */
     bool show_color = true;
+    /* 是否显示真实类别 */
     bool real_categories = false;
     /* 聚类算法，0 for K-means */
     int means_flag = 0;
