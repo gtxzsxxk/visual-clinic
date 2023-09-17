@@ -210,7 +210,11 @@ void Index::tabSelected() {
     auto multiple_res = tableValidator->selectingMultipleColumns();
     column_selected_num = std::get<1>(multiple_res);
     if (std::get<0>(multiple_res)) {
-        APP_BTN_SET_ENABLE(relate, true);
+        if (column_selected_num < 12) {
+            APP_BTN_SET_ENABLE(relate, true);
+        } else {
+            APP_BTN_SET_ENABLE(relate, false);
+        }
         if (column_selected_num > 2) {
             APP_BTN_SET_ENABLE(PCA, true);
             APP_BTN_SET_ENABLE(means, true);
