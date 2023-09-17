@@ -87,7 +87,6 @@ void RelateDialog::update_data() {
         std::vector<float> vars;
         for (const auto &vec: mat_input) {
             auto avg = getAvgVar(vec);
-            /* TODO: 热力图，状态切换 */
             vars.emplace_back(std::get<1>(avg));
         }
         result = getPearsonCorr(mat_covariance, vars);
