@@ -30,6 +30,7 @@ Index::Index(QWidget *parent) :
         XMainWindow(parent),
         ui(new Ui::Index) {
     ui->setupUi(this);
+    /* 设置窗体外观属性 */
     setWindowIcon(QIcon("resources/logo128.png"));
     auto *shadow = new QGraphicsDropShadowEffect();
     shadow->setBlurRadius(16);
@@ -37,6 +38,7 @@ Index::Index(QWidget *parent) :
     shadow->setColor(QColor(0, 0, 0, 100));
     ui->widget->setGraphicsEffect(shadow);
 
+    /* 连接槽函数 */
     connect(ui->buttonClose, SIGNAL(clicked()), this, SLOT(quit()));
     connect(ui->buttonMinimize, SIGNAL(clicked()), this, SLOT(minimize()));
     connect(ui->buttonMiddle, SIGNAL(clicked()), this, SLOT(normal_maximum()));
@@ -44,6 +46,7 @@ Index::Index(QWidget *parent) :
             SIGNAL(sectionClicked(int)), this, SLOT(onTableHeaderSelected(int)));
     connect(ui->tableWidget, SIGNAL(itemSelectionChanged()), this, SLOT(tabSelected()));
 
+    /* 安装事件过滤器 */
     APP_BTN_FILTER_INSTALL(attr);
     APP_BTN_FILTER_INSTALL(avg);
     APP_BTN_FILTER_INSTALL(scatter);
@@ -52,10 +55,12 @@ Index::Index(QWidget *parent) :
     APP_BTN_FILTER_INSTALL(means);
     APP_BTN_FILTER_INSTALL(import);
 
+    /* 设置表格属性 */
     ui->fileFrame->setVisible(false);
     ui->tableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectColumns);
 
+    /* 设置表格数据验证器 */
     TableValidator::setTableWidget(ui->tableWidget);
     tableValidator = TableValidator::getInstance();
 }
