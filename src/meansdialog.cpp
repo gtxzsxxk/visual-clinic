@@ -94,6 +94,7 @@ MeansDialog::MeansDialog(QWidget *parent, QTableWidget *tableWidget) :
     connect(ui->kmeans_btn, SIGNAL(clicked()), this, SLOT(onSetKmeans()));
     connect(ui->dbscan_btn, SIGNAL(clicked()), this, SLOT(onSetDBSCAN()));
     connect(ui->meanshift_btn, SIGNAL(clicked()), this, SLOT(onSetMeanShift()));
+    connect(ui->spectral_btn, SIGNAL(clicked()), this, SLOT(onSetSpectral()));
 
     go_Means();
 }
@@ -349,8 +350,7 @@ void MeansDialog::go_Means() {
         for (int i = 0; i < rows; ++i) {
             point_categories.emplace_back(res(i));
         }
-    }
-    else if (means_flag == 3) {
+    } else if (means_flag == 3) {
         set_algorithm_name("Spectral");
         int k = ui->point_spinbox->text().toInt();
         const int rows = points.size();
@@ -361,7 +361,8 @@ void MeansDialog::go_Means() {
                 in(i, j) = points[i][j];
             }
         }
-        auto res = clusterSpectral(in,k);
+        Eigen::MatrixXd affinity_matrix = compute_affinity_matrix(in, 2.0);
+        auto res = clusterSpectral(affinity_matrix, k);
         point_categories.clear();
         for (int i = 0; i < rows; ++i) {
             point_categories.emplace_back(res(i));
@@ -476,7 +477,6 @@ void MeansDialog::onSetMeanShift() {
 }
 
 void MeansDialog::onSetSpectral() {
-    QMessageBox::warning(this,"错误","Still in Progess");
     means_flag = 3;
     go_Means();
 }

@@ -1,5 +1,28 @@
 #include "math_common.h"
 
+Eigen::MatrixXd compute_affinity_matrix(const Eigen::MatrixXd &data, double sigma)
+{
+    int num_samples = data.rows();
+    Eigen::MatrixXd affinity_matrix(num_samples, num_samples);
+
+    for (int i = 0; i < num_samples; ++i)
+    {
+        for (int j = 0; j < num_samples; ++j)
+        {
+            // Calculate the squared Euclidean distance between sample i and j
+            double distance_squared = (data.row(i) - data.row(j)).squaredNorm();
+
+            // Calculate similarity using the Gaussian kernel function
+            double similarity = exp(-distance_squared / (2 * sigma * sigma));
+
+            // Fill the affinity matrix
+            affinity_matrix(i, j) = similarity;
+        }
+    }
+
+    return affinity_matrix;
+}
+// Function to perform K-means clustering
 Eigen::VectorXd kmeans_clustering(const Eigen::MatrixXd &data, int num_clusters, double convergence_threshold = 1e-5)
 {
     int num_samples = data.rows();
@@ -93,14 +116,17 @@ Eigen::VectorXd clusterSpectral(const Eigen::MatrixXd &affinity_matrix, int num_
 
 int test_spectral_cluster()
 {
-    // Sample data (replace with your own data)
-    int num_samples = 100;
+    int num_samples = 50;
     int num_features = 2;
-    Eigen::MatrixXd affinity_matrix(num_samples, num_samples);
-    affinity_matrix.setRandom();
-
+    double sigma = 1.0;
     // Number of clusters
-    int num_clusters = 2;
+    int num_clusters = 4;
+
+    // Sample data
+    Eigen::MatrixXd data(num_samples, num_features);
+    data.setRandom();
+
+    Eigen::MatrixXd affinity_matrix = compute_affinity_matrix(data, sigma);
 
     // Perform spectral clustering
     Eigen::VectorXd cluster_assignments = clusterSpectral(affinity_matrix, num_clusters);
@@ -109,8 +135,9 @@ int test_spectral_cluster()
     std::cout << "Cluster Assignments:" << std::endl;
     for (int i = 0; i < cluster_assignments.size(); ++i)
     {
-        std::cout << "Data Point " << i << ": Cluster " << cluster_assignments(i) << std::endl;
+        std::cout << "Data Point " << i << " (" << data.row(i) << ") : Cluster " << cluster_assignments(i) << std::endl;
     }
 
     return 0;
 }
+

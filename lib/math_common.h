@@ -18,6 +18,8 @@ std::vector<int> clusterDBSCAN(const std::vector<Eigen::VectorXf> &in, double ep
 
 Eigen::VectorXd clusterMeanShift(const Eigen::MatrixXd &data, double bandwidth, double convergence_threshold);
 
+Eigen::MatrixXd compute_affinity_matrix(const Eigen::MatrixXd &data, double sigma);
+
 Eigen::VectorXd clusterSpectral(const Eigen::MatrixXd &affinity_matrix, int num_clusters);
 
 std::tuple<Eigen::VectorXf, float, float>

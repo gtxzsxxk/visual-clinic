@@ -153,6 +153,14 @@ end
 
 ![漂移聚类 目标维度：3](resources/doc_cluster_meanshift_3.png)
 
+#### 谱聚类 目标维度：2
+
+![谱聚类 目标维度：2](resources/doc_cluster_spectral_2.png)
+
+#### 谱聚类 目标维度：3
+
+![谱聚类 目标维度：3](resources/doc_cluster_spectral_3.png)
+
 ## 参考文献
 
 > [Qt Source Code](https://github.com/qt/qtbase)
