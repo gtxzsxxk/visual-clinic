@@ -11,6 +11,7 @@ ScatterDialog::ScatterDialog(QWidget *parent, QTableWidget *tableWidget) :
     ui->setupUi(this);
     setWindowIcon(QIcon("resources/logo128.png"));
 
+    /* 检查表格的列 */
     int overlapping_counter = 0;
     int col = -1;
     int col_2;
@@ -31,11 +32,13 @@ ScatterDialog::ScatterDialog(QWidget *parent, QTableWidget *tableWidget) :
             col_2 = it->column();
         }
     }
+    /* 寻找变量边界 */
     ind_max = *std::max_element(data_col_ind.begin(), data_col_ind.end());
     ind_min = *std::min_element(data_col_ind.begin(), data_col_ind.end());
     dep_max = *std::max_element(data_col_dep.begin(), data_col_dep.end());
     dep_min = *std::min_element(data_col_dep.begin(), data_col_dep.end());
     float dist = (ind_max - ind_min + dep_max - dep_min) / data_col_dep.size() / 3;
+    /* 检查重叠问题 */
     for (const auto &it: tableWidget->selectedItems()) {
         float x = it->text().toFloat();
         float y = it->text().toFloat();
@@ -56,8 +59,10 @@ ScatterDialog::ScatterDialog(QWidget *parent, QTableWidget *tableWidget) :
     name_col_dep = tableWidget->horizontalHeaderItem(col_2)->text();
     ui->var_ind_label->setText(name_col_ind);
     ui->var_dep_label->setText(name_col_dep);
+
     connect(ui->swap_var_btn, SIGNAL(clicked()), this, SLOT(swap_variables()));
     connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(onDegreeChange(int)));
+
     draw_chart();
     fit();
     connect(scatter_series, SIGNAL(hovered(const QPointF &, bool)), this, SLOT(hoverTip(const QPointF &, bool)));
@@ -72,6 +77,7 @@ ScatterDialog::~ScatterDialog() {
 }
 
 void ScatterDialog::swap_variables() {
+    /* 交换自变量因变量 */
     std::swap(data_col_ind, data_col_dep);
     std::swap(name_col_ind, name_col_dep);
     ui->var_ind_label->setText(name_col_ind);
@@ -129,6 +135,7 @@ void ScatterDialog::draw_chart() {
 }
 
 void ScatterDialog::fit() {
+    /*拟合数据*/
     int deg = ui->spinBox->value();
     auto results = fitLeastSquareAndPR(data_col_ind, data_col_dep, deg);
     if (spline_series == nullptr) {
@@ -174,10 +181,10 @@ void ScatterDialog::onDegreeChange(int deg) {
 }
 
 void ScatterDialog::hoverTip(const QPointF &point, bool status) {
-    //鼠标指向图表柱时提示数值文本
+    /* 鼠标指向图表柱时提示数值文本 */
     QChart *pchart = chart;
     if (tipLabel == nullptr) {
-        tipLabel = new QLabel(ui->chart);    //头文件中的定义 QLabel*   m_tooltip = nullptr;  //柱状体鼠标提示信息
+        tipLabel = new QLabel(ui->chart);
         tipLabel->setStyleSheet("background: rgba(95,166,250,185);color: rgb(248, 248, 255);"
                                 "border:0px groove gray;border-radius:10px;padding:2px 4px;"
                                 "border:2px groove gray;border-radius:10px;padding:2px 4px");

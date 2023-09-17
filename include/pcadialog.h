@@ -23,11 +23,16 @@ public:
 
 private:
     Ui::PCADialog *ui;
+    /* 用于在表格上显示数据的标签 */
     QLabel *tipLabel = nullptr;
     QTableWidget *tableWidget;
+    /* 三维图表容器 */
     QWidget *scatter_3d_widget = nullptr;
+    /* 二维图表容器 */
     QChartView *scatter_2d_widget = nullptr;
+    /* PCA后的点集 */
     std::vector<std::vector<float>> points;
+    /* 每个点是良性还是恶性 */
     std::vector<bool> point_status;
 
     void go_PCA();

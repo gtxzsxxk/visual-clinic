@@ -10,7 +10,10 @@ RelateDialog::RelateDialog(QWidget *parent, QTableWidget *tableWidget) :
         ui(new Ui::RelateDialog), tableWidget(tableWidget) {
     ui->setupUi(this);
     setWindowIcon(QIcon("resources/logo128.png"));
+    /* 设置内存策略 */
     setAttribute(Qt::WA_DeleteOnClose);
+
+    /* 初始化表头 */
     std::set<int> columns;
     for (const auto &item: tableWidget->selectedItems()) {
         columns.insert(item->column());
@@ -108,6 +111,7 @@ void RelateDialog::update_data() {
     }
     min_value = is_relate_co ? 0 : min_value;
 
+    /* 线性颜色 */
     auto color = [&](float x) {
         float r_max = 160;
         int offset = 20;
@@ -116,6 +120,7 @@ void RelateDialog::update_data() {
         return static_cast<int>(k * x + b);
     };
 
+    /* 二次曲线 */
     auto color_ploy = [&](float x) {
         float r_max = 140;
         float offset = 15;
@@ -124,6 +129,7 @@ void RelateDialog::update_data() {
         return static_cast<int>(-A * (x - min_value) * (x - min_value) + top);
     };
 
+    /* 选择颜色模式 */
     auto color_func = color_ploy;
 
     for (int i = 0; i < column_name_pairs.size(); i++) {

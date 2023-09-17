@@ -15,21 +15,21 @@ void XGradientFrame::paintEvent(QPaintEvent *) {
     QPainter painter(this);
     painter.setRenderHint(QPainter::Antialiasing, true);
 
-    // 设置渐变色
+    /* 设置渐变色 */
     QLinearGradient linear(10, this->height(), 10, 0);
     for (const auto &it: color_maps) {
         linear.setColorAt(it.first, it.second);
     }
 
-    // 设置显示模式
+    /* 设置显示模式 */
     linear.setSpread(QGradient::PadSpread);
 
-    // 设置画笔颜色、宽度
+    /* 设置画笔颜色、宽度 */
     painter.setPen(QPen(QColor(255, 255, 255), 2));
-    // 设置画刷填充
+    /* 设置画刷填充 */
     painter.setBrush(linear);
 
-    // 绘制椭圆
+    /* 绘制标签 */
     painter.drawRect(QRect(0, 0, 20, this->height()));
     painter.setPen(QPen(QColor(0, 0, 0), 2));
     float step = this->height() / 6;
@@ -49,6 +49,7 @@ void XGradientFrame::paintEvent(QPaintEvent *) {
 }
 
 void XGradientFrame::setPoints(const std::function<int(float)> &f, float max_value, float min_value) {
+    /* 设置点集 */
     float k = 1 / (max_value - min_value);
     float step = (max_value - min_value) / 10;
     float x = min_value;

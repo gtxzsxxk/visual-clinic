@@ -20,8 +20,11 @@ public:
 private:
     Ui::RelateDialog *ui;
     bool graph_initialized = false;
+    /* 是否显示相关性系数 */
     bool is_relate_co = true;
+    /* 主页面的表格控件 */
     QTableWidget *tableWidget;
+    /* 表格的表头index和字符串 */
     std::vector<std::pair<int, QString>> column_name_pairs;
 
     void draw_hotgraph();

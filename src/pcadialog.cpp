@@ -27,8 +27,10 @@ PCADialog::PCADialog(QWidget *parent, QTableWidget *tableWidget) :
     ui->setupUi(this);
     setWindowIcon(QIcon("resources/logo128.png"));
     connect(ui->spinBox, SIGNAL(valueChanged(int)), this, SLOT(dimValueChanged(int)));
-
+    /* 设置内存管理策略 */
     setAttribute(Qt::WA_DeleteOnClose);
+
+    /* 使用set容器查找选中的列 */
     std::set<int> columns;
     for (const auto &item: tableWidget->selectedItems()) {
         columns.insert(item->column());
@@ -65,6 +67,7 @@ PCADialog::PCADialog(QWidget *parent, QTableWidget *tableWidget) :
         points.emplace_back(data);
     }
 
+    /* 默认使用二维 */
     ui->spinBox->setValue(2);
     go_PCA();
 }
@@ -204,6 +207,7 @@ void PCADialog::init_2d_scatter() {
 }
 
 void PCADialog::reset_memory() {
+    /* 管理内存 */
     if (scatter_3d_widget && ui->horizontalLayout->count() == 2) {
         ui->horizontalLayout->removeWidget(scatter_3d_widget);
         delete scatter_3d_widget;
@@ -217,10 +221,10 @@ void PCADialog::reset_memory() {
 }
 
 void PCADialog::hoverTip_2d(const QPointF &point, bool status) {
-//鼠标指向图表柱时提示数值文本
+    /* 鼠标指向图表柱时提示数值文本 */
     QChart *pchart = scatter_2d_widget->chart();
     if (tipLabel == nullptr) {
-        tipLabel = new QLabel(scatter_2d_widget);    //头文件中的定义 QLabel*   m_tooltip = nullptr;  //柱状体鼠标提示信息
+        tipLabel = new QLabel(scatter_2d_widget);
         tipLabel->setStyleSheet("background: rgba(95,166,250,185);color: rgb(248, 248, 255);"
                                 "border:0px groove gray;border-radius:10px;padding:2px 4px;"
                                 "border:2px groove gray;border-radius:10px;padding:2px 4px");

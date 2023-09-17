@@ -25,16 +25,20 @@ public:
 
 private:
     Ui::ScatterDialog *ui;
+    /* 自变量的边界 */
     float ind_max;
     float ind_min;
+    /* 因变量的边界 */
     float dep_max;
     float dep_min;
+    /* 表格相关 */
     QScatterSeries *scatter_series = nullptr;
     QSplineSeries *spline_series = nullptr;
     QValueAxis *axisX = nullptr;
     QValueAxis *axisY = nullptr;
     QChart *chart = nullptr;
     QLabel *tipLabel = nullptr;
+    /* 数据点信息 */
     std::vector<float> data_col_ind;
     std::vector<float> data_col_dep;
     QString name_col_ind;
