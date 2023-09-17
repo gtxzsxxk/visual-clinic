@@ -74,4 +74,7 @@ CMakeLists.txt.user*
 cmake-build-debug
 lib/Eigen/*
 
+build-*
+bin
+
 *.pdf

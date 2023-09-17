@@ -3,6 +3,7 @@
 //
 
 #include "../include/FileTab.h"
+#include "../include/TableValidator.h"
 
 #include <QEvent>
 #include <QFontMetrics>
@@ -165,7 +166,7 @@ void FileTab::readCSV() {
         while (!stream.atEnd()) {
             lines.push_back(stream.readLine());
         }
-        if (lines.size() < 2) {
+        if (lines.size() < 2 || TableValidator::datasetValidate(lines)) {
             QMessageBox::warning(this, "错误", "文件是空的，或者文件格式错误");
         }
 
@@ -180,6 +181,9 @@ void FileTab::readCSV() {
 }
 
 void FileTab::loadTable() {
+    if(CSVLines.empty()){
+        return;
+    }
     auto header_src = CSVLines[0];
     auto headers = header_src.split(',');
     tableWidget->clear();

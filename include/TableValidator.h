@@ -22,6 +22,8 @@ public:
     /* 设置表格控件指针 */
     static void setTableWidget(QTableWidget *widget);
 
+    static bool datasetValidate(const std::vector<QString> &csv_lines);
+
     [[nodiscard]] static TableValidator *getInstance();
 
     /* 是否选中了两列 */

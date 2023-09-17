@@ -158,3 +158,31 @@ bool TableValidator::selectingInfoAndDiscreteColumns() const {
     }
     return false;
 }
+
+bool TableValidator::datasetValidate(const std::vector<QString> &csv_lines) {
+    /* 检测除了第二列以外，是否全为数字 */
+    auto col_num = csv_lines[0].split(',').size();
+    for (int c = 0; c < col_num; c++) {
+        if (c == 1) {
+            continue;
+        }
+        for (int r = 1; r < csv_lines.size(); r++) {
+            auto columns = csv_lines[r].split(',');
+            for (const auto &it: columns) {
+                bool success = false;
+                it.toDouble(&success);
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+    }
+    /* 检测除了第二列，是否全为离散量 */
+    for (int r = 1; r < csv_lines.size(); r++) {
+        auto columns = csv_lines[r].split(',');
+        if (columns[1][0] < 'A') {
+            return false;
+        }
+    }
+    return true;
+}
