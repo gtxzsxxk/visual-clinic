@@ -192,7 +192,7 @@ void ScatterDialog::hoverTip(const QPointF &point, bool status) {
     }
     if (status) {
         QPointF pointLabel = pchart->mapToPosition(point);
-        QString sText = QString::number(point.y(), 'g', 4);
+        QString sText = "X="+QString::number(point.y(), 'g', 4)+", Y="+QString::number(point.y(), 'g', 4);
 
         tipLabel->setText(sText);
         tipLabel->move(pointLabel.x(), pointLabel.y() - tipLabel->height() * 1.5);
