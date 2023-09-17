@@ -38,7 +38,7 @@ end
 
 ## 可执行文件路径
 
-可执行文件在`output`目录下，已使用windeployqt进行发布。
+可执行文件在`bin`目录下，已使用windeployqt进行发布。
 
 ## 工程结构
 
@@ -113,7 +113,7 @@ end
 
 ### 需求三：相关性与协方差矩阵
 
-该按钮将被激活，当且仅当选中的列数大于等于2列。选中列后，点击该按钮，弹出子页面：
+该按钮将被激活，当且仅当选中的列数大于等于2列小于12列。选中列后，点击该按钮，弹出子页面：
 
 ![皮尔逊系数模式](resources/doc_relate_1.png)
 
@@ -170,3 +170,5 @@ end
 > [Qt Source Code](https://github.com/qt/qtbase)
 >
 > [Qt Documentation](https://doc.qt.io/)
+> 
+> [Eigen is a C++ template library for linear algebra: matrices, vectors, numerical solvers, and related algorithms.](https://gitlab.com/libeigen/eigen)
