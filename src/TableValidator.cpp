@@ -152,18 +152,8 @@ std::tuple<std::vector<float>, bool, int> TableValidator::parseDiscreteColumn(in
 bool TableValidator::selectingInfoAndDiscreteColumns() const {
     QList<QTableWidgetItem *> selected_items = tableWidget->selectedItems();
     for (const auto &it: selected_items) {
-        int r = it->row();
-        if (!row_counter.count(r)) {
-            row_counter[r] = 1;
-        } else {
-            row_counter[r]++;
-        }
-        if (col == -1) {
-            col = it->column();
-            continue;
-        }
-        if (it->column() == col) {
-            column_cnt++;
+        if (it->column() == 0 || it->column() == 1) {
+            return true;
         }
     }
     return false;
