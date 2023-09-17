@@ -99,7 +99,7 @@ bool Index::eventFilter(QObject *watched, QEvent *event) {
 }
 
 void Index::goAttributionAnalysis() {
-    QMessageBox::information(this, "Debug", "归因分析");
+    QMessageBox::information(this, "In Progress", "归因分析尚未完成");
 }
 
 void Index::goAvgAndVari() {
@@ -124,26 +124,40 @@ void Index::importCSV() {
 }
 
 void Index::goMeans() {
+    if(tableValidator->selectingInfoAndDiscreteColumns()){
+        QMessageBox::warning(this,"错误","不能选择前两列数据作为参数");
+        return;
+    }
     auto meansdial = new MeansDialog(this, ui->tableWidget);
     meansdial->setModal(true);
     meansdial->show();
 }
 
 void Index::goScatter() {
+    if(tableValidator->selectingInfoAndDiscreteColumns()){
+        QMessageBox::warning(this,"错误","不能选择前两列数据作为参数");
+        return;
+    }
     auto scatterdial = new ScatterDialog(this, ui->tableWidget);
     scatterdial->setModal(true);
     scatterdial->show();
 }
 
 void Index::goRelate() {
-    /* TODO: B and M should not be allowed to go relate */
+    if(tableValidator->selectingInfoAndDiscreteColumns()){
+        QMessageBox::warning(this,"错误","不能选择前两列数据作为参数");
+        return;
+    }
     auto relatedial = new RelateDialog(this, ui->tableWidget);
     relatedial->setModal(true);
     relatedial->show();
 }
 
 void Index::goPCA() {
-    /* TODO: B and M should not be allowed to go PCA，统一命名风格 */
+    if(tableValidator->selectingInfoAndDiscreteColumns()){
+        QMessageBox::warning(this,"错误","不能选择前两列数据作为参数");
+        return;
+    }
     auto pcadial = new PCADialog(this, ui->tableWidget);
     pcadial->setModal(true);
     pcadial->show();
