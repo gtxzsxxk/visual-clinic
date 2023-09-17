@@ -25,6 +25,7 @@ private:
     Ui::PCADialog *ui;
     /* 用于在表格上显示数据的标签 */
     QLabel *tipLabel = nullptr;
+
     QTableWidget *tableWidget;
     /* 三维图表容器 */
     QWidget *scatter_3d_widget = nullptr;

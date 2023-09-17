@@ -217,6 +217,7 @@ void PCADialog::reset_memory() {
         ui->horizontalLayout->removeWidget(scatter_2d_widget);
         delete scatter_2d_widget;
         scatter_2d_widget = nullptr;
+        tipLabel = nullptr;
     }
 }
 
