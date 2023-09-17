@@ -52,7 +52,15 @@ void RelateDialog::draw_hotgraph() {
         ui->hotgraph->setVerticalHeader(vertical_headers);
         ui->hotgraph->setHorizontalHeaderLabels(headers);
         ui->hotgraph->setVerticalHeaderLabels(headers);
-        int section_size = 400 / column_name_pairs.size();
+        int width = 0;
+        for (const auto &it: headers) {
+            int tmp = QFontMetrics(this->font()).boundingRect(it).width();
+            if (tmp > width) {
+                width = tmp;
+            }
+        }
+        width += 20;
+        int section_size = (530 - width) / column_name_pairs.size();
         ui->hotgraph->horizontalHeader()->setDefaultSectionSize(section_size);
         ui->hotgraph->verticalHeader()->setDefaultSectionSize(section_size);
         int row_cnt = 0;
