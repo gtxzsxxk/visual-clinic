@@ -36,12 +36,14 @@ Index::Index(QWidget *parent) :
     shadow->setOffset(0);
     shadow->setColor(QColor(0, 0, 0, 100));
     ui->widget->setGraphicsEffect(shadow);
+
     connect(ui->buttonClose, SIGNAL(clicked()), this, SLOT(quit()));
     connect(ui->buttonMinimize, SIGNAL(clicked()), this, SLOT(minimize()));
     connect(ui->buttonMiddle, SIGNAL(clicked()), this, SLOT(normal_maximum()));
     connect(ui->tableWidget->horizontalHeader(),
             SIGNAL(sectionClicked(int)), this, SLOT(onTableHeaderSelected(int)));
     connect(ui->tableWidget, SIGNAL(itemSelectionChanged()), this, SLOT(tabSelected()));
+
     APP_BTN_FILTER_INSTALL(attr);
     APP_BTN_FILTER_INSTALL(avg);
     APP_BTN_FILTER_INSTALL(scatter);
@@ -49,9 +51,13 @@ Index::Index(QWidget *parent) :
     APP_BTN_FILTER_INSTALL(PCA);
     APP_BTN_FILTER_INSTALL(means);
     APP_BTN_FILTER_INSTALL(import);
+
     ui->fileFrame->setVisible(false);
     ui->tableWidget->setSelectionMode(QAbstractItemView::ExtendedSelection);
     ui->tableWidget->setSelectionBehavior(QAbstractItemView::SelectColumns);
+
+    TableValidator::setTableWidget(ui->tableWidget);
+    tableValidator = TableValidator::getInstance();
 }
 
 Index::~Index() {
@@ -97,42 +103,10 @@ void Index::goAttributionAnalysis() {
 }
 
 void Index::goAvgAndVari() {
-    std::vector<float> data;
-    bool discrete_flag = false;
-    int discrete_num = 2;
-    for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
-        auto *item = ui->tableWidget->item(i, selected_column);
-        if (item->text()[0] >= 'A') {
-            discrete_flag = true;
-            break;
-        } else {
-            data.push_back(item->text().toDouble());
-        }
-    }
-    if (discrete_flag) {
-        std::map<QString, int> categories;
-        for (int i = 0; i < ui->tableWidget->rowCount(); i++) {
-            auto *item = ui->tableWidget->item(i, selected_column);
-            auto key = item->text();
-            if (categories.count(key)) {
-                categories[key]++;
-            } else {
-                categories[key] = 1;
-            }
-        }
-        discrete_num = categories.size();
-        int cnt = 0;
-        data.clear();
-        for (const auto &it: categories) {
-            for (int k = 0; k < it.second; k++) {
-                data.push_back((float) cnt);
-            }
-            cnt++;
-        }
-    }
-    auto avgDialog = new AvgDialog(this, std::move(data),
+    auto parsed_data = tableValidator->parseDiscreteColumn(selected_column);
+    auto avgDialog = new AvgDialog(this, std::move(std::get<0>(parsed_data)),
                                    ui->tableWidget->horizontalHeaderItem(selected_column)->text(),
-                                   discrete_flag, discrete_num);
+                                   std::get<1>(parsed_data), std::get<2>(parsed_data));
     avgDialog->setModal(true);
     avgDialog->show();
 }
@@ -194,17 +168,22 @@ void Index::titleBarAdd(const QString &path) {
 }
 
 void Index::tabSelected() {
-    if (isSelectingTwoColumns()) {
+    bool selectingTwoColumns = tableValidator->selectingTwoColumns();
+    if (selectingTwoColumns) {
         APP_BTN_SET_ENABLE(scatter, true);
     } else {
         APP_BTN_SET_ENABLE(scatter, false);
     }
-    if (isSelectingEntireColumn()) {
+    auto entire_res = tableValidator->selectingEntireColumn();
+    selected_column = std::get<1>(entire_res);
+    if (std::get<0>(entire_res)) {
         APP_BTN_SET_ENABLE(avg, true);
     } else {
         APP_BTN_SET_ENABLE(avg, false);
     }
-    if (isSelectingMultipleColumns()) {
+    auto multiple_res = tableValidator->selectingMultipleColumns();
+    column_selected_num = std::get<1>(multiple_res);
+    if (std::get<0>(multiple_res)) {
         APP_BTN_SET_ENABLE(relate, true);
         if (column_selected_num > 2) {
             APP_BTN_SET_ENABLE(PCA, true);
@@ -239,96 +218,6 @@ void Index::onTableHeaderSelected(int index) {
         APP_BTN_SET_ENABLE(avg, true);
         selected_column = index;
     }
-}
-
-bool Index::isSelectingTwoColumns() {
-    QList<QTableWidgetItem *> selected_items = ui->tableWidget->selectedItems();
-    int col = -1;
-    int column_cnt = 1;
-    std::map<int, int> row_counter;
-    for (const auto &it: selected_items) {
-        int r = it->row();
-        if (!row_counter.count(r)) {
-            row_counter[r] = 1;
-        } else {
-            row_counter[r]++;
-        }
-        if (col == -1) {
-            col = it->column();
-            continue;
-        }
-        if (it->column() == col) {
-            column_cnt++;
-        }
-    }
-    if (selected_items.size() != 2 * column_cnt) {
-        return false;
-    }
-    for (const auto &it: row_counter) {
-        if (it.second != 2) {
-            return false;
-        }
-    }
-    return true;
-}
-
-bool Index::isSelectingEntireColumn() {
-    auto selected_items = ui->tableWidget->selectedItems();
-    int col = -1;
-    int column_cnt = 1;
-    for (const auto &it: selected_items) {
-        if (col == -1) {
-            col = it->column();
-            continue;
-        }
-        if (it->column() == col) {
-            column_cnt++;
-        }
-    }
-    if (selected_items.size() != column_cnt) {
-        return false;
-    }
-    if (ui->tableWidget->rowCount() == column_cnt) {
-        selected_column = col;
-        return true;
-    }
-    return false;
-}
-
-bool Index::isSelectingMultipleColumns() {
-    QList<QTableWidgetItem *> selected_items = ui->tableWidget->selectedItems();
-    int col = -1;
-    int column_cnt = 1;
-    std::map<int, int> row_counter;
-    for (const auto &it: selected_items) {
-        int r = it->row();
-        if (!row_counter.count(r)) {
-            row_counter[r] = 1;
-        } else {
-            row_counter[r]++;
-        }
-        if (col == -1) {
-            col = it->column();
-            continue;
-        }
-        if (it->column() == col) {
-            column_cnt++;
-        }
-    }
-    if (selected_items.size() % column_cnt) {
-        return false;
-    }
-    int counts = selected_items.size() / column_cnt;
-    if (counts < 2) {
-        return false;
-    }
-    for (const auto &it: row_counter) {
-        if (it.second != counts) {
-            return false;
-        }
-    }
-    column_selected_num = counts;
-    return true;
 }
 
 void Index::normal_maximum() {

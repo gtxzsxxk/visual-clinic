@@ -3,6 +3,7 @@
 
 #include "XMainWindow.h"
 #include "FileTab.h"
+#include "TableValidator.h"
 
 #include <QDialog>
 
@@ -24,6 +25,7 @@ private:
     int selected_column = 0;
     int column_selected_num = 0;
     bool file_full = false;
+    TableValidator* tableValidator;
     QString currentFilePath;
     std::vector<QString> currentCSVLines;
 
@@ -44,12 +46,6 @@ private:
     void importCSV();
 
     void titleBarAdd(const QString &path);
-
-    bool isSelectingMultipleColumns();
-
-    bool isSelectingTwoColumns();
-
-    bool isSelectingEntireColumn();
 
 public slots:
 

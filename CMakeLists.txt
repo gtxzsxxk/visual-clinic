@@ -39,6 +39,8 @@ set(PROJECT_SOURCES
         lib/dbscan.cpp
         lib/mean_shift.cpp
         lib/spectral_cluster.cpp
+        src/TableValidator.cpp
+        include/TableValidator.h
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
