@@ -76,5 +76,6 @@ lib/Eigen/*
 
 build-*
 bin
+submit
 
 *.pdf
